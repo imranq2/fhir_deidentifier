@@ -43,7 +43,7 @@ def list_assemblies():
         for t in assembly.GetTypes():
             print(f"  Type: {t.FullName}")
 
-list_assemblies()
+# list_assemblies()
 
 # Import the required namespaces and classes
 from Microsoft.Health.Fhir.Anonymizer.Core import AnonymizerConfigurationManager

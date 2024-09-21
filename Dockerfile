@@ -2,10 +2,21 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 # Install git
-RUN apt-get update && apt-get install -y git
+#RUN apt-get update && apt-get install -y git
+
+# Install wget (if not already available)
+RUN apt-get update && apt-get install -y wget
 
 # Clone the GitHub repository
-RUN git clone https://github.com/microsoft/Tools-for-Health-Data-Anonymization.git app
+#RUN git clone https://github.com/microsoft/Tools-for-Health-Data-Anonymization.git app
+
+# Download the source tar.gz from the GitHub releases page
+RUN wget https://github.com/microsoft/Tools-for-Health-Data-Anonymization/archive/refs/tags/v3.1.1.tar.gz -O source.tar.gz
+
+# Extract the tar.gz file and then remove the archive to clean up
+RUN tar -xzf source.tar.gz && rm source.tar.gz
+
+RUN mv Tools-for-Health-Data-Anonymization-3.1.1 app
 
 WORKDIR /app
 
