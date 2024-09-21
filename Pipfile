@@ -9,6 +9,8 @@ fastapi = "*"
 uvicorn = "*"
 
 [dev-packages]
+pytest = "*"
+httpx = "*"
 
 [requires]
 python_version = "3.9"

@@ -51,50 +51,10 @@ from Microsoft.Health.Fhir.Anonymizer.Core import AnonymizerEngine
 
 AnonymizerEngine.InitializeFhirPathExtensionSymbols()
 
-# Program.Main([])
-
-# from Microsoft.Health.Fhir.Anonymizer.Tool import AnonymizationLogic
-# # Import the correct namespace and class
-# try:
-#     from Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool import AnonymizerTool  # Adjust this if needed
-# except ImportError as e:
-#     raise ImportError(f"Failed to import .NET class: {e}")
-
 @app.post("/anonymize")
 async def anonymize(config_json: str, json_content: str):
     try:
-        # config_json = """{
-        #   "fhirVersion": "R4",
-        #   "processingError":"raise",
-        #   "fhirPathRules": [
-        #     {"path": "nodesByType('Extension')", "method": "redact"},
-        #     {"path": "Organization.identifier", "method": "keep"},
-        #     {"path": "nodesByType('Address').country", "method": "keep"},
-        #     {"path": "Resource.id", "method": "cryptoHash"},
-        #     {"path": "nodesByType('Reference').reference", "method": "cryptoHash"},
-        #     {"path": "Group.name", "method": "redact"}
-        #   ],
-        #   "parameters": {
-        #     "dateShiftKey": "",
-        #     "cryptoHashKey": "",
-        #     "encryptKey": "",
-        #     "enablePartialAgesForRedact": true
-        #   }
-        # }"""
         anonymizer_configuration_manager = AnonymizerConfigurationManager.CreateFromSettingsInJson(config_json)
-        # json_content = """{
-        #   "resourceType": "Patient",
-        #   "id": "example",
-        #   "name": [
-        #     {
-        #       "family": "Doe",
-        #       "given": ["John"]
-        #     }
-        #   ],
-        #   "gender": "male",
-        #   "birthDate": "1974-12-25"
-        # }
-        # """
         result = AnonymizerEngine(anonymizer_configuration_manager).AnonymizeJson(json_content)
         print(result)
 
