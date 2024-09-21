@@ -1,11 +1,9 @@
 version: '3.8'
 
 services:
-  fhir-de-identifier:
+  dev:
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./data:/data
-      - ./fastapi-app:/app/fastapi-app
-#    entrypoint: ["dotnet", "Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool.dll"]
+      - ./:/app
