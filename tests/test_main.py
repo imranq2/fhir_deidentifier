@@ -68,14 +68,16 @@ def test_anonymize_success(rest_client):
 
 
 def test_anonymize_invalid_input(rest_client):
+    print("")
     """Test the /anonymize endpoint with invalid input (expect failure)"""
-    config_json = """{}"""  # Empty configuration JSON
-    json_content = """{}"""  # Empty FHIR resource
+    config = {}  # Empty configuration JSON
+    resource = {}  # Empty FHIR resource
 
     response = rest_client.post("/anonymize", json={
-        "config_json": config_json,
-        "json_content": json_content
+        "config": config,
+        "resource": resource
     })
 
     assert response.status_code == 500
+    print(response.json())
     assert "AnonymizerConfigurationManager" in response.json()["detail"]
