@@ -1,30 +1,26 @@
 # First stage: Build the .NET code
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
-# Install git
-#RUN apt-get update && apt-get install -y git
+# Define a build argument for the version
+ARG VERSION=3.1.1
 
 # Install wget (if not already available)
 RUN apt-get update && apt-get install -y wget
 
-# Clone the GitHub repository
-#RUN git clone https://github.com/microsoft/Tools-for-Health-Data-Anonymization.git app
-
-# Download the source tar.gz from the GitHub releases page
-RUN wget https://github.com/microsoft/Tools-for-Health-Data-Anonymization/archive/refs/tags/v3.1.1.tar.gz -O source.tar.gz
+# Download the source tar.gz from the GitHub releases page using the version argument
+RUN wget https://github.com/microsoft/Tools-for-Health-Data-Anonymization/archive/refs/tags/v${VERSION}.tar.gz -O source.tar.gz
 
 # Extract the tar.gz file and then remove the archive to clean up
 RUN tar -xzf source.tar.gz && rm source.tar.gz
 
-RUN mv Tools-for-Health-Data-Anonymization-3.1.1 app
+# Rename the extracted folder to 'app' using the version argument
+RUN mv Tools-for-Health-Data-Anonymization-${VERSION} app
 
 WORKDIR /app
 
 RUN ls -halt .
 
 RUN ls -haltR FHIR/src/
-# Copy the project files
-#COPY . .
 
 # Build the project
 RUN dotnet build FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool -c Release
@@ -41,12 +37,12 @@ WORKDIR /app
 
 ENV PYTHONPATH=/app;/lib/netlib
 
+# Copy the build output from the first stage
 COPY --from=build /app/FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool/bin/Release/net6.0 /lib/netlib
 
 RUN ls -halt /lib/netlib
 
 ENV PYTHONNET_RUNTIME=coreclr
-#ENTRYPOINT ["dotnet", "Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool.dll"]
 
 # Copy the FastAPI Python code
 COPY ./fastapi-app /app/fastapi-app
