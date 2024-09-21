@@ -25,8 +25,8 @@ def test_anonymize_success(rest_client):
         {"path": "Group.name", "method": "redact"}
       ],
       "parameters": {
-        "dateShiftKey": "",
-        "cryptoHashKey": "",
+        "dateShiftKey": "3f49ef04-60a4-4c89-85a3-df2eae5489ae",
+        "cryptoHashKey": "3f49ef04-60a4-4c89-85a3-df2eae5489ae",
         "encryptKey": "",
         "enablePartialAgesForRedact": true
       }
@@ -51,17 +51,14 @@ def test_anonymize_success(rest_client):
 
     assert response.status_code == 200
     assert response.json() == {
-        "resourceType": "Patient",
-        "id": "0efb82083e8653b8665c20a579810870d70c121a6b80a97b7666df6e501d572d",
-        "name": [{"family": "Doe", "given": ["John"]}],
-        "gender": "male",
-        "birthDate": "1974-12-25",
-        "meta": {
-            "security": [
-                {"system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue", "code": "CRYTOHASH",
-                 "display": "cryptographic hash function"}
-            ]
-        }
+        'birthDate': '1974-12-25',
+        'gender': 'male',
+        'id': '0d9b28fe8cc6aa8ab33f70305576fca5431b0d9339ac83d17e4d4ca882fae668',
+        'meta': {'security': [{'code': 'CRYTOHASH',
+                               'display': 'cryptographic hash function',
+                               'system': 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue'}]},
+        'name': [{'family': 'Doe', 'given': ['John']}],
+        'resourceType': 'Patient'
     }
 
 
