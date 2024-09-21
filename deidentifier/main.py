@@ -1,3 +1,6 @@
+import json
+from typing import Dict, Any
+
 from fastapi import FastAPI, HTTPException
 from pythonnet import load
 import clr
@@ -52,13 +55,19 @@ from Microsoft.Health.Fhir.Anonymizer.Core import AnonymizerEngine
 AnonymizerEngine.InitializeFhirPathExtensionSymbols()
 
 @app.post("/anonymize")
-async def anonymize(config_json: str, json_content: str):
+async def anonymize(config: Dict[str, Any], resource: Dict[str,Any]):
     try:
+        assert config
+        assert isinstance(config, dict)
+        assert resource
+        assert isinstance(resource, dict)
+        config_json = json.dumps(config)
+        json_content = json.dumps(resource)
         anonymizer_configuration_manager = AnonymizerConfigurationManager.CreateFromSettingsInJson(config_json)
-        result = AnonymizerEngine(anonymizer_configuration_manager).AnonymizeJson(json_content)
+        result: str = AnonymizerEngine(anonymizer_configuration_manager).AnonymizeJson(json_content)
         print(result)
 
-        return result
+        return json.loads(result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
