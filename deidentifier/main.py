@@ -19,19 +19,10 @@ def initialize_anonymizer():
     except Exception as e:
         raise ImportError(
             "Pythonnet could not load CoreCLR. Make sure .NET 6.0+ is installed in the environment.") from e
-    # Path to the .NET assembly (ensure this path is correct)
-    assembly_path = os.path.join(
-        "/lib/netlib",
-        "Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool.dll"
-    )
-    # Check if the DLL exists
-    if not os.path.exists(assembly_path):
-        raise FileNotFoundError(f"Could not find the .NET assembly at {assembly_path}")
-    # Load the .NET assembly
-    try:
-        clr.AddReference(assembly_path)
-    except Exception as e:
-        raise ImportError(f"Failed to load .NET assembly: {e}")
+
+    # noinspection PyUnresolvedReferences
+    clr.AddReference("/lib/netlib/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool")
+    # noinspection PyUnresolvedReferences
     clr.AddReference("/lib/netlib/Microsoft.Health.Fhir.Anonymizer.R4.Core")
     # Inspect the assembly to list all namespaces and classes
     # noinspection PyUnresolvedReferences
