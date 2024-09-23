@@ -51,10 +51,10 @@ COPY Pipfile Pipfile.lock /app/
 RUN pipenv sync --dev --system --verbose --extra-pip-args="--prefer-binary"
 
 # Copy the FastAPI Python code
-COPY ./fastapi-app /app/fastapi-app
+COPY ./deidentifier /app/deidentifier
 
 # Expose the FastAPI port
 EXPOSE 8000
 
 # Command to run FastAPI
-CMD ["uvicorn", "fastapi-app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "deidentifier.main:app", "--host", "0.0.0.0", "--port", "8000"]

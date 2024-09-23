@@ -29,7 +29,7 @@ find_text:
 	python3 find_text_in_files.py data/output/large large
 
 .PHONY: up
-up:
+up: build
 	docker compose --progress=plain up
 
 .PHONY: down
