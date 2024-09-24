@@ -27,6 +27,8 @@ def test_anonymize_redact_default(rest_client):
             {"path": "Group.name", "method": "redact"},
             {"path": "Patient.birthDate", "method": "dateshift"},
             {"path": "Patient.gender", "method": "keep"},
+            {"path": "nodesByType('HumanName').use", "method": "keep"},
+            {"path": "nodesByType('HumanName').family", "method": "cryptoHash"},
             {"path": "Resource", "method": "redact"},  # by default remove all fields
         ],
         "parameters": {
@@ -41,6 +43,7 @@ def test_anonymize_redact_default(rest_client):
         "id": "example",
         "name": [
             {
+                "use": "official",
                 "family": "Doe",
                 "given": ["John"]
             }
@@ -58,6 +61,8 @@ def test_anonymize_redact_default(rest_client):
     assert response.json() == {
         'birthDate': '1975-01-25',
         'gender': 'male',
+        'name': [{'family': 'bc537e047f20d40fc0b8ee30a078cc883e6acc4cbc4062c7fa588df228cbd94f',
+                  'use': 'official'}],
         'id': '0d9b28fe8cc6aa8ab33f70305576fca5431b0d9339ac83d17e4d4ca882fae668',
         'meta': {'security': [{'code': 'REDACTED',
                                'display': 'redacted',
