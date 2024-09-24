@@ -29,6 +29,7 @@ def test_anonymize_redact_default(rest_client):
             {"path": "Patient.gender", "method": "keep"},
             {"path": "nodesByType('HumanName').use", "method": "keep"},
             {"path": "nodesByType('HumanName').family", "method": "cryptoHash"},
+            {"path": "nodesByType('HumanName').given", "method": "cryptoHash"},
             {"path": "Resource", "method": "redact"},  # by default remove all fields
         ],
         "parameters": {
@@ -61,18 +62,16 @@ def test_anonymize_redact_default(rest_client):
     assert response.json() == {
         'birthDate': '1975-01-25',
         'gender': 'male',
-        'name': [{'family': 'bc537e047f20d40fc0b8ee30a078cc883e6acc4cbc4062c7fa588df228cbd94f',
-                  'use': 'official'}],
         'id': '0d9b28fe8cc6aa8ab33f70305576fca5431b0d9339ac83d17e4d4ca882fae668',
-        'meta': {'security': [{'code': 'REDACTED',
-                               'display': 'redacted',
-                               'system': 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue'},
-                              {'code': 'CRYTOHASH',
+        'meta': {'security': [{'code': 'CRYTOHASH',
                                'display': 'cryptographic hash function',
                                'system': 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue'},
                               {'code': 'PERTURBED',
                                'display': 'exact value is replaced with another exact '
                                           'value'}]},
+        'name': [{'family': 'bc537e047f20d40fc0b8ee30a078cc883e6acc4cbc4062c7fa588df228cbd94f',
+                  'given': ['29ffea82697f244f288787c73c40f12bcb5b7a54e45e4ae25c4ed92637bafe1c'],
+                  'use': 'official'}],
         'resourceType': 'Patient'
     }
 
