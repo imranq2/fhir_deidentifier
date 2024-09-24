@@ -30,17 +30,17 @@ class FHIRDeIdentificationChecker:
         source_data: Dict[str, Union[List[Any], None]] = self.extract_sensitive_data(source)
         de_identified_data: Dict[str, Union[List[Any], None]] = self.extract_sensitive_data(de_identified)
 
-        differences: Dict[str, Dict[str, Union[List[Any], None]]] = {}
+        matching_data: Dict[str, Dict[str, Union[List[Any], None]]] = {}
         for path in source_data:
-            if source_data[path] != de_identified_data[path]:
-                differences[path] = {
+            if source_data[path] is not None and source_data[path] == de_identified_data[path]:
+                matching_data[path] = {
                     "source": source_data[path],
                     "de_identified": de_identified_data[path]
                 }
 
-        return differences
+        return matching_data
 
     def is_de_identified(self, source: Dict[str, Any], de_identified: Dict[str, Any]) -> bool:
         """Check if the de-identified resource is properly de-identified by comparing sensitive fields."""
-        differences: Dict[str, Dict[str, Union[List[Any], None]]] = self.compare_resources(source, de_identified)
-        return bool(differences)  # True if differences are found, False otherwise
+        matching_fields: Dict[str, Dict[str, Union[List[Any], None]]] = self.compare_resources(source, de_identified)
+        return not bool(matching_fields)  # True if matching_fields are found, False otherwise
