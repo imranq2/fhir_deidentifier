@@ -1,0 +1,74 @@
+{
+  "fhirVersion": "R4",
+  "processingError": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Extension')",
+      "method": "redact"
+    },
+    {
+      "path": "Resource.id",
+      "method": "cryptoHash"
+    },
+    {
+      "path": "nodesByType('Reference').reference",
+      "method": "cryptoHash"
+    },
+    {
+      "path": "Group.name",
+      "method": "redact"
+    },
+    {
+      "path": "Patient.birthDate",
+      "method": "generalize",
+      "cases": {
+        "$this <= @1935-01-01": "@1935-01-01",
+        "$this >= @1935-01-01": "@2010-01-01"
+      },
+      "otherValues": "redact"
+    },
+    {
+      "path": "Patient.gender",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('HumanName').use",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('HumanName').family",
+      "method": "cryptoHash"
+    },
+    {
+      "path": "nodesByType('HumanName').given",
+      "method": "cryptoHash"
+    },
+    {
+      "path": "nodesByType('Address').country",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Address').city",
+      "method": "substitute",
+      "replaceWith": "example city"
+    },
+    {
+      "path": "nodesByType('Address').postalCode",
+      "method": "generalize",
+      "cases": {
+        "$this.startsWith('123') or $this.startsWith('234')": "$this.substring(0,2)+'0000'"
+      },
+      "otherValues": "redact"
+    },
+    {
+      "path": "Resource",
+      "method": "redact"
+    }
+  ],
+  "parameters": {
+    "dateShiftKey": "3f49ef04-60a4-4c89-85a3-df2eae5489ae",
+    "cryptoHashKey": "3f49ef04-60a4-4c89-85a3-df2eae5489ae",
+    "encryptKey": "",
+    "enablePartialAgesForRedact": true
+  }
+}

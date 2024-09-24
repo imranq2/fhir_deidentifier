@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from typing import Dict, Any, List, Union
 
 from fastapi.testclient import TestClient
@@ -7,54 +9,14 @@ from deidentifier.fhir_deidentifier_checker import FHIRDeIdentificationChecker
 
 def test_anonymize_bundle(rest_client: TestClient) -> None:
     print("")
+    # Arrange
+    data_dir: Path = Path(__file__).parent.joinpath("./")
     """Test the /anonymize endpoint with valid input"""
 
     # https://github.com/microsoft/Tools-for-Health-Data-Anonymization/blob/master/docs/FHIR-anonymization.md#fhir-path-rules
-    config = {
-        "fhirVersion": "R4",
-        "processingError": "raise",
-        "fhirPathRules": [
-            # resource rules
-            {"path": "nodesByType('Extension')", "method": "redact"},
-            {"path": "Resource.id", "method": "cryptoHash"},
-            {"path": "nodesByType('Reference').reference", "method": "cryptoHash"},
-            {"path": "Group.name", "method": "redact"},
-            # Patient rules
-            {
-                "path": "Patient.birthDate",
-                "method": "generalize",
-                "cases": {
-                    "$this <= @1935-01-01": "@1935-01-01",
-                    "$this >= @1935-01-01": "@2010-01-01"
-                },
-                "otherValues": "redact"
-            },
-            {"path": "Patient.gender", "method": "keep"},
-            # HumanName rules
-            {"path": "nodesByType('HumanName').use", "method": "keep"},
-            {"path": "nodesByType('HumanName').family", "method": "cryptoHash"},
-            {"path": "nodesByType('HumanName').given", "method": "cryptoHash"},
-            # Address rules
-            {"path": "nodesByType('Address').country", "method": "keep"},
-            {"path": "nodesByType('Address').city", "method": "substitute", "replaceWith": "example city"},
-            {
-                "path": "nodesByType('Address').postalCode",
-                "method": "generalize",
-                "cases": {
-                    "$this.startsWith('123') or $this.startsWith('234')": "$this.substring(0,2)+'0000'",
-                },
-                "otherValues": "redact"
-            },
-            # by default remove all fields
-            {"path": "Resource", "method": "redact"},
-        ],
-        "parameters": {
-            "dateShiftKey": "3f49ef04-60a4-4c89-85a3-df2eae5489ae",
-            "cryptoHashKey": "3f49ef04-60a4-4c89-85a3-df2eae5489ae",
-            "encryptKey": "",
-            "enablePartialAgesForRedact": True
-        }
-    }
+    with open(str(data_dir.joinpath("config.json")), "r") as f:
+        config = json.load(f)
+
     resource = {
         "resourceType": "Bundle",
         "entry": [
