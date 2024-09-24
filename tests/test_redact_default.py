@@ -27,7 +27,7 @@ def test_anonymize_redact_default(rest_client):
                 "path": "Patient.birthDate",
                 "method": "dateshift"
             },
-            {"path": "Resource", "method": "redact"},
+            {"path": "Resource", "method": "redact"},  # by default remove all fields
         ],
         "parameters": {
             "dateShiftKey": "3f49ef04-60a4-4c89-85a3-df2eae5489ae",
