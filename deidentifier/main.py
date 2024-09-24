@@ -2,48 +2,19 @@ import json
 from typing import Dict, Any
 
 from fastapi import FastAPI, HTTPException
-from pythonnet import load
-import clr
-import os
-import sys
+
+from deidentifier.dot_net_initializer import DotNetInitializer
 
 app = FastAPI()
 
 
-def initialize_anonymizer():
-    # Add the /app directory to sys.path if needed
-    sys.path.append("/app")
-    # Load CoreCLR runtime (if using CoreCLR)
-    try:
-        load("coreclr")
-    except Exception as e:
-        raise ImportError(
-            "Pythonnet could not load CoreCLR. Make sure .NET 6.0+ is installed in the environment.") from e
+DotNetInitializer.initialize_anonymizer()
 
-    # noinspection PyUnresolvedReferences
-    clr.AddReference("/lib/netlib/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool")
-    # noinspection PyUnresolvedReferences
-    clr.AddReference("/lib/netlib/Microsoft.Health.Fhir.Anonymizer.R4.Core")
-    # Inspect the assembly to list all namespaces and classes
-    # noinspection PyUnresolvedReferences
-    from System import AppDomain
-    def list_assemblies():
-        for assembly in AppDomain.CurrentDomain.GetAssemblies():
-            print(f"Assembly: {assembly.FullName}")
-            for t in assembly.GetTypes():
-                print(f"  Type: {t.FullName}")
-    # list_assemblies()
-
-
-initialize_anonymizer()
-
-# Import the required namespaces and classes
+# These should come after the DotNetInitializer.initialize_anonymizer() call
 # noinspection PyUnresolvedReferences
 from Microsoft.Health.Fhir.Anonymizer.Core import AnonymizerConfigurationManager
 # noinspection PyUnresolvedReferences
 from Microsoft.Health.Fhir.Anonymizer.Core import AnonymizerEngine
-
-AnonymizerEngine.InitializeFhirPathExtensionSymbols()
 
 @app.post("/anonymize")
 async def anonymize(config: Dict[str, Any], resource: Dict[str,Any]):
