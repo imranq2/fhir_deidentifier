@@ -8,10 +8,15 @@ class FHIRDeIdentificationChecker:
         # If no sensitive fields are provided, use a default list
         self.sensitive_fields: List[str] = sensitive_fields if sensitive_fields else [
             "Patient.name",
-            "Patient.address",
             "Patient.telecom",
+            # "Patient.gender",
             "Patient.birthDate",
-            "identifier",
+            "Patient.address",
+            "Patient.identifier",
+            "Patient.photo",
+            "Patient.contact",
+            "Patient.deceasedDateTime",
+            # Practitioner
             "Practitioner.name",
             "Practitioner.telecom"
         ]

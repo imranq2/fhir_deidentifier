@@ -1,8 +1,9 @@
-from typing import Dict, Any
+from typing import Dict, Any, List, Union
 
 from fastapi.testclient import TestClient
 
 from deidentifier.fhir_deidentifier_checker import FHIRDeIdentificationChecker
+
 
 def test_anonymize_redact_default(rest_client: TestClient) -> None:
     print("")
@@ -72,4 +73,8 @@ def test_anonymize_redact_default(rest_client: TestClient) -> None:
 
     # Check if the de-identified resource is properly de-identified by comparing sensitive fields
     checker = FHIRDeIdentificationChecker()
-    assert checker.is_de_identified(source=resource, de_identified=de_identified_resource)
+    matching_fields: Dict[str, Dict[str, Union[List[Any], None]]] = checker.compare_resources(
+        source=resource,
+        de_identified=de_identified_resource
+    )
+    assert not bool(matching_fields), matching_fields
