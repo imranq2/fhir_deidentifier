@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 
 from deidentifier.fhir_deidentifier_checker import FHIRDeIdentificationChecker
 
-def test_anonymize_redact_default(rest_client):
+def test_anonymize_redact_default(rest_client: TestClient) -> None:
     print("")
     """Test the /anonymize endpoint with valid input"""
 
@@ -72,4 +72,4 @@ def test_anonymize_redact_default(rest_client):
 
     # Check if the de-identified resource is properly de-identified by comparing sensitive fields
     checker = FHIRDeIdentificationChecker()
-    assert checker.is_de_identified(resource, de_identified_resource)
+    assert checker.is_de_identified(source=resource, de_identified=de_identified_resource)

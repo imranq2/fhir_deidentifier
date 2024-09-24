@@ -4,7 +4,7 @@ from fhirpathpy import evaluate
 
 
 class FHIRDeIdentificationChecker:
-    def __init__(self, sensitive_fields: Optional[List[str]] = None):
+    def __init__(self, *, sensitive_fields: Optional[List[str]] = None):
         # If no sensitive fields are provided, use a default list
         self.sensitive_fields: List[str] = sensitive_fields if sensitive_fields else [
             "Patient.name",
@@ -16,7 +16,7 @@ class FHIRDeIdentificationChecker:
             "Practitioner.telecom"
         ]
 
-    def extract_sensitive_data(self, resource: Dict[str, Any]) -> Dict[str, Union[List[Any], None]]:
+    def extract_sensitive_data(self, *, resource: Dict[str, Any]) -> Dict[str, Union[List[Any], None]]:
         """Extract sensitive data from the resource based on predefined sensitive fields."""
         data: Dict[str, Union[List[Any], None]] = {}
         for path in self.sensitive_fields:
@@ -24,11 +24,11 @@ class FHIRDeIdentificationChecker:
             data[path] = result if result else None
         return data
 
-    def compare_resources(self, source: Dict[str, Any], de_identified: Dict[str, Any]) -> Dict[
+    def compare_resources(self, *, source: Dict[str, Any], de_identified: Dict[str, Any]) -> Dict[
         str, Dict[str, Union[List[Any], None]]]:
         """Compare sensitive data between the source and de-identified resources."""
-        source_data: Dict[str, Union[List[Any], None]] = self.extract_sensitive_data(source)
-        de_identified_data: Dict[str, Union[List[Any], None]] = self.extract_sensitive_data(de_identified)
+        source_data: Dict[str, Union[List[Any], None]] = self.extract_sensitive_data(resource=source)
+        de_identified_data: Dict[str, Union[List[Any], None]] = self.extract_sensitive_data(resource=de_identified)
 
         matching_data: Dict[str, Dict[str, Union[List[Any], None]]] = {}
         for path in source_data:
@@ -40,7 +40,7 @@ class FHIRDeIdentificationChecker:
 
         return matching_data
 
-    def is_de_identified(self, source: Dict[str, Any], de_identified: Dict[str, Any]) -> bool:
+    def is_de_identified(self, *, source: Dict[str, Any], de_identified: Dict[str, Any]) -> bool:
         """Check if the de-identified resource is properly de-identified by comparing sensitive fields."""
-        matching_fields: Dict[str, Dict[str, Union[List[Any], None]]] = self.compare_resources(source, de_identified)
+        matching_fields: Dict[str, Dict[str, Union[List[Any], None]]] = self.compare_resources(source=source, de_identified=de_identified)
         return not bool(matching_fields)  # True if matching_fields are found, False otherwise
