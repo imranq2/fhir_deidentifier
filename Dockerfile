@@ -36,6 +36,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 ENV PYTHONPATH=/app;/lib/netlib
+ENV PATH="/lib/netlib:${PATH}"
 
 # Copy the build output from the first stage
 COPY --from=build /app/FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool/bin/Release/net6.0 /lib/netlib
@@ -52,6 +53,11 @@ RUN pipenv sync --dev --system --verbose --extra-pip-args="--prefer-binary"
 
 # Copy the FastAPI Python code
 COPY ./deidentifier /app/deidentifier
+
+# add script to pass through anonymize command to dotnet
+COPY ./anonymize.sh /app/anonymize.sh
+
+RUN chmod +x /app/anonymize.sh && cp /app/anonymize.sh /usr/local/bin/anonymize
 
 # Expose the FastAPI port
 EXPOSE 8000
