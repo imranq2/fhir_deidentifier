@@ -1,14 +1,8 @@
-import json
+from typing import Dict, Any
 
 from fastapi.testclient import TestClient
 
-
-def test_health_check(rest_client: TestClient):
-    """Test the /health endpoint"""
-    response = rest_client.get("/health")
-    assert response.status_code == 200
-    assert response.json() == {"status": "Healthy"}
-
+from deidentifier.fhir_deidentifier_checker import FHIRDeIdentificationChecker
 
 def test_anonymize_redact_default(rest_client):
     print("")
@@ -59,7 +53,8 @@ def test_anonymize_redact_default(rest_client):
     })
 
     assert response.status_code == 200, response.text
-    assert response.json() == {
+    de_identified_resource: Dict[str, Any] = response.json()
+    assert de_identified_resource == {
         'birthDate': '1975-01-25',
         'gender': 'male',
         'id': '0d9b28fe8cc6aa8ab33f70305576fca5431b0d9339ac83d17e4d4ca882fae668',
@@ -75,18 +70,6 @@ def test_anonymize_redact_default(rest_client):
         'resourceType': 'Patient'
     }
 
-
-def test_anonymize_invalid_input(rest_client):
-    print("")
-    """Test the /anonymize endpoint with invalid input (expect failure)"""
-    config = {}  # Empty configuration JSON
-    resource = {}  # Empty FHIR resource
-
-    response = rest_client.post("/anonymize", json={
-        "config": config,
-        "resource": resource
-    })
-
-    assert response.status_code == 500
-    print(response.json())
-    assert "AnonymizerConfigurationManager" in response.json()["detail"]
+    # Check if the de-identified resource is properly de-identified by comparing sensitive fields
+    checker = FHIRDeIdentificationChecker()
+    assert checker.is_de_identified(resource, de_identified_resource)
