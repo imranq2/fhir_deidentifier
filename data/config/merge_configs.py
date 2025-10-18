@@ -16,6 +16,8 @@ parameters = None
 fhirVersion = None
 processingErrors = None
 
+defaultRule = "redact"
+
 for config_path in config_files:
     with open(config_path, 'r') as f:
         try:
@@ -32,16 +34,14 @@ for config_path in config_files:
             print(f"Error decoding JSON from {config_path}: {e}")
             raise
 
-# Append catch-all redact rule
-# merged_rules.append({"path": "*", "method": "redact"})
-
-# Write the merged config
+# Write the merged config with defaultRule
 with open(OUTPUT_FILE, 'w') as out:
     json.dump({
         'fhirVersion': fhirVersion,
+        'defaultRule': defaultRule,
         'processingErrors': processingErrors,
         'fhirPathRules': merged_rules,
         'parameters': parameters
     }, out, indent=2)
 
-print(f"Merged {len(config_files)} configs into {OUTPUT_FILE} with catch-all redact rule.")
+print(f"Merged {len(config_files)} configs into {OUTPUT_FILE} with defaultRule set to redact.")
