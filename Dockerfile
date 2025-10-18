@@ -2,19 +2,20 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 # Define a build argument for the version
-ARG VERSION=3.1.1
+# https://github.com/microsoft/Tools-for-Health-Data-Anonymization/releases
+ARG TOOLS_FOR_HEALTH_DATA_VERSION=4.2.2
 
 # Install wget (if not already available)
 RUN apt-get update && apt-get install -y wget
 
 # Download the source tar.gz from the GitHub releases page using the version argument
-RUN wget https://github.com/microsoft/Tools-for-Health-Data-Anonymization/archive/refs/tags/v${VERSION}.tar.gz -O source.tar.gz
+RUN wget https://github.com/microsoft/Tools-for-Health-Data-Anonymization/archive/refs/tags/v${TOOLS_FOR_HEALTH_DATA_VERSION}.tar.gz -O source.tar.gz
 
 # Extract the tar.gz file and then remove the archive to clean up
 RUN tar -xzf source.tar.gz && rm source.tar.gz
 
 # Rename the extracted folder to 'app' using the version argument
-RUN mv Tools-for-Health-Data-Anonymization-${VERSION} app
+RUN mv Tools-for-Health-Data-Anonymization-${TOOLS_FOR_HEALTH_DATA_VERSION} app
 
 WORKDIR /app
 
