@@ -1,0 +1,18 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    { "path": "Patient.birthDate", "method": "dateshift" }
+  ],
+  "parameters": {
+    "dateShiftKey": "",
+    "dateShiftScope": "file",
+    "cryptoHashKey": "",
+    "encryptKey": "",
+    "enablePartialAgesForRedact": true,
+    "enablePartialDatesForRedact": false,
+    "enablePartialZipCodesForRedact": true,
+    "restrictedZipCodeTabulationAreas": ["036","059","102","203","205","369","556","692","821","823","878","879","884","893"]
+  }
+}
+

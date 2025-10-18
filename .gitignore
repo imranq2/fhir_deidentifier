@@ -401,3 +401,5 @@ FodyWeavers.xsd
 /data/output/
 /.idea/
 /venv/
+
+/data/config/config_merged.json

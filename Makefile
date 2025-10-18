@@ -1,11 +1,10 @@
-
 .PHONY: Pipfile.lock
 Pipfile.lock:
 	docker compose --progress=plain build
 	docker compose --progress=plain run --rm --name de-identifier-shell dev sh -c "rm -f Pipfile.lock && pipenv lock --dev"
 
 build:
-	docker compose build --progress plain
+	docker compose build --parallel
 
 .PHONY:shell
 shell: build ## Brings up the bash shell in dev docker
@@ -18,11 +17,11 @@ update: Pipfile.lock  ## Updates all the packages using Pipfile
 # config file format: https://github.com/microsoft/Tools-for-Health-Data-Anonymization/blob/master/docs/FHIR-anonymization.md#fhir-path-rules
 
 .PHONY: run
-run:
-	docker compose --progress=plain build && \
+run: build
+	python3 data/config/merge_configs.py && \
 	rm -rf ./data/output/* && \
 	docker compose run --rm --name de-identifier-shell dev ls /data -v && \
-	docker compose run --rm --name de-identifier-shell dev anonymize -r -i /data/input/large/ -o /data/output/large/ -c /data/config/config.json -v && \
+	docker compose run --rm --name de-identifier-shell dev anonymize -r -i /data/input/large/ -o /data/output/large/ -c /data/config/config_merged.json -v && \
 	make find_text
 
 .PHONY: find_text

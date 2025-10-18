@@ -1,0 +1,20 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    { "path": "(Observation.value as string)", "method": "cryptoHash" },
+    { "path": "Observation.referenceRange", "method": "redact" },
+    { "path": "(Observation.component.value as string)", "method": "cryptoHash" }
+  ],
+  "parameters": {
+    "dateShiftKey": "",
+    "dateShiftScope": "file",
+    "cryptoHashKey": "",
+    "encryptKey": "",
+    "enablePartialAgesForRedact": true,
+    "enablePartialDatesForRedact": false,
+    "enablePartialZipCodesForRedact": true,
+    "restrictedZipCodeTabulationAreas": ["036","059","102","203","205","369","556","692","821","823","878","879","884","893"]
+  }
+}
+
