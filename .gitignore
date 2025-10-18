@@ -403,3 +403,4 @@ FodyWeavers.xsd
 /venv/
 
 /data/config/config_merged.json
+/core

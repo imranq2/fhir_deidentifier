@@ -8,7 +8,7 @@ OUTPUT_FILE = os.path.join(CONFIG_DIR, 'config_merged.json')
 # List all config files except the output and the merge script itself
 config_files = [
     f for f in glob.glob(os.path.join(CONFIG_DIR, 'config_*.json'))
-    if not f.endswith('config.json') and not f.endswith('merge_configs.py')
+    if not f.endswith('config_merged.json') and not f.endswith('merge_configs.py')
 ]
 
 merged_rules = []
@@ -33,7 +33,7 @@ for config_path in config_files:
             raise
 
 # Append catch-all redact rule
-merged_rules.append({"path": "*", "method": "redact"})
+# merged_rules.append({"path": "*", "method": "redact"})
 
 # Write the merged config
 with open(OUTPUT_FILE, 'w') as out:
