@@ -7,7 +7,7 @@
     {
       "path": "nodesByType('HumanName').text",
       "method": "substitute",
-      "replaceWith": "John Doe"
+      "replaceWith": "Jane Doe"
     },
     {
       "path": "nodesByType('HumanName').family",
@@ -17,7 +17,7 @@
     {
       "path": "nodesByType('HumanName').given",
       "method": "substitute",
-      "replaceWith": "John"
+      "replaceWith": "Jane"
     }
   ]
 }

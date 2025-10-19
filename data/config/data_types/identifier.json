@@ -9,6 +9,10 @@
       "method": "keep"
     },
     {
+      "path": "nodesByType('Identifier').system",
+      "method": "keep"
+    },
+    {
       "path": "nodesByType('Identifier').value",
       "method": "substitute",
       "replaceWith": "redacted"

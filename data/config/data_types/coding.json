@@ -33,6 +33,14 @@
       "method": "keep"
     },
     {
+      "path": "nodesByType('Coding').where(system.startsWith('http://hl7.org')).display",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Coding').where(system.startsWith('http://hl7.org')).code",
+      "method": "keep"
+    },
+    {
       "path": "nodesByType('Coding').display",
       "method": "substitute",
       "replaceWith": "Redacted display"

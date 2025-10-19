@@ -12,6 +12,11 @@
       "path": "nodesByType('Reference').where(reference.matches('^Practitioner/.+$')).display",
       "method": "substitute",
       "replaceWith": "Fake Doctor, MD"
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.matches('^Patient/.+$')).display",
+      "method": "substitute",
+      "replaceWith": "Jane Doe"
     }
   ]
 }
