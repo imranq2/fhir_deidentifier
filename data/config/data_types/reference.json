@@ -8,11 +8,7 @@
     },
     {
       "path": "nodesByType('Reference').where(reference.matches('^[A-Za-z]+/.+$')).reference",
-      "method": "generalize",
-      "cases": {
-        "$this.matches('^([A-Za-z]+)/.+$')": "$this.replaceMatches('^([A-Za-z]+)/.+$', '$1/REDACTED')"
-      },
-      "otherValues": "redact"
+      "method": "cryptoHash"
     },
     {
       "path": "nodesByType('Reference').where(reference.matches('^Practitioner/.+$')).display",
