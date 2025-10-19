@@ -2,6 +2,24 @@
   "fhirVersion": "R4",
   "processingErrors": "raise",
   "fhirPathRules": [
-    {"path": "Person.name", "method": "redact"}
+    {
+      "path": "Person.nodesByType('HumanName').use",
+      "method": "keep"
+    },
+    {
+      "path": "Person.nodesByType('HumanName').text",
+      "method": "substitute",
+      "replaceWith": "John Doe"
+    },
+    {
+      "path": "Person.nodesByType('HumanName').family",
+      "method": "substitute",
+      "replaceWith": "Doe"
+    },
+    {
+      "path": "Person.nodesByType('HumanName').given",
+      "method": "substitute",
+      "replaceWith": "John"
+    }
   ]
 }
