@@ -46,6 +46,10 @@
     {
       "path": "Resource.identifier.where(system='https://www.icanbwell.com/uuid')",
       "method": "keep"
+    },
+    {
+      "path": "nodesByType('Extension').where(url='https://www.icanbwell.com/uuid')",
+      "method": "keep"
     }
   ],
   "parameters": {

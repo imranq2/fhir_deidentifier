@@ -97,10 +97,6 @@
       "path": "Patient.generalPractitioner.reference",
       "method": "substitute",
       "replaceWith": "Practitioner/1111111111111111"
-    },
-    {
-      "path": "Patient.generalPractitioner.extension.where(url='https://www.icanbwell.com/uuid')",
-      "method": "keep"
     }
   ]
 }
