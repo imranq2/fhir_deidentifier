@@ -5,12 +5,12 @@
     {
       "path": "nodesByType('CodeableConcept').text",
       "method": "substitute",
-      "replaceWith": "substituted text"
+      "replaceWith": "Redacted text"
     },
     {
       "path": "nodesByType('CodeableConcept').coding.display",
       "method": "substitute",
-      "replaceWith": "substituted display"
+      "replaceWith": "Redacted display"
     },
     {
       "path": "nodesByType('CodeableConcept').coding.code",
