@@ -8,6 +8,10 @@
       "replaceWith": "Redacted text"
     },
     {
+      "path": "nodesByType('CodeableConcept').coding[system.startsWith('http://snomed.info') or system.startsWith('http://terminology.hl7.org')].display",
+      "method": "keep"
+    },
+    {
       "path": "nodesByType('CodeableConcept').coding.display",
       "method": "substitute",
       "replaceWith": "Redacted display"
