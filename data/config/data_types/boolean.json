@@ -1,0 +1,10 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('boolean')",
+      "method": "keep"
+    }
+  ]
+}

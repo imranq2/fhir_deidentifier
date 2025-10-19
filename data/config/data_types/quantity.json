@@ -15,11 +15,11 @@
       "method": "keep"
     },
     {
-      "path": "nodesByType('Quantity').code",
+      "path": "nodesByType('Quantity').unit",
       "method": "keep"
     },
     {
-      "path": "nodesByType('Quantity').unit",
+      "path": "nodesByType('Quantity').code",
       "method": "keep"
     }
   ]

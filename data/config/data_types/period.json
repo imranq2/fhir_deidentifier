@@ -1,0 +1,14 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Period').start",
+      "method": "dateShift"
+    },
+        {
+      "path": "nodesByType('Period').end",
+      "method": "dateShift"
+    }
+  ]
+}
