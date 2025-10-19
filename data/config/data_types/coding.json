@@ -1,7 +1,7 @@
 {
   "fhirPathRules": [
     {
-      "path": "nodesByType('Coding').where(system.startsWith('http://snomed.info') or system.startsWith('http://terminology.hl7.org') or system.startsWith('http://loinc.org')).display",
+      "path": "nodesByType('Coding').where(system.startsWith('http://snomed.info') or system.startsWith('http://terminology.hl7.org') or system.startsWith('http://loinc.org') or system.startsWith('http://www.nlm.nih.gov')).display",
       "method": "keep"
     },
     {
@@ -15,8 +15,13 @@
       "replaceWith": "2000-01-01"
     },
     {
-      "path": "nodesByType('Coding').code",
+      "path": "nodesByType('Coding').where(system.startsWith('http://snomed.info') or system.startsWith('http://terminology.hl7.org') or system.startsWith('http://loinc.org') or system.startsWith('http://www.nlm.nih.gov')).code",
       "method": "keep"
+    },
+    {
+      "path": "nodesByType('Coding').code",
+      "method": "substitute",
+      "replaceWith": "redacted"
     },
     {
       "path": "nodesByType('Coding').system",

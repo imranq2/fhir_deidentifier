@@ -3,6 +3,11 @@
     {
       "path": "nodesByType('Identifier').where(system='https://www.icanbwell.com/uuid')",
       "method": "keep"
+    },
+    {
+      "path": "nodesByType('Identifier').value",
+      "method": "substitute",
+      "replaceWith": "redacted"
     }
   ]
 }
