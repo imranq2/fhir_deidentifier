@@ -32,7 +32,13 @@ for config_path in config_files:
     with open(config_path, 'r') as f:
         try:
             data = json.load(f)
-            merged_rules.extend(data.get('fhirPathRules', []))
+            fhir_path_rules = data.get('fhirPathRules', [])
+            # check that all rules begin with the resource type from the filename
+            resource_type = os.path.splitext(os.path.basename(config_path))[0].capitalize()
+            for rule in fhir_path_rules:
+                if not rule['path'].startswith(resource_type):
+                    raise ValueError(f"Rule path '{rule['path']}' does not start with resource type '{resource_type}' in file {config_path}")
+            merged_rules.extend(fhir_path_rules)
             # Use parameters, fhirVersion, processingErrors from the first file
             if parameters is None:
                 parameters = data.get('parameters', {})
