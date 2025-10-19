@@ -5,18 +5,5 @@
   "fhirPathRules": [
     {"path": "Group.name", "method": "redact"},
     {"path": "Group.characteristic.value", "method": "redact"}
-  ],
-  "parameters": {
-    "dateShiftKey": "",
-    "dateShiftScope": "resource",
-    "cryptoHashKey": "",
-    "encryptKey": "",
-    "enablePartialAgesForRedact": true,
-    "enablePartialDatesForRedact": true,
-    "enablePartialZipCodesForRedact": true,
-    "restrictedZipCodeTabulationAreas": [
-      "036", "059", "102", "203", "205", "369", "556", "692", "821", "823", "878", "879", "884", "893"
-    ]
-  }
+  ]
 }
-

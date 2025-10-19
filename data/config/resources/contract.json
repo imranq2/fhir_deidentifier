@@ -48,18 +48,5 @@
     {"path": "nodesByType('Identifier').value", "method": "redact"},
     {"path": "nodesByType('Reference').display", "method": "redact"},
     {"path": "nodesByType('Reference').reference", "method": "cryptoHash"}
-  ],
-  "parameters": {
-    "dateShiftKey": "",
-    "dateShiftScope": "resource",
-    "cryptoHashKey": "",
-    "encryptKey": "",
-    "enablePartialAgesForRedact": true,
-    "enablePartialDatesForRedact": true,
-    "enablePartialZipCodesForRedact": true,
-    "restrictedZipCodeTabulationAreas": [
-      "036", "059", "102", "203", "205", "369", "556", "692", "821", "823", "878", "879", "884", "893"
-    ]
-  }
+  ]
 }
-
