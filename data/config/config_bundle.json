@@ -1,0 +1,18 @@
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "Bundle.entry.fullUrl", "method": "redact"},
+    {"path": "Bundle.entry.request.url", "method": "redact"},
+    {"path": "Bundle.entry.response.location", "method": "redact"}
+  ]
+}
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "AdverseEvent.suspectEntity.causality.productRelatedness", "method": "redact"}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "ImagingStudy.description", "method": "redact"},
+    {"path": "ImagingStudy.series.description", "method": "redact"},
+    {"path": "ImagingStudy.series.instance.title", "method": "redact"}
+  ]
+}

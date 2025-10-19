@@ -1,0 +1,9 @@
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "VerificationResult.attestation.sourceIdentityCertificate", "method": "redact"},
+    {"path": "VerificationResult.attestation.proxyIdentityCertificate", "method": "redact"}
+  ]
+}

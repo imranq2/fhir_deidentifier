@@ -1,0 +1,23 @@
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "ClinicalImpression.description", "method": "redact"},
+    {"path": "ClinicalImpression.summary", "method": "redact"},
+    {"path": "ClinicalImpression.finding.basis", "method": "redact"}
+  ],
+  "parameters": {
+    "dateShiftKey": "",
+    "dateShiftScope": "resource",
+    "cryptoHashKey": "",
+    "encryptKey": "",
+    "enablePartialAgesForRedact": true,
+    "enablePartialDatesForRedact": true,
+    "enablePartialZipCodesForRedact": true,
+    "restrictedZipCodeTabulationAreas": [
+      "036", "059", "102", "203", "205", "369", "556", "692", "821", "823", "878", "879", "884", "893"
+    ]
+  }
+}
+

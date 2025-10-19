@@ -1,7 +1,8 @@
 {
   "fhirVersion": "R4",
+  "defaultRule": "redact",
   "processingErrors": "raise",
   "fhirPathRules": [
-    { "path": "Patient.birthDate", "method": "dateshift" }
+    {"path": "Procedure.performed", "method": "redact"}
   ]
 }

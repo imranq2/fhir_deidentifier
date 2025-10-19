@@ -1,0 +1,10 @@
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "Task.description", "method": "redact"},
+    {"path": "Task.input.value", "method": "redact"},
+    {"path": "Task.output.value", "method": "redact"}
+  ]
+}

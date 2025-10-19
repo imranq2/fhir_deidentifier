@@ -1,0 +1,8 @@
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "Substance.description", "method": "redact"}
+  ]
+}
