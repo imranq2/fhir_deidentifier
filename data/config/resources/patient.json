@@ -2,6 +2,32 @@
   "fhirVersion": "R4",
   "processingErrors": "raise",
   "fhirPathRules": [
-    { "path": "Patient.birthDate", "method": "dateshift" }
+    {
+      "path": "Patient.active",
+      "method": "keep"
+    },
+    {
+      "path": "Patient.birthDate",
+      "method": "dateshift"
+    },
+    {
+      "path": "Patient.nodesByType('HumanName').use",
+      "method": "keep"
+    },
+    {
+      "path": "Patient.nodesByType('HumanName').text",
+      "method": "substitute",
+      "replaceWith": "John Doe"
+    },
+    {
+      "path": "Patient.nodesByType('HumanName').family",
+      "method": "substitute",
+      "replaceWith": "Doe"
+    },
+    {
+      "path": "Patient.nodesByType('HumanName').given",
+      "method": "substitute",
+      "replaceWith": "John"
+    }
   ]
 }
