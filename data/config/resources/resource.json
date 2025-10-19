@@ -71,24 +71,6 @@
       "path": "nodesByType('Reference').where(reference.matches('^Practitioner/.+$')).display",
       "method": "substitute",
       "replaceWith": "Fake Doctor, MD"
-    },
-    {
-      "path": "nodesByType('CodeableConcept').text",
-      "method": "substitute",
-      "replaceWith": "substituted text"
-    },
-    {
-      "path": "nodesByType('CodeableConcept').coding.display",
-      "method": "substitute",
-      "replaceWith": "substituted display"
-    },
-    {
-      "path": "nodesByType('CodeableConcept').coding.code",
-      "method": "keep"
-    },
-    {
-      "path": "nodesByType('CodeableConcept').coding.system",
-      "method": "keep"
     }
   ],
   "parameters": {

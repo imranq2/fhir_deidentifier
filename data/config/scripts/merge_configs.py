@@ -3,6 +3,7 @@ import glob
 import os
 
 CONFIG_DIR = os.path.dirname(__file__)
+DATA_TYPES_CONFIG_DIR = os.path.join(CONFIG_DIR, '../data_types')
 RESOURCE_CONFIG_DIR = os.path.join(CONFIG_DIR, '../resources')
 OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 
@@ -31,6 +32,7 @@ parameters = None
 fhirVersion = None
 processingErrors = None
 
+# Read resource config files and merge their fhirPathRules
 for config_path in config_files:
     with open(config_path, 'r') as f:
         try:
@@ -49,7 +51,21 @@ for config_path in config_files:
             print(f"Error decoding JSON from {config_path}: {e}")
             raise
 
-# Add DEFAULT_CONFIG at the end
+# Now read the data types config files and merge their fhirPathRules
+# We do it after resoure files to allow resource files to override data type rules if needed
+data_type_config_files = sorted(
+    glob.glob(os.path.join(DATA_TYPES_CONFIG_DIR, '*.json'))
+)
+for config_path in data_type_config_files:
+    with open(config_path, 'r') as f:
+        try:
+            data = json.load(f)
+            merged_rules.extend(data.get('fhirPathRules', []))
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON from {config_path}: {e}")
+            raise
+
+# Add DEFAULT_CONFIG from resource.json at the end
 with open(os.path.join(RESOURCE_CONFIG_DIR, DEFAULT_CONFIG), 'r') as f:
     try:
         data = json.load(f)
