@@ -41,6 +41,30 @@
       "method": "keep"
     },
     {
+      "path": "nodesByType('Coding').where(system.startsWith('http://www.ama-assn.org')).display",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Coding').where(system.startsWith('http://www.ama-assn.org')).code",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Coding').where(system.startsWith('https://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement')).display",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Coding').where(system.startsWith('https://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement')).code",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Coding').where(system.startsWith('http://www.whocc.no/atc')).display",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Coding').where(system.startsWith('http://www.whocc.no/atc')).code",
+      "method": "keep"
+    },
+    {
       "path": "nodesByType('Coding').display",
       "method": "substitute",
       "replaceWith": "Redacted display"

@@ -17,6 +17,10 @@
       "method": "keep"
     },
     {
+      "path": "nodesByType('CodeableConcept').where(coding.where(system.startsWith('http://www.ama-assn.org')).exists()).text",
+      "method": "keep"
+    },
+    {
       "path": "nodesByType('CodeableConcept').text",
       "method": "substitute",
       "replaceWith": "Redacted text"
