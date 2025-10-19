@@ -37,6 +37,12 @@ placeholder_replacements: Dict[str, str] = {
     "PRACTITIONER_NAME_3": "John Dorian, MD",
     "PRACTITIONER_NAME_4": "Lisa Cuddy, MD",
     "PRACTITIONER_NAME_5": "Gregory House, MD",
+    "PRACTITIONER_UUID_1": "e985b181-ed44-42bf-94d0-f09a4fe72d10",
+    "PRACTITIONER_UUID_2": "078e6f48-495d-4e80-843e-af3cd64b37d8",
+    "PRACTITIONER_UUID_3": "5dcf1d7d-e880-44f3-8fa0-39edf02439a8",
+    "PRACTITIONER_UUID_4": "2548693e-f44e-44b6-a905-002dd124bbb5",
+    "PRACTITIONER_UUID_5": "e3112d92-ced0-42ad-bccf-ede4721adcf4",
+
 }
 
 
