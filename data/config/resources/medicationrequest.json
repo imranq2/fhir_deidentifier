@@ -46,6 +46,10 @@
       "method": "keep"
     },
     {
+      "path": "MedicationRequest.dosageInstruction.timing.event",
+      "method": "dateShift"
+    },
+    {
       "path": "MedicationRequest.dosageInstruction.timing.repeat.bounds.ofType(Period)",
       "method": "dateShift"
     },
@@ -55,6 +59,10 @@
     },
     {
       "path": "MedicationRequest.dosageInstruction.timing.repeat.durationUnit",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.dosageInstruction.timing.count",
       "method": "keep"
     }
   ]
