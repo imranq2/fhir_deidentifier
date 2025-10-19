@@ -8,6 +8,10 @@
       "method": "keep"
     },
     {
+      "path": "Resource.meta.id",
+      "method": "keep"
+    },
+    {
       "path": "Resource.meta.versionId",
       "method": "keep"
     },
