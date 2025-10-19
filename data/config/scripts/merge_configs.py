@@ -32,6 +32,8 @@ placeholder_replacements: Dict[str, str] = {
     "{{PERSON_ID_TO_SUBSTITUTE}}": "23a534fd-73a0-46a9-9d26-03498572d1e5",
     "{{SUBSTITUTE_PERSON_ID}}": "e00fe98c-1a5d-4ba9-a7b0-f10228498dc9",
     "{{SUBSTITUTE_PERSON_NAME}}": "Jane Doe",
+    "{{SUBSTITUTE_PERSON_NAME_FAMILY}}": "Doe",
+    "{{SUBSTITUTE_PERSON_NAME_GIVEN}}": "Jane",
     "{{TRUSTED_CODE_SYSTEMS}}": trusted_code_system_regex,
     "{{PRACTITIONER_NAME_1}}": "Doogie Howser, MD",
     "{{PRACTITIONER_NAME_2}}": "Gregory House, MD",
