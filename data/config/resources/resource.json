@@ -58,6 +58,16 @@
     {
       "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",
       "method": "keep"
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.matches('^Patient/.+$')).reference",
+      "method": "substitute",
+      "replaceWith": "Patient/REDACTED"
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.matches('^Person/.+$')).reference",
+      "method": "substitute",
+      "replaceWith": "Person/REDACTED"
     }
   ],
   "parameters": {
