@@ -54,11 +54,11 @@
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
     },
-        {
+    {
       "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and (display.matches('^[A-Oa-o0-4].*') or display.empty()))",
       "method": "substitute",
       "replaceWith": {
-        "reference": "Practitioner/{{ORGANIZATION_UUID_1}}",
+        "reference": "Organization/{{ORGANIZATION_UUID_1}}",
         "display": "{{ORGANIZATION_NAME_1}}"
       }
     },
@@ -66,11 +66,26 @@
       "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and display.matches('^[P-Zp-z5-9].*'))",
       "method": "substitute",
       "replaceWith": {
-        "reference": "Practitioner/{{ORGANIZATION_UUID_2}}",
+        "reference": "Organization/{{ORGANIZATION_UUID_2}}",
         "display": "{{ORGANIZATION_NAME_2}}"
       }
     },
-
+    {
+      "path": "nodesByType('Reference').where(reference.startsWith('Location/') and (display.matches('^[A-Oa-o0-4].*') or display.empty()))",
+      "method": "substitute",
+      "replaceWith": {
+        "reference": "Location/{{LOCATION_UUID_1}}",
+        "display": "{{LOCATION_NAME_1}}"
+      }
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.startsWith('Location/') and display.matches('^[P-Zp-z5-9].*'))",
+      "method": "substitute",
+      "replaceWith": {
+        "reference": "Location/{{LOCATION_UUID_2}}",
+        "display": "{{LOCATION_NAME_2}}"
+      }
+    },
     {
       "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",
       "method": "keep"

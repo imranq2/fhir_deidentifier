@@ -45,7 +45,11 @@ placeholder_replacements: Dict[str, str] = {
     "ORGANIZATION_NAME_1": "South Medical Center",
     "ORGANIZATION_NAME_2": "City Medical Center",
     "ORGANIZATION_UUID_1": "2500b32e-88e1-4e65-af2b-0bddca822f09",
-    "ORGANIZATION_UUID_2": "36cf9f91-4022-4d20-9dad-7ab0ebb3fe0e"
+    "ORGANIZATION_UUID_2": "36cf9f91-4022-4d20-9dad-7ab0ebb3fe0e",
+    "LOCATION_NAME_1": "South Medical Center Main Campus",
+    "LOCATION_NAME_2": "City Medical Center Downtown Clinic",
+    "LOCATION_UUID_1": "dbfb7108-1faf-4abd-a202-89fc3a1a18c5",
+    "LOCATION_UUID_2": "3420266f-0e96-48b6-9996-fddd6d59b34f",
 }
 
 
