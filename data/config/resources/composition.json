@@ -1,0 +1,37 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "Composition.status",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.title",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').id",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').title",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').code",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').text.div",
+      "method": "substitute",
+      "replaceWith": "Redacted section text"
+    },
+    {
+      "path": "Composition.nodesByName('section').mode",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('entry').id",
+      "method": "keep"
+    }
+  ]
+}
