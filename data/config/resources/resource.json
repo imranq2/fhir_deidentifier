@@ -3,6 +3,7 @@
   "defaultRule": "redact",
   "processingErrors": "raise",
   "fhirPathRules": [
+    { "path": "Resource.id", "method": "keep" },
     { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/owner').code", "method": "substitute", "replaceWith": "deidentified" },
     { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/access').code", "method": "substitute", "replaceWith": "deidentified" },
     { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/vendor').code", "method": "substitute", "replaceWith": "deidentified" },
@@ -10,7 +11,6 @@
     { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/connectionType').code", "method": "keep" },
     { "path": "Resource.meta.security.where(code != null).code", "method": "cryptoHash" },
     { "path": "Resource.meta.source", "method": "cryptoHash" },
-    { "path": "Resource.id", "method": "cryptoHash" },
     { "path": "Resource.patient.display", "method": "cryptoHash" },
     { "path": "Resource.subject.display", "method": "cryptoHash" },
     {"path": "nodesByType('Extension')", "method": "redact"},

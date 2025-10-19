@@ -6,10 +6,19 @@ CONFIG_DIR = os.path.dirname(__file__)
 RESOURCE_CONFIG_DIR = os.path.join(CONFIG_DIR, '../resources')
 OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 
+DEFAULT_CONFIG = "resource.json"
+
+limit_to_configs = [
+    "patient.json",
+]
+
 # List all config files except the output and the merge script itself
 config_files = sorted(
     [
         f for f in glob.glob(os.path.join(RESOURCE_CONFIG_DIR, '*.json'))
+        if os.path.basename(f) != DEFAULT_CONFIG and (
+            not limit_to_configs or os.path.basename(f) in limit_to_configs
+    )
     ]
 )
 
@@ -33,6 +42,15 @@ for config_path in config_files:
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {config_path}: {e}")
             raise
+
+# Add DEFAULT_CONFIG at the end
+with open(os.path.join(RESOURCE_CONFIG_DIR, DEFAULT_CONFIG), 'r') as f:
+    try:
+        data = json.load(f)
+        merged_rules.extend(data.get('fhirPathRules', []))
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON from {DEFAULT_CONFIG}: {e}")
+        raise
 
 # Redact all other resources
 merged_rules.append({"path": "Resource", "method": "redact"})
