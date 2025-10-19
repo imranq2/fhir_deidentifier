@@ -5,7 +5,7 @@
       "method": "keep"
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.matches('^[A-Ea-e0-1].*'))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and (display.matches('^[A-Ea-e0-1].*') or display.empty()))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Practitioner/{{PRACTITIONER_UUID_1}}",
