@@ -9,14 +9,7 @@ OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 
 DEFAULT_CONFIG = "resource.json"
 
-limit_to_configs = [
-    "patient.json",
-    "person.json",
-    "medicationrequest.json",
-    "medicationdispense.json",
-    "medicationstatement.json",
-    "observation.json",
-]
+limit_to_configs = None
 
 # List all config files except the output and the merge script itself
 config_files = sorted(
@@ -87,7 +80,7 @@ with open(os.path.join(RESOURCE_CONFIG_DIR, DEFAULT_CONFIG), 'r') as f:
         print(f"Error decoding JSON from {DEFAULT_CONFIG}: {e}")
         raise
 
-# Redact all other resources
+# Redact all other fields that were not matched by previous rules
 merged_rules.append({"path": "Resource", "method": "redact"})
 
 # Write the merged config with defaultRule

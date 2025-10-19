@@ -3,7 +3,9 @@
   "defaultRule": "redact",
   "processingErrors": "raise",
   "fhirPathRules": [
-    {"path": "DiagnosticReport.media.comment", "method": "redact"},
-    {"path": "DiagnosticReport.conclusion", "method": "redact"}
+    {
+      "path": "DiagnosticReport.status",
+      "method": "keep"
+    }
   ]
 }
