@@ -1,0 +1,23 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.matches('^[A-Za-z]+/.+$')).reference",
+      "method": "generalize",
+      "cases": {
+        "$this.matches('^([A-Za-z]+)/.+$')": "$this.replaceMatches('^([A-Za-z]+)/.+$', '$1/REDACTED')"
+      },
+      "otherValues": "redact"
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.matches('^Practitioner/.+$')).display",
+      "method": "substitute",
+      "replaceWith": "Fake Doctor, MD"
+    }
+  ]
+}

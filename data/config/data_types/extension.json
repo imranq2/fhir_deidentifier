@@ -1,0 +1,10 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Extension').where(url='https://www.icanbwell.com/uuid')",
+      "method": "keep"
+    }
+  ]
+}

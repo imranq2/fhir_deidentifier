@@ -1,0 +1,46 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Meta').id",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Meta').versionId",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Meta').lastUpdated",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Meta').security.system",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Meta').security.where(system='https://www.icanbwell.com/owner').code",
+      "method": "substitute",
+      "replaceWith": "deidentified"
+    },
+    {
+      "path": "nodesByType('Meta').security.where(system='https://www.icanbwell.com/access').code",
+      "method": "substitute",
+      "replaceWith": "deidentified"
+    },
+    {
+      "path": "nodesByType('Meta').security.where(system='https://www.icanbwell.com/vendor').code",
+      "method": "substitute",
+      "replaceWith": "deidentified"
+    },
+    {
+      "path": "nodesByType('Meta').security.where(system='https://www.icanbwell.com/sourceAssigningAuthority').code",
+      "method": "substitute",
+      "replaceWith": "deidentified"
+    },
+    {
+      "path": "nodesByType('Meta').security.where(system='https://www.icanbwell.com/connectionType').code",
+      "method": "keep"
+    }
+  ]
+}

@@ -2,7 +2,6 @@
   "fhirVersion": "R4",
   "processingErrors": "raise",
   "fhirPathRules": [
-
     {
       "path": "nodesByType('CodeableConcept').text",
       "method": "substitute",
