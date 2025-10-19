@@ -1,7 +1,7 @@
 import json
 import glob
 import os
-from typing import List
+from typing import List, Dict
 
 CONFIG_DIR = os.path.dirname(__file__)
 DATA_TYPES_CONFIG_DIR = os.path.join(CONFIG_DIR, '../data_types')
@@ -11,7 +11,10 @@ OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 DEFAULT_CONFIG = "resource.json"
 
 # Replace the id on the person resource with this
-SUBSTITUTE_PERSON_ID: str = "e00fe98c-1a5d-4ba9-a7b0-f10228498dc9"
+placeholder_replacements: Dict[str, str] = {
+    "SUBSTITUTE_PERSON_ID": "e00fe98c-1a5d-4ba9-a7b0-f10228498dc9",
+    "SUBSTITUTE_PERSON_NAME": "Jane Doe"
+}
 
 trusted_code_systems: List[str] = [
     "http://loinc.org",
@@ -69,7 +72,8 @@ for config_path in config_files:
             for rule in fhir_path_rules:
                 rule['path'] = rule['path'].replace('{{TRUSTED_CODE_SYSTEMS}}', trusted_code_system_regex)
                 if "replaceWith" in rule:
-                    rule['replaceWith'] = rule['replaceWith'].replace('{{SUBSTITUTE_PERSON_ID}}', SUBSTITUTE_PERSON_ID)
+                    for placeholder, placeholder_value in placeholder_replacements.items():
+                        rule['replaceWith'] = rule['replaceWith'].replace('{{' + placeholder + '}}', placeholder_value)
             merged_rules.extend(fhir_path_rules)
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {config_path}: {e}")
@@ -90,7 +94,8 @@ for config_path in data_type_config_files:
             for rule in fhir_path_rules:
                 rule['path'] = rule['path'].replace('{{TRUSTED_CODE_SYSTEMS}}', trusted_code_system_regex)
                 if "replaceWith" in rule:
-                    rule['replaceWith'] = rule['replaceWith'].replace('{{SUBSTITUTE_PERSON_ID}}', SUBSTITUTE_PERSON_ID)
+                    for placeholder, placeholder_value in placeholder_replacements.items():
+                        rule['replaceWith'] = rule['replaceWith'].replace('{{' + placeholder + '}}', placeholder_value)
             merged_rules.extend(fhir_path_rules)
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {config_path}: {e}")
