@@ -68,11 +68,16 @@
       "path": "nodesByType('Reference').where(reference.matches('^Person/.+$')).reference",
       "method": "substitute",
       "replaceWith": "Person/REDACTED"
+    },
+        {
+      "path": "nodesByType('Reference').where(reference.matches('^Encounter/.+$')).reference",
+      "method": "substitute",
+      "replaceWith": "Encounter/REDACTED"
     }
   ],
   "parameters": {
     "dateShiftKey": "",
-    "dateShiftScope": "file",
+    "dateShiftScope": "folder",
     "cryptoHashKey": "",
     "encryptKey": "",
     "enablePartialAgesForRedact": true,

@@ -23,6 +23,15 @@
       "path": "MedicationRequest.subject.display",
       "method": "substitute",
       "replaceWith": "John Doe"
+    },
+    {
+      "path": "MedicationRequest.encounter.display",
+      "method": "substitute",
+      "replaceWith": "Fake Encounter"
+    },
+    {
+      "path": "MedicationRequest.authoredOn",
+      "method": "dateShift"
     }
   ]
 }
