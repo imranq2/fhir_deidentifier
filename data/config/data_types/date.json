@@ -13,6 +13,10 @@
     {
       "path": "nodesByType('instant')",
       "method": "dateshift"
+    },
+    {
+      "path": "nodesByType('time')",
+      "method": "dateshift"
     }
   ]
 }
