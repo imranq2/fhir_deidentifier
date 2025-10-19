@@ -1,10 +1,6 @@
 {
   "fhirPathRules": [
     {
-      "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",
-      "method": "keep"
-    },
-    {
       "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and (display.matches('^[A-Ea-e0-1].*') or display.empty()))",
       "method": "substitute",
       "replaceWith": {
@@ -57,6 +53,27 @@
       "path": "nodesByType('Reference').where(reference.matches('^Person/.+$')).display",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
+    },
+        {
+      "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and (display.matches('^[A-Oa-o0-4].*') or display.empty()))",
+      "method": "substitute",
+      "replaceWith": {
+        "reference": "Practitioner/{{ORGANIZATION_UUID_1}}",
+        "display": "{{ORGANIZATION_NAME_1}}"
+      }
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and display.matches('^[P-Zp-z5-9].*'))",
+      "method": "substitute",
+      "replaceWith": {
+        "reference": "Practitioner/{{ORGANIZATION_UUID_2}}",
+        "display": "{{ORGANIZATION_NAME_2}}"
+      }
+    },
+
+    {
+      "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",
+      "method": "keep"
     },
     {
       "path": "nodesByType('Reference').where(reference.matches('^[A-Za-z]+/.+$')).reference",
