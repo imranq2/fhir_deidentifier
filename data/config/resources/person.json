@@ -1,7 +1,7 @@
 {
   "fhirPathRules": [
     {
-      "path": "Person.id",
+      "path": "Person.where(id.matches('{{PERSON_ID_TO_SUBSTITUTE}}')).id",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_ID}}"
     },

@@ -29,27 +29,28 @@ trusted_code_system_regex = f"^https?://({trusted_code_systems_list})"
 print(f"Using trusted code systems regex: {trusted_code_system_regex}")
 
 placeholder_replacements: Dict[str, str] = {
-    "SUBSTITUTE_PERSON_ID": "e00fe98c-1a5d-4ba9-a7b0-f10228498dc9",
-    "SUBSTITUTE_PERSON_NAME": "Jane Doe",
-    "TRUSTED_CODE_SYSTEMS": trusted_code_system_regex,
-    "PRACTITIONER_NAME_1": "Doogie Howser, MD",
-    "PRACTITIONER_NAME_2": "Gregory House, MD",
-    "PRACTITIONER_NAME_3": "Meredith Grey, MD",
-    "PRACTITIONER_NAME_4": "Christopher Turk, MD",
-    "PRACTITIONER_NAME_5": "John Dorian, MD",
-    "PRACTITIONER_UUID_1": "e985b181-ed44-42bf-94d0-f09a4fe72d10",
-    "PRACTITIONER_UUID_2": "078e6f48-495d-4e80-843e-af3cd64b37d8",
-    "PRACTITIONER_UUID_3": "5dcf1d7d-e880-44f3-8fa0-39edf02439a8",
-    "PRACTITIONER_UUID_4": "2548693e-f44e-44b6-a905-002dd124bbb5",
-    "PRACTITIONER_UUID_5": "e3112d92-ced0-42ad-bccf-ede4721adcf4",
-    "ORGANIZATION_NAME_1": "South Medical Center",
-    "ORGANIZATION_NAME_2": "City Medical Center",
-    "ORGANIZATION_UUID_1": "2500b32e-88e1-4e65-af2b-0bddca822f09",
-    "ORGANIZATION_UUID_2": "36cf9f91-4022-4d20-9dad-7ab0ebb3fe0e",
-    "LOCATION_NAME_1": "South Medical Center Main Campus",
-    "LOCATION_NAME_2": "City Medical Center Downtown Clinic",
-    "LOCATION_UUID_1": "dbfb7108-1faf-4abd-a202-89fc3a1a18c5",
-    "LOCATION_UUID_2": "3420266f-0e96-48b6-9996-fddd6d59b34f",
+    "{{PERSON_ID_TO_SUBSTITUTE}}": "23a534fd-73a0-46a9-9d26-03498572d1e5",
+    "{{SUBSTITUTE_PERSON_ID}}": "e00fe98c-1a5d-4ba9-a7b0-f10228498dc9",
+    "{{SUBSTITUTE_PERSON_NAME}}": "Jane Doe",
+    "{{TRUSTED_CODE_SYSTEMS}}": trusted_code_system_regex,
+    "{{PRACTITIONER_NAME_1}}": "Doogie Howser, MD",
+    "{{PRACTITIONER_NAME_2}}": "Gregory House, MD",
+    "{{PRACTITIONER_NAME_3}}": "Meredith Grey, MD",
+    "{{PRACTITIONER_NAME_4}}": "Christopher Turk, MD",
+    "{{PRACTITIONER_NAME_5}}": "John Dorian, MD",
+    "{{PRACTITIONER_UUID_1}}": "e985b181-ed44-42bf-94d0-f09a4fe72d10",
+    "{{PRACTITIONER_UUID_2}}": "078e6f48-495d-4e80-843e-af3cd64b37d8",
+    "{{PRACTITIONER_UUID_3}}": "5dcf1d7d-e880-44f3-8fa0-39edf02439a8",
+    "{{PRACTITIONER_UUID_4}}": "2548693e-f44e-44b6-a905-002dd124bbb5",
+    "{{PRACTITIONER_UUID_5}}": "e3112d92-ced0-42ad-bccf-ede4721adcf4",
+    "{{ORGANIZATION_NAME_1}}": "South Medical Center",
+    "{{ORGANIZATION_NAME_2}}": "City Medical Center",
+    "{{ORGANIZATION_UUID_1}}": "2500b32e-88e1-4e65-af2b-0bddca822f09",
+    "{{ORGANIZATION_UUID_2}}": "36cf9f91-4022-4d20-9dad-7ab0ebb3fe0e",
+    "{{LOCATION_NAME_1}}": "South Medical Center Main Campus",
+    "{{LOCATION_NAME_2}}": "City Medical Center Downtown Clinic",
+    "{{LOCATION_UUID_1}}": "dbfb7108-1faf-4abd-a202-89fc3a1a18c5",
+    "{{LOCATION_UUID_2}}": "3420266f-0e96-48b6-9996-fddd6d59b34f",
 }
 
 
@@ -73,17 +74,17 @@ def replace_placeholders(*, fhir_path_rules: List[Dict[str,Any]]) -> List[Dict[s
     # now iterate the fhir_path_rules and replace the trusted code systems placeholder if present
     for rule in fhir_path_rules:
         for placeholder, placeholder_value in placeholder_replacements.items():
-            rule['path'] = rule['path'].replace('{{' + placeholder + '}}', placeholder_value)
+            rule['path'] = rule['path'].replace(placeholder, placeholder_value)
             if "replaceWith" in rule:
                 if isinstance(rule["replaceWith"], str):
-                    rule['replaceWith'] = rule['replaceWith'].replace('{{' + placeholder + '}}', placeholder_value)
+                    rule['replaceWith'] = rule['replaceWith'].replace(placeholder , placeholder_value)
                 elif isinstance(rule["replaceWith"], dict):
                     for key in rule['replaceWith']:
-                        rule['replaceWith'][key] = rule['replaceWith'][key].replace('{{' + placeholder + '}}', placeholder_value)
+                        rule['replaceWith'][key] = rule['replaceWith'][key].replace(placeholder , placeholder_value)
             if "cases" in rule:
                 cases: Dict[str, str] = rule['cases']
                 for case_key in cases:
-                    cases[case_key] = cases[case_key].replace('{{' + placeholder + '}}', placeholder_value)
+                    cases[case_key] = cases[case_key].replace(placeholder, placeholder_value)
 
     return fhir_path_rules
 
