@@ -60,19 +60,12 @@
       "method": "keep"
     },
     {
-      "path": "nodesByType('Reference').where(reference.matches('^Patient/.+$')).reference",
-      "method": "substitute",
-      "replaceWith": "Patient/REDACTED"
-    },
-    {
-      "path": "nodesByType('Reference').where(reference.matches('^Person/.+$')).reference",
-      "method": "substitute",
-      "replaceWith": "Person/REDACTED"
-    },
-        {
-      "path": "nodesByType('Reference').where(reference.matches('^Encounter/.+$')).reference",
-      "method": "substitute",
-      "replaceWith": "Encounter/REDACTED"
+      "path": "nodesByType('Reference').where(reference.matches('^[A-Za-z]+/.+$')).reference",
+      "method": "generalize",
+      "cases": {
+        "$this.matches('^([A-Za-z]+)/.+$')": "$this.replaceMatches('^([A-Za-z]+)/.+$', '$1/REDACTED')"
+      },
+      "otherValues": "redact"
     }
   ],
   "parameters": {
