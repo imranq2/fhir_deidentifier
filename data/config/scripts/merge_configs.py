@@ -1,6 +1,7 @@
 import json
 import glob
 import os
+from typing import List
 
 CONFIG_DIR = os.path.dirname(__file__)
 DATA_TYPES_CONFIG_DIR = os.path.join(CONFIG_DIR, '../data_types')
@@ -8,6 +9,23 @@ RESOURCE_CONFIG_DIR = os.path.join(CONFIG_DIR, '../resources')
 OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 
 DEFAULT_CONFIG = "resource.json"
+
+trusted_code_systems: List[str] = [
+    "http://loinc.org",
+    "http://snomed.info/sct",
+    # "http://hl7.org/fhir/sid/icd-10",
+    # "http://hl7.org/fhir/sid/icd-9",
+    # "http://unitsofmeasure.org",
+    # "http://www.nlm.nih.gov/research/umls/rxnorm",
+    # "http://terminology.hl7.org",
+    # "http://www.ama-assn.org/go/cpt",
+    # "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
+    # "http://www.whocc.no/atc"
+]
+
+trusted_code_systems_list: str = '|'.join([cs.replace('http://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems])
+trusted_code_system_regex = f"^https?://({trusted_code_systems_list})"
+print(f"Using trusted code systems regex: {trusted_code_system_regex}")
 
 limit_to_configs = None
 
@@ -43,6 +61,9 @@ for config_path in config_files:
                         f"Rule path '{rule['path']}' does not start with resource type '{resource_type_upper}' in file {config_path}."
                         " If you are defining global rules then add them to resource.json instead."
                     )
+            # now iterate the fhir_path_rules and replace the trusted code systems placeholder if present
+            for rule in fhir_path_rules:
+                rule['path'] = rule['path'].replace('{{TRUSTED_CODE_SYSTEMS}}', trusted_code_system_regex)
             merged_rules.extend(fhir_path_rules)
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {config_path}: {e}")
@@ -59,7 +80,10 @@ for config_path in data_type_config_files:
     with open(config_path, 'r') as f:
         try:
             data = json.load(f)
-            merged_rules.extend(data.get('fhirPathRules', []))
+            fhir_path_rules = data.get('fhirPathRules', [])
+            for rule in fhir_path_rules:
+                rule['path'] = rule['path'].replace('{{TRUSTED_CODE_SYSTEMS}}', trusted_code_system_regex)
+            merged_rules.extend(fhir_path_rules)
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {config_path}: {e}")
             raise

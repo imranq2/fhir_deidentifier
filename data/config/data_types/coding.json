@@ -1,11 +1,11 @@
 {
   "fhirPathRules": [
     {
-      "path": "nodesByType('Coding').where(system.matches('https?://(snomed.info|terminology.hl7.org|loinc.org|www.nlm.nih.gov|hl7.org|www.ama-assn.org|fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement|www.whocc.no/atc)')).display",
+      "path": "nodesByType('Coding').where(system.matches('{{TRUSTED_CODE_SYSTEMS}}')).display",
       "method": "keep"
     },
     {
-      "path": "nodesByType('Coding').where(system.matches('https?://(snomed.info|terminology.hl7.org|loinc.org|www.nlm.nih.gov|hl7.org|www.ama-assn.org|fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement|www.whocc.no/atc)')).code",
+      "path": "nodesByType('Coding').where(system.matches('{{TRUSTED_CODE_SYSTEMS}}')).code",
       "method": "keep"
     },
     {
