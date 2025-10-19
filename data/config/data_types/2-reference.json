@@ -50,6 +50,14 @@
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
     },
     {
+      "path": "nodesByType('Reference').where(reference.matches('^Person/{{PERSON_ID_TO_SUBSTITUTE}}'))",
+      "method": "substitute",
+      "replaceWith": {
+        "reference": "Person/{{SUBSTITUTE_PERSON_ID}}",
+        "display": "{{SUBSTITUTE_PERSON_NAME}}"
+      }
+    },
+    {
       "path": "nodesByType('Reference').where(reference.matches('^Person/.+$')).display",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
