@@ -37,7 +37,10 @@ for config_path in config_files:
             resource_type = os.path.splitext(os.path.basename(config_path))[0].capitalize()
             for rule in fhir_path_rules:
                 if not rule['path'].startswith(resource_type):
-                    raise ValueError(f"Rule path '{rule['path']}' does not start with resource type '{resource_type}' in file {config_path}")
+                    raise ValueError(
+                        f"Rule path '{rule['path']}' does not start with resource type '{resource_type}' in file {config_path}."
+                        " If you are defining global rules then add them to resource.json instead."
+                    )
             merged_rules.extend(fhir_path_rules)
             # Use parameters, fhirVersion, processingErrors from the first file
             if parameters is None:
