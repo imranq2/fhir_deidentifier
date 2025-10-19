@@ -1,0 +1,7 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {"path": "Person.name", "method": "redact"}
+  ]
+}

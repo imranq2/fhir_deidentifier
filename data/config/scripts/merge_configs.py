@@ -10,6 +10,7 @@ DEFAULT_CONFIG = "resource.json"
 
 limit_to_configs = [
     "patient.json",
+    "person.json",
 ]
 
 # List all config files except the output and the merge script itself
