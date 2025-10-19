@@ -13,17 +13,18 @@ DEFAULT_CONFIG = "resource.json"
 trusted_code_systems: List[str] = [
     "http://loinc.org",
     "http://snomed.info/sct",
-    # "http://hl7.org/fhir/sid/icd-10",
-    # "http://hl7.org/fhir/sid/icd-9",
-    # "http://unitsofmeasure.org",
-    # "http://www.nlm.nih.gov/research/umls/rxnorm",
-    # "http://terminology.hl7.org",
-    # "http://www.ama-assn.org/go/cpt",
-    # "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
-    # "http://www.whocc.no/atc"
+    "http://hl7.org/fhir/sid/icd-10",
+    "http://hl7.org/fhir/sid/icd-9",
+    "http://unitsofmeasure.org",
+    "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "http://terminology.hl7.org",
+    "http://www.ama-assn.org/go/cpt",
+    "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
+    "http://www.whocc.no/atc",
+    "http://hl7.org/fhir/us/core/CodeSystem/condition-category"
 ]
 
-trusted_code_systems_list: str = '|'.join([cs.replace('http://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems])
+trusted_code_systems_list: str = '|'.join([cs.replace('http://', '').replace('https://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems])
 trusted_code_system_regex = f"^https?://({trusted_code_systems_list})"
 print(f"Using trusted code systems regex: {trusted_code_system_regex}")
 
