@@ -1,0 +1,11 @@
+{
+  "fhirVersion": "R4",
+  "defaultRule": "redact",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "MedicationDispense.status",
+      "method": "keep"
+    }
+  ]
+}
