@@ -45,13 +45,6 @@ for config_path in config_files:
                         " If you are defining global rules then add them to resource.json instead."
                     )
             merged_rules.extend(fhir_path_rules)
-            # Use parameters, fhirVersion, processingErrors from the first file
-            if parameters is None:
-                parameters = data.get('parameters', {})
-            if fhirVersion is None:
-                fhirVersion = data.get('fhirVersion', 'R4')
-            if processingErrors is None:
-                processingErrors = data.get('processingErrors', 'raise')
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {config_path}: {e}")
             raise
@@ -61,6 +54,13 @@ with open(os.path.join(RESOURCE_CONFIG_DIR, DEFAULT_CONFIG), 'r') as f:
     try:
         data = json.load(f)
         merged_rules.extend(data.get('fhirPathRules', []))
+        # Use parameters, fhirVersion, processingErrors from the resource file
+        if parameters is None:
+            parameters = data.get('parameters', {})
+        if fhirVersion is None:
+            fhirVersion = data.get('fhirVersion', 'R4')
+        if processingErrors is None:
+            processingErrors = data.get('processingErrors', 'raise')
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from {DEFAULT_CONFIG}: {e}")
         raise

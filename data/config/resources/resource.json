@@ -77,7 +77,7 @@
   ],
   "parameters": {
     "dateShiftKey": "",
-    "dateShiftScope": "folder",
+    "dateShiftFixedOffsetInDays": 1,
     "cryptoHashKey": "",
     "encryptKey": "",
     "enablePartialAgesForRedact": true,
