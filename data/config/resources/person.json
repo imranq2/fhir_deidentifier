@@ -1,6 +1,11 @@
 {
   "fhirPathRules": [
     {
+      "path": "Person.id",
+      "method": "substitute",
+      "replaceWith": "{{SUBSTITUTE_PERSON_ID}}"
+    },
+    {
       "path": "Person.active",
       "method": "keep"
     },
