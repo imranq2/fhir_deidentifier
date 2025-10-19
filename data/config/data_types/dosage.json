@@ -1,0 +1,31 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Dosage').timing.event",
+      "method": "dateShift"
+    },
+    {
+      "path": "nodesByType('Dosage').timing.repeat.bounds.ofType(Period)",
+      "method": "dateShift"
+    },
+    {
+      "path": "nodesByType('Dosage').timing.repeat.duration",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Dosage').timing.repeat.durationUnit",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Dosage').timing.count",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Dosage').text",
+      "method": "substitute",
+      "replaceWith": "Redacted dosage"
+    }
+  ]
+}
