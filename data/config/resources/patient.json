@@ -28,6 +28,24 @@
       "path": "Patient.nodesByType('HumanName').given",
       "method": "substitute",
       "replaceWith": "John"
+    },
+    {
+      "path": "Patient.nodesByType('ContactPoint').where(system='phone').use | Patient.nodesByType('ContactPoint').where(system='email').use",
+      "method": "keep"
+    },
+    {
+      "path": "Patient.nodesByType('ContactPoint').where(system='phone').system | Patient.nodesByType('ContactPoint').where(system='email').system",
+      "method": "keep"
+    },
+    {
+      "path": "Patient.nodesByType('ContactPoint').where(system='phone').value",
+      "method": "substitute",
+      "replaceWith": "111-111-1111"
+    },
+    {
+      "path": "Patient.nodesByType('ContactPoint').where(system='email').value",
+      "method": "substitute",
+      "replaceWith": "foo@bar.com"
     }
   ]
 }
