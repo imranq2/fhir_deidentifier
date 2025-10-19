@@ -3,12 +3,12 @@ import glob
 import os
 
 CONFIG_DIR = os.path.dirname(__file__)
-OUTPUT_FILE = os.path.join(CONFIG_DIR, 'config_merged.json')
+RESOURCE_CONFIG_DIR = os.path.join(CONFIG_DIR, '../resources')
+OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 
 # List all config files except the output and the merge script itself
 config_files = [
-    f for f in glob.glob(os.path.join(CONFIG_DIR, 'config_*.json'))
-    if not f.endswith('config_merged.json') and not f.endswith('merge_configs.py')
+    f for f in glob.glob(os.path.join(RESOURCE_CONFIG_DIR, '*.json'))
 ]
 
 merged_rules = []
