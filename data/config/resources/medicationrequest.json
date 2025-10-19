@@ -28,16 +28,6 @@
       "method": "keep"
     },
     {
-      "path": "MedicationRequest.subject.display",
-      "method": "substitute",
-      "replaceWith": "John Doe"
-    },
-    {
-      "path": "MedicationRequest.encounter.display",
-      "method": "substitute",
-      "replaceWith": "Fake Encounter"
-    },
-    {
       "path": "MedicationRequest.authoredOn",
       "method": "dateShift"
     },
@@ -64,6 +54,20 @@
     {
       "path": "MedicationRequest.dosageInstruction.timing.count",
       "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.reasonCode",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.note.text",
+      "method": "substitute",
+      "replaceWith": "Redacted note"
+    },
+    {
+      "path": "MedicationRequest.dosageInstruction.text",
+      "method": "substitute",
+      "replaceWith": "Redacted dosage"
     }
   ]
 }
