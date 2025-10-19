@@ -68,7 +68,11 @@ def replace_placeholders(*, fhir_path_rules: List[Dict[str,Any]]) -> List[Dict[s
         for placeholder, placeholder_value in placeholder_replacements.items():
             rule['path'] = rule['path'].replace('{{' + placeholder + '}}', placeholder_value)
             if "replaceWith" in rule:
-                rule['replaceWith'] = rule['replaceWith'].replace('{{' + placeholder + '}}', placeholder_value)
+                if isinstance(rule["replaceWith"], str):
+                    rule['replaceWith'] = rule['replaceWith'].replace('{{' + placeholder + '}}', placeholder_value)
+                elif isinstance(rule["replaceWith"], dict):
+                    for key in rule['replaceWith']:
+                        rule['replaceWith'][key] = rule['replaceWith'][key].replace('{{' + placeholder + '}}', placeholder_value)
             if "cases" in rule:
                 cases: Dict[str, str] = rule['cases']
                 for case_key in cases:
