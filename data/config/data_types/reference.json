@@ -12,11 +12,11 @@
       "path": "nodesByType('Reference').where(reference.matches('^Practitioner/.+$')).display",
       "method": "generalize",
       "cases": {
-        "$this.matches('^[A-Ea-e0-1].*')": "'Anonymous-A'",
-        "$this.matches('^[F-Jf-j2-3].*')": "'Anonymous-B'",
-        "$this.matches('^[K-Ok-o4-5].*')": "'Anonymous-C'",
-        "$this.matches('^[P-Tp-t6-7].*')": "'Anonymous-D'",
-        "$this.matches('^[U-Zu-z8-9].*')": "'Anonymous-E'"
+        "$this.matches('^[A-Ea-e0-1].*')": "'{{PRACTITIONER_NAME_1}}'",
+        "$this.matches('^[F-Jf-j2-3].*')": "'{{PRACTITIONER_NAME_2}}'",
+        "$this.matches('^[K-Ok-o4-5].*')": "'{{PRACTITIONER_NAME_3}}'",
+        "$this.matches('^[P-Tp-t6-7].*')": "'{{PRACTITIONER_NAME_4}}'",
+        "$this.matches('^[U-Zu-z8-9].*')": "'{{PRACTITIONER_NAME_5}}'"
       }
     },
     {

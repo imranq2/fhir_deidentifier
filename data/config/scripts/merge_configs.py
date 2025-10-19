@@ -31,7 +31,12 @@ print(f"Using trusted code systems regex: {trusted_code_system_regex}")
 placeholder_replacements: Dict[str, str] = {
     "SUBSTITUTE_PERSON_ID": "e00fe98c-1a5d-4ba9-a7b0-f10228498dc9",
     "SUBSTITUTE_PERSON_NAME": "Jane Doe",
-    "TRUSTED_CODE_SYSTEMS": trusted_code_system_regex
+    "TRUSTED_CODE_SYSTEMS": trusted_code_system_regex,
+    "PRACTITIONER_NAME_1": "Doogie Howser, MD",
+    "PRACTITIONER_NAME_2": "Meredith Grey, MD",
+    "PRACTITIONER_NAME_3": "John Dorian, MD",
+    "PRACTITIONER_NAME_4": "Lisa Cuddy, MD",
+    "PRACTITIONER_NAME_5": "Gregory House, MD",
 }
 
 
