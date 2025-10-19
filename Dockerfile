@@ -1,5 +1,5 @@
 # First stage: Build the .NET code
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Define a build argument for the version
 # https://github.com/microsoft/Tools-for-Health-Data-Anonymization/releases
@@ -23,16 +23,18 @@ RUN ls -halt .
 
 RUN ls -haltR FHIR/src/
 
+RUN sed -i 's/<TargetFramework>net[0-9.]*<\/TargetFramework>/<TargetFramework>net8.0<\/TargetFramework>/g' FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool/*.csproj
+
 # Build the project
-RUN dotnet build FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool -c Release
+RUN dotnet build FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool -c Release -p:TargetFramework=net8.0
 
 # Second stage: Set up the runtime environment for .NET, Mono (v6.12+), and Python
-FROM mcr.microsoft.com/dotnet/runtime:6.0
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 
 # Install Python, pip, pythonnet, and Mono
 RUN apt-get update && \
     apt-get install -y python3 python3-pip && \
-    pip install pipenv
+    pip install pipenv --break-system-packages
 
 WORKDIR /app
 
@@ -40,7 +42,7 @@ ENV PYTHONPATH=/app;/lib/netlib
 ENV PATH="/lib/netlib:${PATH}"
 
 # Copy the build output from the first stage
-COPY --from=build /app/FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool/bin/Release/net6.0 /lib/netlib
+COPY --from=build /app/FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool/bin/Release/net8.0 /lib/netlib
 
 RUN ls -halt /lib/netlib
 
@@ -50,7 +52,7 @@ ENV PYTHONNET_RUNTIME=coreclr
 COPY Pipfile Pipfile.lock /app/
 
 # Install dependencies using pipenv
-RUN pipenv sync --dev --system --verbose --extra-pip-args="--prefer-binary"
+RUN pipenv sync --dev --system --verbose --extra-pip-args="--prefer-binary --break-system-packages"
 
 # Copy the FastAPI Python code
 COPY ./deidentifier /app/deidentifier
