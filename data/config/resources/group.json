@@ -1,9 +1,0 @@
-{
-  "fhirVersion": "R4",
-  "defaultRule": "redact",
-  "processingErrors": "raise",
-  "fhirPathRules": [
-    {"path": "Group.name", "method": "redact"},
-    {"path": "Group.characteristic.value", "method": "redact"}
-  ]
-}

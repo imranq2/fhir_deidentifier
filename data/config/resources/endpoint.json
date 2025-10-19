@@ -1,9 +1,0 @@
-{
-  "fhirVersion": "R4",
-  "defaultRule": "redact",
-  "processingErrors": "raise",
-  "fhirPathRules": [
-    {"path": "Endpoint.name", "method": "redact"},
-    {"path": "Endpoint.address", "method": "redact"}
-  ]
-}

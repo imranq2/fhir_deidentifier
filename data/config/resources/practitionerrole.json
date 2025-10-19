@@ -1,9 +1,0 @@
-{
-  "fhirVersion": "R4",
-  "defaultRule": "redact",
-  "processingErrors": "raise",
-  "fhirPathRules": [
-    {"path": "PractitionerRole.notAvailable.description", "method": "redact"},
-    {"path": "PractitionerRole.availabilityExceptions", "method": "redact"}
-  ]
-}
