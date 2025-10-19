@@ -7,16 +7,16 @@ RESOURCE_CONFIG_DIR = os.path.join(CONFIG_DIR, '../resources')
 OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 
 # List all config files except the output and the merge script itself
-config_files = [
-    f for f in glob.glob(os.path.join(RESOURCE_CONFIG_DIR, '*.json'))
-]
+config_files = sorted(
+    [
+        f for f in glob.glob(os.path.join(RESOURCE_CONFIG_DIR, '*.json'))
+    ]
+)
 
 merged_rules = []
 parameters = None
 fhirVersion = None
 processingErrors = None
-
-defaultRule = "redact"
 
 for config_path in config_files:
     with open(config_path, 'r') as f:
@@ -34,14 +34,16 @@ for config_path in config_files:
             print(f"Error decoding JSON from {config_path}: {e}")
             raise
 
+# Redact all other resources
+merged_rules.append({"path": "Resource", "method": "redact"})
+
 # Write the merged config with defaultRule
-with open(OUTPUT_FILE, 'w') as out:
+with open(OUTPUT_FILE, 'w') as output_file:
     json.dump({
         'fhirVersion': fhirVersion,
-        'defaultRule': defaultRule,
         'processingErrors': processingErrors,
         'fhirPathRules': merged_rules,
         'parameters': parameters
-    }, out, indent=2)
+    }, output_file, indent=2)
 
 print(f"Merged {len(config_files)} configs into {OUTPUT_FILE} with defaultRule set to redact.")
