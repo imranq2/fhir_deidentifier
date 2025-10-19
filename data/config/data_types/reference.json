@@ -1,6 +1,4 @@
 {
-  "fhirVersion": "R4",
-  "processingErrors": "raise",
   "fhirPathRules": [
     {
       "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",

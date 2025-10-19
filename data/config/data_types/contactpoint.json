@@ -1,6 +1,4 @@
 {
-  "fhirVersion": "R4",
-  "processingErrors": "raise",
   "fhirPathRules": [
     {
       "path": "nodesByType('ContactPoint').where(system='phone').use | nodesByType('ContactPoint').where(system='email').use",

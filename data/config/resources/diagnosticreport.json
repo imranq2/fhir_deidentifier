@@ -1,7 +1,4 @@
 {
-  "fhirVersion": "R4",
-  "defaultRule": "redact",
-  "processingErrors": "raise",
   "fhirPathRules": [
     {
       "path": "DiagnosticReport.status",

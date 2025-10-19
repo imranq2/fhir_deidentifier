@@ -1,6 +1,4 @@
 {
-  "fhirVersion": "R4",
-  "processingErrors": "raise",
   "fhirPathRules": [
     {
       "path": "nodesByType('Coding').where(system.startsWith('http://snomed.info') or system.startsWith('http://terminology.hl7.org') or system.startsWith('http://loinc.org')).display",

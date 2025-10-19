@@ -1,6 +1,4 @@
 {
-  "fhirVersion": "R4",
-  "processingErrors": "raise",
   "fhirPathRules": [
     {
       "path": "nodesByType('Dosage').text",
