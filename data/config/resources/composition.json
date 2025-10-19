@@ -9,6 +9,14 @@
       "method": "keep"
     },
     {
+      "path": "Composition.text",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.type",
+      "method": "keep"
+    },
+    {
       "path": "Composition.nodesByName('section').id",
       "method": "keep"
     },
