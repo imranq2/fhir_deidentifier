@@ -14,6 +14,7 @@ limit_to_configs = [
     "person.json",
     "medicationrequest.json",
     "medicationdispense.json",
+    "medicationstatement.json",
     "observation.json",
 ]
 

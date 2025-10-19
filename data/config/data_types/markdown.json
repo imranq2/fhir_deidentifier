@@ -1,0 +1,11 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('markdown')",
+      "method": "substitute",
+      "replaceWith": "Redacted markdown content"
+    }
+  ]
+}
