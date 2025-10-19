@@ -40,6 +40,22 @@
     {
       "path": "MedicationRequest.authoredOn",
       "method": "dateShift"
+    },
+    {
+      "path": "MedicationRequest.courseOfTherapyType.ofType(CodeableConcept)",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.dosageInstruction.timing.repeat.bounds.ofType(Period)",
+      "method": "dateShift"
+    },
+    {
+      "path": "MedicationRequest.dosageInstruction.timing.repeat.duration",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.dosageInstruction.timing.repeat.durationUnit",
+      "method": "keep"
     }
   ]
 }
