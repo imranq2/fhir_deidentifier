@@ -3,7 +3,13 @@
   "defaultRule": "redact",
   "processingErrors": "raise",
   "fhirPathRules": [
-    { "path": "Resource.id", "method": "keep" }
+    { "path": "Resource.id", "method": "keep" },
+    { "path": "Resource.meta.security.system", "method": "keep" },
+    { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/owner').code", "method": "substitute", "replaceWith": "deidentified" },
+    { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/access').code", "method": "substitute", "replaceWith": "deidentified" },
+    { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/vendor').code", "method": "substitute", "replaceWith": "deidentified" },
+    { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/sourceAssigningAuthority').code", "method": "substitute", "replaceWith": "deidentified" },
+    { "path": "Resource.meta.security.where(system='https://www.icanbwell.com/connectionType').code", "method": "keep" }
   ],
   "parameters": {
     "dateShiftKey": "",
