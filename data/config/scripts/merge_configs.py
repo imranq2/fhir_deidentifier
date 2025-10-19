@@ -11,6 +11,7 @@ DEFAULT_CONFIG = "resource.json"
 limit_to_configs = [
     "patient.json",
     "person.json",
+    "medicationrequest.json"
 ]
 
 # List all config files except the output and the merge script itself
@@ -23,6 +24,8 @@ config_files = sorted(
     ]
 )
 
+print(f"Using following config files for merging: {config_files}")
+
 merged_rules = []
 parameters = None
 fhirVersion = None
@@ -34,11 +37,11 @@ for config_path in config_files:
             data = json.load(f)
             fhir_path_rules = data.get('fhirPathRules', [])
             # check that all rules begin with the resource type from the filename
-            resource_type = os.path.splitext(os.path.basename(config_path))[0].capitalize()
+            resource_type_upper = os.path.splitext(os.path.basename(config_path))[0].upper()
             for rule in fhir_path_rules:
-                if not rule['path'].startswith(resource_type):
+                if not rule['path'].upper().startswith(resource_type_upper):
                     raise ValueError(
-                        f"Rule path '{rule['path']}' does not start with resource type '{resource_type}' in file {config_path}."
+                        f"Rule path '{rule['path']}' does not start with resource type '{resource_type_upper}' in file {config_path}."
                         " If you are defining global rules then add them to resource.json instead."
                     )
             merged_rules.extend(fhir_path_rules)
