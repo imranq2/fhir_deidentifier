@@ -92,11 +92,6 @@
       "path": "Patient.generalPractitioner.display",
       "method": "substitute",
       "replaceWith": "Fake Doctor, MD"
-    },
-    {
-      "path": "Patient.generalPractitioner.reference",
-      "method": "substitute",
-      "replaceWith": "Practitioner/REDACTED"
     }
   ]
 }

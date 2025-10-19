@@ -91,16 +91,6 @@
     {
       "path": "Person.link.assurance",
       "method": "keep"
-    },
-    {
-      "path": "Person.link.where(target.reference.startsWith('Patient/')).target.reference",
-      "method": "substitute",
-      "replaceWith": "Patient/REDACTED"
-    },
-    {
-      "path": "Person.link.where(target.reference.startsWith('Person/')).target.reference",
-      "method": "substitute",
-      "replaceWith": "Person/REDACTED"
     }
   ]
 }

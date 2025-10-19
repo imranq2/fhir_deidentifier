@@ -18,6 +18,11 @@
     {
       "path": "MedicationRequest.medication.ofType(CodeableConcept)",
       "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.subject.display",
+      "method": "substitute",
+      "replaceWith": "John Doe"
     }
   ]
 }

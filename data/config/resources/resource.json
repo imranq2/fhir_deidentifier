@@ -54,6 +54,10 @@
     {
       "path": "nodesByType('Extension').where(url='https://www.icanbwell.com/uuid')",
       "method": "keep"
+    },
+    {
+      "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'))",
+      "method": "keep"
     }
   ],
   "parameters": {
