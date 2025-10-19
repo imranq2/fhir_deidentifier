@@ -20,7 +20,8 @@ update: Pipfile.lock  ## Updates all the packages using Pipfile
 run: build
 	python3 data/config/scripts/merge_configs.py && \
 	rm -rf ./data/output/* && \
-	docker compose run --rm --name de-identifier-shell dev anonymize -r -i /data/input/large/ -o /data/output/large/ -c /data/config/merged/merged.json -v && \
+	docker compose run --rm --name de-identifier-shell dev anonymize -r --validateInput --validateOutput \
+	-i /data/input/large/ -o /data/output/large/ -c /data/config/merged/merged.json -v && \
 	make find_text
 
 .PHONY: find_text
