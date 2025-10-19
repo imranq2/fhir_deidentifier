@@ -16,6 +16,14 @@
       "method": "keep"
     },
     {
+      "path": "MedicationRequest.priority",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.doNotPerform",
+      "method": "keep"
+    },
+    {
       "path": "MedicationRequest.medication.ofType(CodeableConcept)",
       "method": "keep"
     },
