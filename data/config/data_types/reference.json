@@ -10,7 +10,7 @@
     },
     {
       "path": "nodesByType('Reference').where(reference.matches('^Practitioner/.+$')).display",
-        "method": "generalize",
+      "method": "generalize",
       "cases": {
         "$this.matches('^[A-Ea-e0-1].*')": "'Anonymous-A'",
         "$this.matches('^[F-Jf-j2-3].*')": "'Anonymous-B'",
