@@ -1,0 +1,24 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('ContactPoint').where(system='phone').use | nodesByType('ContactPoint').where(system='email').use",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('ContactPoint').where(system='phone').system | nodesByType('ContactPoint').where(system='email').system",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('ContactPoint').where(system='phone').value",
+      "method": "substitute",
+      "replaceWith": "111-111-1111"
+    },
+    {
+      "path": "nodesByType('ContactPoint').where(system='email').value",
+      "method": "substitute",
+      "replaceWith": "foo@bar.com"
+    }
+  ]
+}

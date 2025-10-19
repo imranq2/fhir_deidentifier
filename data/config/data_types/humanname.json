@@ -1,0 +1,25 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('HumanName').use",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('HumanName').text",
+      "method": "substitute",
+      "replaceWith": "John Doe"
+    },
+    {
+      "path": "nodesByType('HumanName').family",
+      "method": "substitute",
+      "replaceWith": "Doe"
+    },
+    {
+      "path": "nodesByType('HumanName').given",
+      "method": "substitute",
+      "replaceWith": "John"
+    }
+  ]
+}

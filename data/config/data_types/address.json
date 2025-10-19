@@ -1,0 +1,35 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Address').use",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Address').line",
+      "method": "substitute",
+      "replaceWith": "123 Fake Street"
+    },
+    {
+      "path": "nodesByType('Address').city",
+      "method": "substitute",
+      "replaceWith": "Fake Town"
+    },
+    {
+      "path": "nodesByType('Address').district",
+      "method": "substitute",
+      "replaceWith": "Fake District"
+    },
+    {
+      "path": "nodesByType('Address').state",
+      "method": "substitute",
+      "replaceWith": "CA"
+    },
+    {
+      "path": "nodesByType('Address').postalCode",
+      "method": "substitute",
+      "replaceWith": "12345"
+    }
+  ]
+}
