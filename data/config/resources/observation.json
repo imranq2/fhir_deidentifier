@@ -2,8 +2,9 @@
   "fhirVersion": "R4",
   "processingErrors": "raise",
   "fhirPathRules": [
-    { "path": "(Observation.value as string)", "method": "cryptoHash" },
-    { "path": "Observation.referenceRange", "method": "redact" },
-    { "path": "(Observation.component.value as string)", "method": "cryptoHash" }
+    {
+      "path": "Observation.status",
+      "method": "keep"
+    }
   ]
 }

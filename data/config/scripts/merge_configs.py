@@ -12,7 +12,8 @@ DEFAULT_CONFIG = "resource.json"
 limit_to_configs = [
     "patient.json",
     "person.json",
-    "medicationrequest.json"
+    "medicationrequest.json",
+    "observation.json",
 ]
 
 # List all config files except the output and the merge script itself
@@ -25,7 +26,8 @@ config_files = sorted(
     ]
 )
 
-print(f"Using following config files for merging: {config_files}")
+config_names_text = '\n'.join([os.path.basename(f) for f in config_files])
+print(f"Using following config files for merging:\n{config_names_text}")
 
 merged_rules = []
 parameters = None
@@ -56,6 +58,8 @@ for config_path in config_files:
 data_type_config_files = sorted(
     glob.glob(os.path.join(DATA_TYPES_CONFIG_DIR, '*.json'))
 )
+data_type_config_names_text = '\n'.join([os.path.basename(f) for f in data_type_config_files])
+print(f"Using following data_type config files for merging:\n{data_type_config_names_text}")
 for config_path in data_type_config_files:
     with open(config_path, 'r') as f:
         try:
