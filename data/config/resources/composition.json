@@ -17,6 +17,10 @@
       "method": "keep"
     },
     {
+      "path": "Composition.author",
+      "method": "keep"
+    },
+    {
       "path": "Composition.nodesByName('section').id",
       "method": "keep"
     },
@@ -29,12 +33,39 @@
       "method": "keep"
     },
     {
+      "path": "Composition.nodesByName('section').where(title='Source').text.div",
+      "method": "substitute",
+      "replaceWith": "Redacted Source"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='created').text.div",
+      "method": "substitute",
+      "replaceWith": "Redacted Source"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Medication Name').text.div",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Status').text.div",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Authored On Date').text.div",
+      "method": "substitute",
+      "replaceWith": "2000-01-01T00:00:00Z"
+    },
+    {
       "path": "Composition.nodesByName('section').text.div",
       "method": "substitute",
       "replaceWith": "Redacted section text"
     },
     {
       "path": "Composition.nodesByName('section').mode",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').orderedBy",
       "method": "keep"
     },
     {
