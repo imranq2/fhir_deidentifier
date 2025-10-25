@@ -12,7 +12,7 @@ import sys
 
 def validate_fhir_resource(
         file_path: Path,
-        validator_url: str = "http://localhost:8080/validate",
+        validator_url: str = "http://fhir-validator:3500/validate",
         profile: Optional[str] = None
 ) -> Dict[str, Any]:
     """

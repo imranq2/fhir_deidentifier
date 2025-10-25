@@ -6,6 +6,8 @@ services:
     image: markiantorno/validator-wrapper:1.0.70
     ports:
       - "3500:3500"
+    networks:
+      - fhirnet
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3500/validator/version"]
       interval: 30s
@@ -22,6 +24,11 @@ services:
       - ./scripts:/app
       - ./data/output/large:/data/output/large
     working_dir: /app
-    command: ["/bin/sh", "-c", "pip install requests && python validate.py $VALIDATE_FOLDER"]
-    environment:
-      - VALIDATE_FOLDER=/data/output/large
+    command: ["/bin/sh", "-c", "pip install requests && python validate.py /data/output/large"]
+    networks:
+      - fhirnet
+
+networks:
+  fhirnet:
+    driver: bridge
+
