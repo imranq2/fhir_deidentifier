@@ -14,7 +14,7 @@
     },
     {
       "path": "nodesByType('Attachment').url",
-      "method": "cryptoHash"
+      "method": "keep"
     },
     {
       "path": "nodesByType('Attachment').size",

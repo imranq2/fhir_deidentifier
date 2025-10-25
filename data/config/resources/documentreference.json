@@ -3,14 +3,6 @@
     {
       "path": "DocumentReference.status",
       "method": "keep"
-    },
-    {
-        "path": "DocumentReference.attachment.contentType",
-        "method": "keep"
-    },
-    {
-        "path": "DocumentReference.attachment.url",
-        "method": "keep"
     }
   ]
 }
