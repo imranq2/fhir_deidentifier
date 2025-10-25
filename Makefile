@@ -35,3 +35,8 @@ up: build
 .PHONY: down
 down:
 	docker compose --progress=plain down
+
+
+.PHONY: validate
+validate:
+	docker compose -f docker-compose-validate.yml up

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  fhir-validator:
+    platform: linux/amd64
+    image: markiantorno/validator-wrapper:1.0.70
+    ports:
+      - "8080:8080"
+
+  validate-script:
+#    depends_on:
+#      fhir-validator:
+#        condition: service_healthy
+    image: python:3.12-slim
+    volumes:
+      - ./scripts:/app
+      - ./data/output/large:/data/output/large
+    working_dir: /app
+#    command: [ "python", "validate.py" ]
