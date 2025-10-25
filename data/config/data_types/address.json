@@ -7,17 +7,17 @@
     {
       "path": "nodesByType('Address').line",
       "method": "substitute",
-      "replaceWith": "123 Fake Street"
+      "replaceWith": "123 Main Street"
     },
     {
       "path": "nodesByType('Address').city",
       "method": "substitute",
-      "replaceWith": "Fake Town"
+      "replaceWith": "My Town"
     },
     {
       "path": "nodesByType('Address').district",
       "method": "substitute",
-      "replaceWith": "Fake District"
+      "replaceWith": "My District"
     },
     {
       "path": "nodesByType('Address').state",
@@ -27,7 +27,7 @@
     {
       "path": "nodesByType('Address').postalCode",
       "method": "substitute",
-      "replaceWith": "00000"
+      "replaceWith": "12345"
     }
   ]
 }

@@ -21,7 +21,8 @@ trusted_code_systems: List[str] = [
     "http://www.ama-assn.org/go/cpt",
     "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
     "http://www.whocc.no/atc",
-    "http://hl7.org/fhir/us/core/CodeSystem/condition-category"
+    "http://hl7.org/fhir/us/core/CodeSystem",
+    "http://ihe.net/fhir/ValueSet"
 ]
 
 trusted_code_systems_list: str = '|'.join([cs.replace('http://', '').replace('https://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems])
