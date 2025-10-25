@@ -8,6 +8,7 @@ import requests
 from pathlib import Path
 from typing import Dict, Any, Optional
 import sys
+import uuid
 
 
 def validate_fhir_resource(
@@ -31,19 +32,38 @@ def validate_fhir_resource(
 
     with open(file_path, 'r', encoding='utf-8') as f:
         fhir_resource: Dict[str, Any] = json.load(f)
+        fhir_resource_str = json.dumps(fhir_resource)
 
     headers: Dict[str, str] = {"Content-Type": "application/json"}
-    params: Dict[str, str] = {}
 
-    if profile:
-        params["profile"] = profile
+    cli_context = {
+        "sv": "4.0.1",
+        "igs": ["hl7.fhir.us.core#4.0.0"],
+        "profiles": [profile] if profile else [],
+        "locale": "en"
+    }
+
+    files_to_validate = [
+        {
+            "fileName": file_path.name,
+            "fileContent": fhir_resource_str,
+            "fileType": "json"
+        }
+    ]
+
+    session_id = str(uuid.uuid4())
+
+    validation_request = {
+        "cliContext": cli_context,
+        "filesToValidate": files_to_validate,
+        "sessionId": session_id
+    }
 
     try:
         response = requests.post(
             validator_url,
-            json=fhir_resource,
+            json=validation_request,
             headers=headers,
-            params=params,
             timeout=30
         )
         response.raise_for_status()

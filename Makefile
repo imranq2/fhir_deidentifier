@@ -40,5 +40,6 @@ down:
 .PHONY: validate
 validate:
 	docker compose -f docker-compose-validate.yml down && \
-	docker compose -f docker-compose-validate.yml up validate-script && \
+	docker compose -f docker-compose-validate.yml up -d && \
+	docker compose -f docker-compose-validate.yml exec validate-script sh -c "pip install --root-user-action requests && python validate.py /data/output/large" && \
 	docker compose -f docker-compose-validate.yml down
