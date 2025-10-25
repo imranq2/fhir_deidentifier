@@ -1,0 +1,36 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Attachment').contentType",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Attachment').language",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Attachment').data",
+      "method": "encrypt"
+    },
+    {
+      "path": "nodesByType('Attachment').url",
+      "method": "cryptoHash"
+    },
+    {
+      "path": "nodesByType('Attachment').size",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Attachment').hash",
+      "method": "cryptoHash"
+    },
+    {
+      "path": "nodesByType('Attachment').title",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Attachment').creation",
+      "method": "keep"
+    }
+  ]
+}

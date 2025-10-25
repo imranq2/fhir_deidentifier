@@ -1,0 +1,9 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Dosage').text",
+      "method": "substitute",
+      "replaceWith": "Redacted dosage"
+    }
+  ]
+}

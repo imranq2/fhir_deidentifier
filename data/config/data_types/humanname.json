@@ -1,0 +1,23 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('HumanName').use",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('HumanName').text",
+      "method": "substitute",
+      "replaceWith": "Jane Doe"
+    },
+    {
+      "path": "nodesByType('HumanName').family",
+      "method": "substitute",
+      "replaceWith": "Doe"
+    },
+    {
+      "path": "nodesByType('HumanName').given",
+      "method": "substitute",
+      "replaceWith": "Jane"
+    }
+  ]
+}

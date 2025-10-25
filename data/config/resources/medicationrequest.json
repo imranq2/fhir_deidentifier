@@ -1,0 +1,33 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "MedicationRequest.status",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.intent",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.priority",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.doNotPerform",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.authoredOn",
+      "method": "dateShift"
+    },
+    {
+      "path": "MedicationRequest.reasonCode",
+      "method": "keep"
+    },
+    {
+      "path": "MedicationRequest.note.text",
+      "method": "substitute",
+      "replaceWith": "Redacted note"
+    }
+  ]
+}

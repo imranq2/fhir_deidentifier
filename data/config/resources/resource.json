@@ -1,0 +1,35 @@
+{
+  "fhirVersion": "R4",
+  "processingErrors": "raise",
+  "fhirPathRules": [
+    {
+      "path": "Resource.id",
+      "method": "keep"
+    }
+  ],
+  "parameters": {
+    "dateShiftKey": "",
+    "dateShiftFixedOffsetInDays": 55,
+    "cryptoHashKey": "",
+    "encryptKey": "",
+    "enablePartialAgesForRedact": true,
+    "enablePartialDatesForRedact": false,
+    "enablePartialZipCodesForRedact": true,
+    "restrictedZipCodeTabulationAreas": [
+      "036",
+      "059",
+      "102",
+      "203",
+      "205",
+      "369",
+      "556",
+      "692",
+      "821",
+      "823",
+      "878",
+      "879",
+      "884",
+      "893"
+    ]
+  }
+}

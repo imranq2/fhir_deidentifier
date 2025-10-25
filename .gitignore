@@ -401,3 +401,7 @@ FodyWeavers.xsd
 /data/output/
 /.idea/
 /venv/
+
+# These are temporary files created by the application
+/core
+/data/config/merged/merged.json

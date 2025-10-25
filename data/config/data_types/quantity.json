@@ -1,0 +1,24 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Quantity').value",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Quantity').comparator",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Quantity').system",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Quantity').unit",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Quantity').code",
+      "method": "keep"
+    }
+  ]
+}

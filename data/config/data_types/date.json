@@ -1,0 +1,20 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('date')",
+      "method": "dateshift"
+    },
+    {
+      "path": "nodesByType('dateTime')",
+      "method": "dateshift"
+    },
+    {
+      "path": "nodesByType('instant')",
+      "method": "dateshift"
+    },
+    {
+      "path": "nodesByType('time')",
+      "method": "dateshift"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('Timing').event",
+      "method": "dateShift"
+    },
+    {
+      "path": "nodesByType('Timing').repeat.bounds.ofType(Period)",
+      "method": "dateShift"
+    },
+    {
+      "path": "nodesByType('Timing').repeat.duration",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Timing').repeat.durationUnit",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Timing').count",
+      "method": "keep"
+    }
+  ]
+}

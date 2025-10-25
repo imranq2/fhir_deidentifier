@@ -1,0 +1,8 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "DiagnosticReport.status",
+      "method": "keep"
+    }
+  ]
+}

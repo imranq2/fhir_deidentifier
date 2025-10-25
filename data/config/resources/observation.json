@@ -1,0 +1,8 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "Observation.status",
+      "method": "keep"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "Composition.status",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.title",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.text",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.type",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.author",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').id",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').title",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').code",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Source').text.div",
+      "method": "substitute",
+      "replaceWith": "Redacted Source"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='created').text.div",
+      "method": "substitute",
+      "replaceWith": "Redacted Source"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Medication Name').text.div",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Condition Name').text.div",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Status').text.div",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Authored On Date').text.div",
+      "method": "generalize",
+      "cases": {
+        "$this.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z?')": "$this.substring(0, 5) + '01-01' + $this.substring(10)"
+      }
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title='Recorded Date').text.div",
+      "method": "generalize",
+      "cases": {
+        "$this.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z?')": "$this.substring(0, 5) + '01-01' + $this.substring(10)"
+      }
+    },
+    {
+      "path": "Composition.nodesByName('section').where(title.contains(' Date')).text.div",
+      "method": "generalize",
+      "cases": {
+        "$this.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z?')": "$this.substring(0, 5) + '01-01' + $this.substring(10)"
+      }
+    },
+    {
+      "path": "Composition.nodesByName('section').text.div",
+      "method": "substitute",
+      "replaceWith": "Redacted section text"
+    },
+    {
+      "path": "Composition.nodesByName('section').mode",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('section').orderedBy",
+      "method": "keep"
+    },
+    {
+      "path": "Composition.nodesByName('entry').id",
+      "method": "keep"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "fhirPathRules": [
+    {
+      "path": "nodesByType('integer')",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('unsignedInt')",
+      "method": "keep"
+    }
+  ]
+}
