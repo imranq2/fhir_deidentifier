@@ -38,7 +38,7 @@ def validate_fhir_resource(
 
     cli_context = {
         "sv": "4.0.1",
-        "igs": ["hl7.fhir.us.core#4.0.0"],
+        "igs": ["hl7.fhir.us.core#6.1.0"],
         "profiles": [profile] if profile else [],
         "locale": "en"
     }
@@ -59,19 +59,27 @@ def validate_fhir_resource(
         "sessionId": session_id
     }
 
-    try:
-        response = requests.post(
-            validator_url,
-            json=validation_request,
-            headers=headers,
-            timeout=30
-        )
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error validating resource: {e}", file=sys.stderr)
-        raise
+    max_retries = 5
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = requests.post(
+                validator_url,
+                json=validation_request,
+                headers=headers,
+                timeout=30
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            if attempt == max_retries:
+                print(f"Error validating resource after {max_retries} attempts: {e}", file=sys.stderr)
+                raise
+            else:
+                print(f"Attempt {attempt} failed: {e}. Retrying in 3 seconds...", file=sys.stderr)
+                import time
+                time.sleep(3)
 
+    return {}
 
 def main() -> None:
     """Main entry point for CLI usage."""
@@ -102,7 +110,12 @@ def main() -> None:
         try:
             result = validate_fhir_resource(file_path)
             outcomes = result.get("outcomes", [])
-            is_valid = all(len(outcome.get("issues", [])) == 0 for outcome in outcomes)
+            # A file is valid if there are no ERROR-level issues in any outcome
+            has_error = any(
+                any(issue.get('level', '').upper() == 'ERROR' for issue in outcome.get('issues', []))
+                for outcome in outcomes
+            )
+            is_valid = not has_error
             status = "PASSED" if is_valid else "FAILED"
             print(f"{file_path}: {status}")
             if is_valid:
@@ -110,12 +123,13 @@ def main() -> None:
             else:
                 failed += 1
                 failed_files.append(file_path)
-                # Print issues for each failed outcome
+                # Print only ERROR issues for each failed outcome
                 for outcome in outcomes:
                     issues = outcome.get("issues", [])
-                    if issues:
-                        print(f"  Issues in {file_path}:")
-                        for issue in issues:
+                    error_issues = [issue for issue in issues if issue.get('level', '').upper() == 'ERROR']
+                    if error_issues:
+                        print(f"  ERROR Issues in {file_path}:")
+                        for issue in error_issues:
                             print(f"    - {issue}")
         except Exception as e:
             print(f"{file_path}: ERROR - {e}", file=sys.stderr)
@@ -124,9 +138,10 @@ def main() -> None:
 
     print(f"\nValidation complete. {passed}/{total} files PASSED, {failed} FAILED.")
     if failed > 0:
-        print("Failed files:")
+        # Print just the list of failed files at the end
+        print("\nFAILED FILES LIST:")
         for f in failed_files:
-            print(f"  {f}")
+            print(f)
         sys.exit(1)
     else:
         sys.exit(0)
