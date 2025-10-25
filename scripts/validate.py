@@ -101,6 +101,13 @@ def main() -> None:
         print(f"File or directory not found: {input_path}", file=sys.stderr)
         sys.exit(1)
 
+    # Create validation_result directory if it does not exist
+    validation_result_dir = Path("/validation_result")
+    validation_result_dir.mkdir(exist_ok=True)
+
+    # Determine the root for relative paths
+    input_root = input_path if input_path.is_dir() else input_path.parent
+
     total = len(files_to_validate)
     passed = 0
     failed = 0
@@ -116,23 +123,28 @@ def main() -> None:
                 for outcome in outcomes
             )
             is_valid = not has_error
-            status = "PASSED" if is_valid else "FAILED"
-            print(f"{file_path}: {status}")
+            # Collect all ERROR issues for this file
+            error_issues = []
+            for outcome in outcomes:
+                issues = outcome.get("issues", [])
+                error_issues.extend([issue for issue in issues if issue.get('level', '').upper() == 'ERROR'])
+            # Compute relative path and ensure subdirs exist in validation_result
+            rel_path = file_path.relative_to(input_root)
+            result_file = validation_result_dir / rel_path
+            result_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(result_file, 'w', encoding='utf-8') as rf:
+                json.dump(error_issues, rf, indent=2)
+            # Print only the relative file path and status
             if is_valid:
+                print(f"{rel_path} PASSED")
                 passed += 1
             else:
+                print(f"{rel_path} FAILED ({len(error_issues)})")
                 failed += 1
                 failed_files.append(file_path)
-                # Print only ERROR issues for each failed outcome
-                for outcome in outcomes:
-                    issues = outcome.get("issues", [])
-                    error_issues = [issue for issue in issues if issue.get('level', '').upper() == 'ERROR']
-                    if error_issues:
-                        print(f"  ERROR Issues in {file_path}:")
-                        for issue in error_issues:
-                            print(f"    - {issue}")
         except Exception as e:
-            print(f"{file_path}: ERROR - {e}", file=sys.stderr)
+            rel_path = file_path.relative_to(input_root)
+            print(f"{rel_path} FAILED (error: {e})", file=sys.stderr)
             failed += 1
             failed_files.append(file_path)
 
