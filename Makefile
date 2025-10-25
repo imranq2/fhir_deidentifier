@@ -39,4 +39,5 @@ down:
 
 .PHONY: validate
 validate:
-	docker compose -f docker-compose-validate.yml up
+	docker compose -f docker-compose-validate.yml down && \
+	docker compose -f docker-compose-validate.yml up -d
