@@ -101,7 +101,8 @@ def main() -> None:
     for file_path in files_to_validate:
         try:
             result = validate_fhir_resource(file_path)
-            is_valid = result.get("valid", False)
+            outcomes = result.get("outcomes", [])
+            is_valid = all(len(outcome.get("issues", [])) == 0 for outcome in outcomes)
             status = "PASSED" if is_valid else "FAILED"
             print(f"{file_path}: {status}")
             if is_valid:
@@ -109,6 +110,13 @@ def main() -> None:
             else:
                 failed += 1
                 failed_files.append(file_path)
+                # Print issues for each failed outcome
+                for outcome in outcomes:
+                    issues = outcome.get("issues", [])
+                    if issues:
+                        print(f"  Issues in {file_path}:")
+                        for issue in issues:
+                            print(f"    - {issue}")
         except Exception as e:
             print(f"{file_path}: ERROR - {e}", file=sys.stderr)
             failed += 1
