@@ -22,4 +22,6 @@ services:
       - ./scripts:/app
       - ./data/output/large:/data/output/large
     working_dir: /app
-    command: ["tail", "-f", "/dev/null"]
+    command: ["/bin/sh", "-c", "pip install requests && python validate.py $VALIDATE_FOLDER"]
+    environment:
+      - VALIDATE_FOLDER=/data/output/large
