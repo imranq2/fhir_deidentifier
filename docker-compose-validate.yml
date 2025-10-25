@@ -14,9 +14,9 @@ services:
       start_period: 60s
 
   validate-script:
-#    depends_on:
-#      fhir-validator:
-#        condition: service_healthy
+    depends_on:
+      fhir-validator:
+        condition: service_healthy
     image: python:3.12-slim
     volumes:
       - ./scripts:/app
