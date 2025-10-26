@@ -13,7 +13,7 @@ import uuid
 
 def validate_fhir_resource(
         file_path: Path,
-        validator_url: str = "http://hapi-fhir:8080/fhir/$validate",
+        validator_base_url: str = "http://hapi-fhir:8080/fhir",
         profile: Optional[str] = None,
         session_id: Optional[str] = None
 ) -> Dict[str, Any]:
@@ -22,7 +22,7 @@ def validate_fhir_resource(
 
     Args:
         file_path: Path to the FHIR JSON file
-        validator_url: URL of the HAPI FHIR $validate endpoint
+        validator_base_url: Base URL of the HAPI FHIR server
         profile: Optional FHIR profile URL to validate against (sent as a parameter)
         session_id: Optional session ID (unused, for compatibility)
 
@@ -35,11 +35,20 @@ def validate_fhir_resource(
     with open(file_path, 'r', encoding='utf-8') as f:
         fhir_resource: Dict[str, Any] = json.load(f)
 
+    # Determine resourceType for endpoint
+    resource_type = fhir_resource.get("resourceType")
+    if not resource_type:
+        raise ValueError(f"No resourceType found in file: {file_path}")
+    validator_url = f"{validator_base_url.rstrip('/')}/{resource_type}/$validate"
+
     headers: Dict[str, str] = {"Content-Type": "application/fhir+json", "Accept": "application/fhir+json"}
 
     params = {}
     if profile:
         params['profile'] = profile
+
+    # Send the FHIR resource directly as the body for $validate
+    request_body = json.dumps(fhir_resource)
 
     max_retries = 10
     for attempt in range(1, max_retries + 1):
@@ -47,10 +56,17 @@ def validate_fhir_resource(
             response = requests.post(
                 validator_url,
                 params=params,
-                data=json.dumps(fhir_resource),
+                data=request_body,
                 headers=headers,
                 timeout=30
             )
+            if response.status_code == 400:
+                print("\nDEBUG: 400 Bad Request. Request payload:")
+                print(json.dumps(fhir_resource, indent=2))
+                print("Headers:", headers)
+                print("URL:", validator_url)
+                print("Params:", params)
+                print("Response:", response.text)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
