@@ -1,6 +1,7 @@
 import json
 import glob
 import os
+import re
 from typing import List, Dict, Any
 
 CONFIG_DIR = os.path.dirname(__file__)
@@ -13,9 +14,10 @@ DEFAULT_CONFIG = "resource.json"
 trusted_code_systems: List[str] = [
     # keep this list sorted alphabetically for easier maintenance
     "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
+    "http://hl7.org/fhir/gender-identity",
     "http://hl7.org/fhir/sid/icd-10",
     "http://hl7.org/fhir/sid/icd-9",
-    "http://hl7.org/fhir/StructureDefinition/patient-genderIdentity"
+    "http://hl7.org/fhir/StructureDefinition/patient-genderIdentity",
     "http://hl7.org/fhir/us/core",
     "http://hl7.org/fhir/us/core/CodeSystem",
     "http://ihe.net/fhir/ValueSet",
@@ -25,7 +27,10 @@ trusted_code_systems: List[str] = [
     "http://unitsofmeasure.org",
     "http://www.ama-assn.org/go/cpt",
     "http://www.nlm.nih.gov/research/umls/rxnorm",
-    "http://www.whocc.no/atc"
+    "http://www.whocc.no/atc",
+    "ombCategory",
+    "urn:oid:2.16.840.1.113883.6.238",
+    "2.16.840.1.113883.6.238"
 ]
 
 trusted_code_systems_list: str = '|'.join([cs.replace('http://', '').replace('https://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems])

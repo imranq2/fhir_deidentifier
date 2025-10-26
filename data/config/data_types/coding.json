@@ -1,6 +1,14 @@
 {
   "fhirPathRules": [
     {
+      "path": "nodesByType('Coding').where(system.exists() and system.matches('^(http://|https://|urn:oid:)').not()).system",
+      "method": "generalize",
+      "cases": {
+        "$this.exists()": "'urn:oid:' + $this"
+      },
+      "otherValues": "keep"
+    },
+    {
       "path": "nodesByType('Coding').where(system.matches('{{TRUSTED_CODE_SYSTEMS}}')).display",
       "method": "keep"
     },
@@ -22,13 +30,6 @@
       "path": "nodesByType('Coding').code",
       "method": "substitute",
       "replaceWith": "redacted"
-    },
-    {
-      "path": "nodesByType('Coding').where(system.exists() and system.matches('^(http://|https://|urn:oid:)').not()).system",
-      "method": "generalize",
-      "cases": {
-        "$this.exists()": "'urn:oid:' + $this"
-      }
     },
     {
       "path": "nodesByType('Coding').system",
