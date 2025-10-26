@@ -11,11 +11,6 @@
       "method": "keep"
     },
     {
-      "id": "extension-rule-4",
-      "path": "nodesByType('Extension').url",
-      "method": "keep"
-    },
-    {
       "id": "extension-rule-3",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).valueString",
       "method": "substitute",
@@ -26,6 +21,11 @@
       "comment": "Now hash the entire extension to catch any other sensitive data",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not())",
       "method": "redact"
+    },
+    {
+      "id": "extension-rule-4",
+      "path": "nodesByType('Extension').url",
+      "method": "keep"
     }
   ]
 }
