@@ -32,6 +32,16 @@
       "path": "Patient.nodesByType('HumanName').given",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME_GIVEN}}"
+    },
+    {
+        "id": "patient-rule-7",
+        "path": "Patient.contact.organization",
+        "method": "keep"
+    },
+    {
+        "id": "patient-rule-8",
+        "path": "Patient.link.type",
+        "method": "keep"
     }
   ]
 }
