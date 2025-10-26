@@ -39,8 +39,7 @@ def get_source_assigning_authority(meta):
 
 def fix_id_with_uuidv5(obj, namespace=uuid.NAMESPACE_OID):
     """
-    Recursively traverse obj. If a dict has an 'id' that is not a UUID, replace it with a uuidv5
-    using the id and the value of the sourceAssigningAuthority security tag from meta.
+    Only change the 'id' at the top level of the object if it is not a UUID, using uuidv5 with the id and the value of the sourceAssigningAuthority security tag from meta.
     """
     if isinstance(obj, dict):
         if 'id' in obj and isinstance(obj['id'], str) and not is_valid_uuid(obj['id']):
@@ -52,17 +51,13 @@ def fix_id_with_uuidv5(obj, namespace=uuid.NAMESPACE_OID):
             else:
                 name = obj['id']
             obj['id'] = str(uuid.uuid5(namespace, name))
-        for v in obj.values():
-            fix_id_with_uuidv5(v, namespace)
-    elif isinstance(obj, list):
-        for item in obj:
-            fix_id_with_uuidv5(item, namespace)
     return obj
+
 
 def fix_reference_with_uuid_extension(obj):
     """
     Recursively traverse obj. If a dict has a 'reference' field containing {resourceType}/{id} and id is not a uuid,
-    find the extension with id 'uuid' and use that value for 'id' in the reference.
+    find the extension with url 'https://www.icanbwell.com/uuid' and set the reference to the whole valueString from that extension.
     """
     import re
     uuid_regex = re.compile(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
@@ -74,21 +69,23 @@ def fix_reference_with_uuid_extension(obj):
                 resource_type, ref_id = parts
                 # Only act if id is not a uuid
                 if not uuid_regex.match(ref_id):
-                    # Look for extension with id 'uuid'
                     extensions = obj.get('extension')
                     if isinstance(extensions, list):
                         for ext in extensions:
-                            if isinstance(ext, dict) and ext.get('id') == 'uuid' and 'value' in ext:
-                                new_uuid = ext['value']
-                                if uuid_regex.match(new_uuid):
-                                    obj['reference'] = f"{resource_type}/{new_uuid}"
-                                    break
+                            if (
+                                isinstance(ext, dict)
+                                and ext.get('url') == 'https://www.icanbwell.com/uuid'
+                                and 'valueString' in ext
+                            ):
+                                obj['reference'] = ext['valueString']
+                                break
         for v in obj.values():
             fix_reference_with_uuid_extension(v)
     elif isinstance(obj, list):
         for item in obj:
             fix_reference_with_uuid_extension(item)
     return obj
+
 
 def process_json_files(input_dir, output_dir=None):
     for root, _, files in os.walk(input_dir):
