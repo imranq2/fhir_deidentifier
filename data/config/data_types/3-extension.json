@@ -31,6 +31,12 @@
     {
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('instant')",
+      "method": "dateShift"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('CodeableConcept').text",
       "method": "substitute",
       "replaceWith": "Redacted text"
