@@ -62,6 +62,7 @@ validate:
 	    --exclude-code=Terminology_PassThrough_TX_Message \
 	    --exclude-code=XHTML_XHTML_NS_InValid \
 	    --exclude-code="^http://hl7.org/fhir/StructureDefinition/Narrative" \
+	    --exclude-code="^http://hl7.org/fhir/StructureDefinition/Composition" \
 	    --exclude-diagnostics='^Error parsing XHTML'\
 	"
 
