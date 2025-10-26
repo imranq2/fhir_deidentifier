@@ -58,6 +58,13 @@ services:
       - hapi.fhir.implementationguides.uscore610.version=6.1.0
       - hapi.fhir.implementationguides.uscore610.installMode=STORE_AND_INSTALL
       - hapi.fhir.terminology.hibernate_search_enabled=false
+      # Remote Terminology Service configuration
+      - hapi.fhir.terminology.remote_terminology_service.all.system=*
+      - hapi.fhir.terminology.remote_terminology_service.all.url=https://tx.fhir.org/r4/
+      - hapi.fhir.terminology.remote_terminology_service.snomed.system=http://snomed.info/sct
+      - hapi.fhir.terminology.remote_terminology_service.snomed.url=https://tx.fhir.org/r4/
+      - hapi.fhir.terminology.remote_terminology_service.loinc.system=http://loinc.org
+      - hapi.fhir.terminology.remote_terminology_service.loinc.url=https://hapi.fhir.org/baseR4/
       - spring.datasource.driver-class-name=org.postgresql.Driver
     networks:
       - fhirnet
