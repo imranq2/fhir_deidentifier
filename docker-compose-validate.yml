@@ -1,3 +1,7 @@
+# Use 'docker compose' (v2+) instead of 'docker-compose' (v1, deprecated)
+# All commands and documentation should reference 'docker compose'
+# Example: docker compose -f docker-compose-validate.yml up --build -d
+
 version: '3.8'
 
 services:
@@ -46,9 +50,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./data/config/validation/application.yaml:/config/application.yaml
-      - ./data/config/validation/application.yaml:/app/config/application.yaml
+    configs:
+      - source: hapi
+        target: /app/config/application.yaml
     networks:
       - fhirnet
 
@@ -70,3 +74,7 @@ networks:
 
 volumes:
   pgdata:
+
+configs:
+  hapi:
+     file: ./data/config/validation/application.yaml
