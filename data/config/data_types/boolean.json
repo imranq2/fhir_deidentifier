@@ -1,6 +1,7 @@
 {
   "fhirPathRules": [
     {
+      "id": "boolean-rule-1",
       "path": "nodesByType('boolean')",
       "method": "keep"
     }

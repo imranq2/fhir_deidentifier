@@ -1,6 +1,7 @@
 {
   "fhirPathRules": [
     {
+      "id": "markdown-rule-1",
       "path": "nodesByType('markdown')",
       "method": "substitute",
       "replaceWith": "Redacted markdown content"

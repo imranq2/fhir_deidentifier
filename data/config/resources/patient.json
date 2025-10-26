@@ -1,28 +1,34 @@
 {
   "fhirPathRules": [
     {
+      "id": "patient-rule-1",
       "path": "Patient.active",
       "method": "keep"
     },
     {
+      "id": "patient-rule-2",
       "path": "Patient.gender",
       "method": "keep"
     },
     {
+      "id": "patient-rule-3",
       "path": "Patient.birthDate",
       "method": "dateshift"
     },
     {
+      "id": "patient-rule-4",
       "path": "Patient.nodesByType('HumanName').text",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
     },
     {
+      "id": "patient-rule-5",
       "path": "Patient.nodesByType('HumanName').family",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME_FAMILY}}"
     },
     {
+      "id": "patient-rule-6",
       "path": "Patient.nodesByType('HumanName').given",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME_GIVEN}}"

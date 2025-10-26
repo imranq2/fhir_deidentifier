@@ -1,22 +1,27 @@
 {
   "fhirPathRules": [
     {
+      "id": "timing-rule-1",
       "path": "nodesByType('Timing').event",
       "method": "dateShift"
     },
     {
+      "id": "timing-rule-2",
       "path": "nodesByType('Timing').repeat.bounds.ofType(Period)",
       "method": "dateShift"
     },
     {
+      "id": "timing-rule-3",
       "path": "nodesByType('Timing').repeat.duration",
       "method": "keep"
     },
     {
+      "id": "timing-rule-4",
       "path": "nodesByType('Timing').repeat.durationUnit",
       "method": "keep"
     },
     {
+      "id": "timing-rule-5",
       "path": "nodesByType('Timing').count",
       "method": "keep"
     }
