@@ -19,34 +19,50 @@ services:
   #      retries: 3
   #      start_period: 60s
 
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_DB=hapi
+      - POSTGRES_USER=hapi
+      - POSTGRES_PASSWORD=hapi
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - fhirnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hapi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   hapi-fhir:
     image: hapiproject/hapi:v8.4.0-2
     ports:
       - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
-      - spring.datasource.url=jdbc:h2:mem:test_mem
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/hapi
+      - spring.datasource.username=hapi
+      - spring.datasource.password=hapi
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
       - JAVA_OPTS=-Xmx1024m
       - hapi.fhir.enable_repository_validating_interceptor=true
       # US Core 6.1.0 IG auto-install (no packageUrl!)
       - hapi.fhir.implementationguides.uscore610.name=hl7.fhir.us.core
       - hapi.fhir.implementationguides.uscore610.version=6.1.0
       - hapi.fhir.implementationguides.uscore610.installMode=STORE_AND_INSTALL
-
-    #    healthcheck:
-    #      test: ["CMD", "curl", "--fail", "-s", "http://localhost:8080/actuator/health"]
-    #      interval: 20s
-    #      timeout: 20s
-    #      retries: 3
-    #      start_period: 60s
+      - hapi.fhir.terminology.hibernate_search_enabled=false
+      - spring.datasource.driver-class-name=org.postgresql.Driver
     networks:
       - fhirnet
 
   validate-script:
-    #    depends_on:
-    #      fhir-validator:
-    #        condition: service_healthy
-    #      hapi-fhir:
-    #        condition: service_healthy
     image: python:3.12-slim
     volumes:
       - ./profiles:/profiles
@@ -55,9 +71,11 @@ services:
       - ./data/validation_result:/validation_result
     working_dir: /app
     command: [ "tail", "-f", "/dev/null" ]
-    #    command: ["/bin/sh", "-c", "pip install requests && python validate.py /data/output/large"]
     networks:
       - fhirnet
+
+volumes:
+  pgdata:
 
 networks:
   fhirnet:

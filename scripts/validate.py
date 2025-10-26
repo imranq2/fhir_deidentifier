@@ -105,35 +105,6 @@ def get_us_core_profile_url(resource_type: str) -> Optional[str]:
         return f"http://hl7.org/fhir/us/core/StructureDefinition/{profile_name}"
     return None
 
-def install_us_core_ig(validator_base_url: str, version: str = "6.1.0", max_retries: int = 10, retry_wait: int = 10):
-    """
-    Install the US Core IG package on the HAPI FHIR server using the IG installer endpoint.
-    Retries if the server is not yet online or install takes time.
-    """
-    ig_installer_url = validator_base_url.rstrip("/fhir/").rstrip("/") + "/write/install/by-param"
-    params = {
-        "fetchDependencies": "true",
-        "installMode": "STORE_AND_INSTALL",
-        "name": "hl7.fhir.us.core",
-        "version": version
-    }
-    print(f"Ensuring US Core IG {version} is installed on HAPI FHIR server...")
-    for attempt in range(1, max_retries + 1):
-        try:
-            response = requests.get(ig_installer_url, params=params, timeout=120)
-            if response.status_code in (200, 201):
-                print("US Core IG installed successfully.")
-                return True
-            else:
-                print(f"Attempt {attempt}: Failed to install US Core IG: {response.status_code} {response.text}")
-        except Exception as e:
-            print(f"Attempt {attempt}: Error installing US Core IG: {e}")
-        if attempt < max_retries:
-            print(f"Retrying in {retry_wait} seconds...")
-            time.sleep(retry_wait)
-    print("Failed to install US Core IG after multiple attempts.")
-    return False
-
 def main() -> None:
     """Main entry point for CLI usage."""
     parser = argparse.ArgumentParser(description="FHIR Resource Validator using HAPI FHIR server $validate operation")
@@ -156,22 +127,6 @@ def main() -> None:
         print(f"File or directory not found: {input_path}", file=sys.stderr)
         sys.exit(1)
 
-    # # Always infer US Core profile if --profile is not set
-    # needs_us_core = False
-    # if args.profile:
-    #     needs_us_core = args.profile.startswith("https://hl7.org/fhir/us/core/StructureDefinition/")
-    # else:
-    #     # If any file is a US Core resource type, we need US Core IG
-    #     for file_path in files_to_validate:
-    #         with open(file_path, 'r', encoding='utf-8') as f:
-    #             fhir_resource = json.load(f)
-    #         resource_type = fhir_resource.get("resourceType", "").lower()
-    #         if get_us_core_profile_url(resource_type):
-    #             needs_us_core = True
-    #             break
-    # if needs_us_core or not args.profile:
-    #     # Always install US Core IG if defaulting to US Core profiles
-    #     install_us_core_ig(args.validator_base_url, version="6.1.0")
 
     # Create validation_result directory if it does not exist
     validation_result_dir = Path("/validation_result")
@@ -192,9 +147,10 @@ def main() -> None:
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 fhir_resource = json.load(f)
-            resource_type = fhir_resource.get("resourceType", "").lower()
+            # resource_type = fhir_resource.get("resourceType", "").lower()
             # Default to US Core profile if --profile is not set
-            profile_url = args.profile if args.profile else get_us_core_profile_url(resource_type)
+            # profile_url = args.profile if args.profile else get_us_core_profile_url(resource_type)
+            profile_url = args.profile
             result = validate_fhir_resource(file_path, validator_base_url=args.validator_base_url, profile=profile_url, session_id=session_id)
             # HAPI returns an OperationOutcome resource
             issues = result.get('issue', [])
