@@ -37,13 +37,19 @@ down:
 	docker compose --progress=plain down
 
 
-.PHONY: start_validator
-start_validator:
+.PHONY: start-validator
+start-validator:
 	docker compose -f docker-compose-validate.yml down
 	docker compose -f docker-compose-validate.yml up -d
 
-.PHONY: fix_fhir
-fix_fhir:
+.PHONY: copy-input
+copy-input:
+	rm -rf ./data/input/large/*
+	mkdir -p ./data/input/large/
+	cp -r ./data/input/large-copy/* ./data/input/large/
+
+.PHONY: fix-fhir
+fix-fhir:
 	docker compose -f docker-compose-validate.yml run --rm validate-script sh -c "pip install --root-user-action=ignore requests && python fix_fhir.py --input /data/input"
 
 .PHONY: validate
@@ -51,6 +57,6 @@ validate:
 	rm -rf ./data/validation_result/*
 	docker compose -f docker-compose-validate.yml run --rm validate-script sh -c "pip install --root-user-action=ignore requests && python validate.py /data/output/large --exclude-code=DUPLICATE_ID --exclude-code=Terminology_PassThrough_TX_Message"
 
-.PHONY: stop_validator
-stop_validator:
+.PHONY: stop-validator
+stop-validator:
 	docker compose -f docker-compose-validate.yml down
