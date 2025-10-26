@@ -415,7 +415,7 @@ hapi:
        url: "https://tx.fhir.org/r4/"
      loinc:
        system: "http://loinc.org"
-       url: "https://hapi.fhir.org/baseR4/"
+       url: "https://tx.fhir.org/r4/"
 
     # -------------------------------------------------------------------------------
     # Q. Subscriptions (disabled by default)

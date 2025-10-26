@@ -64,7 +64,7 @@ services:
       - ./data/output/large:/data/output/large
       - ./data/validation_result:/validation_result
     working_dir: /app
-    command: [ "tail", "-f", "/dev/null" ]
+    command: [ "sh", "-c", "apt-get update && apt-get install -y curl &&  tail -f /dev/null" ]
     networks:
       - fhirnet
 
