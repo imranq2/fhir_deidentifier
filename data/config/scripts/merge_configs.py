@@ -33,13 +33,29 @@ trusted_oids: List[str] = [
     "2.16.840.1.113883.6.238"
 ]
 
-trusted_code_systems_list: str = '|'.join([
-    cs.replace('http://', '').replace('https://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems
-])
+def escape_for_regex(s: str) -> str:
+    return s.replace('.', r'.').replace('/', r'\/')
+
+trusted_code_systems_regex_parts = []
+for cs in trusted_code_systems:
+    if cs.startswith("http"):
+        # Remove protocol, escape, and allow http or https
+        cs_no_proto = cs.split("//", 1)[-1]
+        trusted_code_systems_regex_parts.append(r"https?:\/\/" + escape_for_regex(cs_no_proto))
+    else:
+        trusted_code_systems_regex_parts.append(escape_for_regex(cs))
+
 trusted_oids_list: str = '|'.join([
     oid.replace('.', r'.') for oid in trusted_oids
 ])
-trusted_code_system_regex = f"^(https?://({trusted_code_systems_list})|(urn:oid:)?({trusted_oids_list}))"
+
+trusted_code_systems_list: str = '|'.join(trusted_code_systems_regex_parts)
+
+# Build the final regex
+if trusted_oids_list:
+    trusted_code_system_regex = f"^((?:{trusted_code_systems_list})|(urn:oid:)?({trusted_oids_list}))"
+else:
+    trusted_code_system_regex = f"^((?:{trusted_code_systems_list}))"
 print(f"Using trusted code systems regex: {trusted_code_system_regex}")
 
 placeholder_replacements: Dict[str, str] = {
