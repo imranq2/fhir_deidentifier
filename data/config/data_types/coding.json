@@ -16,12 +16,6 @@
       "method": "keep"
     },
     {
-      "id": "coding-rule-4",
-      "path": "nodesByType('Coding').display",
-      "method": "substitute",
-      "replaceWith": "Redacted display"
-    },
-    {
       "id": "coding-rule-5",
       "path": "nodesByType('Coding').where(code.exists() and code.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}')).code",
       "method": "substitute",
@@ -44,6 +38,12 @@
       "path": "nodesByType('Coding').display",
       "method": "substitute",
       "replaceWith": "masked"
+    },
+    {
+      "id": "coding-rule-4",
+      "path": "nodesByType('Coding').display",
+      "method": "substitute",
+      "replaceWith": "Redacted display"
     }
   ]
 }

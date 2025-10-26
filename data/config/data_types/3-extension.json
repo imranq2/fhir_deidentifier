@@ -24,13 +24,6 @@
     {
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
-      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('string')",
-      "method": "substitute",
-      "replaceWith": "redacted"
-    },
-    {
-      "id": "extension-rule-3",
-      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('instant')",
       "method": "dateShift"
     },
@@ -67,6 +60,13 @@
       "comment": "Now hash the entire extension to catch any other sensitive data",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not())",
       "method": "cryptoHash"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('string')",
+      "method": "substitute",
+      "replaceWith": "redacted"
     }
   ]
 }
