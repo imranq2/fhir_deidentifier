@@ -11,6 +11,17 @@
       "method": "keep"
     },
     {
+      "id": "extension-rule-4",
+      "path": "nodesByType('Extension').url",
+      "method": "keep"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}'))",
+      "method": "keep"
+    },
+    {
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('string')",
