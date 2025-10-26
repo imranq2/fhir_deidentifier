@@ -87,6 +87,23 @@ def fix_reference_with_uuid_extension(obj):
     return obj
 
 
+def fix_div_fields(obj):
+    """
+    Recursively traverse obj. If a dict has a key 'div' whose value is a string not starting with '<',
+    wrap the value in '<div></div>' to make it valid HTML.
+    """
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k == "div" and isinstance(v, str) and v and not v.lstrip().startswith("<"):
+                obj[k] = f"<div>{v}</div>"
+            else:
+                fix_div_fields(v)
+    elif isinstance(obj, list):
+        for item in obj:
+            fix_div_fields(item)
+    return obj
+
+
 def process_json_files(input_dir, output_dir=None):
     for root, _, files in os.walk(input_dir):
         for file in files:
@@ -101,6 +118,7 @@ def process_json_files(input_dir, output_dir=None):
                 prefix_urn_oid_system(data)
                 fix_id_with_uuidv5(data)
                 fix_reference_with_uuid_extension(data)
+                fix_div_fields(data)
                 # Write back to the same file or to output_dir if specified
                 if output_dir:
                     rel_path = os.path.relpath(input_path, input_dir)
