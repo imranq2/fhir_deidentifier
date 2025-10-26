@@ -1,11 +1,11 @@
 {
   "fhirPathRules": [
     {
-      "path": "nodesByType('ContactPoint').where(system='phone').use | nodesByType('ContactPoint').where(system='email').use",
+      "path": "nodesByType('ContactPoint').use",
       "method": "keep"
     },
     {
-      "path": "nodesByType('ContactPoint').where(system='phone').system | nodesByType('ContactPoint').where(system='email').system",
+      "path": "nodesByType('ContactPoint').system",
       "method": "keep"
     },
     {
