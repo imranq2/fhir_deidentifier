@@ -111,6 +111,7 @@ def main() -> None:
     parser.add_argument("input_path", help="Path to FHIR JSON file or directory")
     parser.add_argument("--profile", help="FHIR profile URL to validate against. If not provided, the script will use the US Core profile for each resource type by default.")
     parser.add_argument("--validator-base-url", default="http://hapi-fhir:8080/fhir", help="Base URL of the HAPI FHIR server")
+    parser.add_argument("--exclude-code", action='append', default=[], help="Code(s) to exclude from error issues (compared to details.coding.code in OperationOutcome.issue). Can be specified multiple times.")
     args = parser.parse_args()
 
     input_path = Path(args.input_path)
@@ -143,6 +144,8 @@ def main() -> None:
     failed = 0
     failed_files = []
 
+    exclude_codes = set(args.exclude_code)
+
     for file_path in files_to_validate:
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -154,8 +157,16 @@ def main() -> None:
             result = validate_fhir_resource(file_path, validator_base_url=args.validator_base_url, profile=profile_url, session_id=session_id)
             # HAPI returns an OperationOutcome resource
             issues = result.get('issue', [])
-            # A file is valid if there are no ERROR or FATAL issues
-            error_issues = [issue for issue in issues if issue.get('severity', '').upper() in ('ERROR', 'FATAL')]
+            # A file is valid if there are no ERROR or FATAL issues, after excluding specified codes
+            def is_excluded(issue):
+                details = issue.get('details', {})
+                codings = details.get('coding', [])
+                for coding in codings:
+                    code = coding.get('code')
+                    if code and code in exclude_codes:
+                        return True
+                return False
+            error_issues = [issue for issue in issues if issue.get('severity', '').upper() in ('ERROR', 'FATAL') and not is_excluded(issue)]
             is_valid = not error_issues
             # Compute relative path and ensure subdirs exist in validation_result
             rel_path = file_path.relative_to(input_root)
