@@ -4,47 +4,49 @@ Download all US Core StructureDefinition profiles and save them in a /profiles f
 Usage:
     python download_profiles.py --version 6.1.0
 
-This script downloads all StructureDefinition JSONs from the US Core Implementation Guide package for the specified version.
+This script downloads the US Core Implementation Guide NPM package for the specified version,
+extracts all StructureDefinition JSONs, and saves them in the output directory.
 """
 import os
 import sys
 import argparse
 import requests
 from pathlib import Path
+import tarfile
+import tempfile
+import shutil
 
-US_CORE_PACKAGE_URL = "https://packages.fhir.org/hl7.fhir.us.core/{version}"
-US_CORE_RESOURCES_URL = "https://hl7.org/fhir/us/core/{version}/StructureDefinition-{name}.json"
+NPM_PACKAGE_URL = "https://packages2.fhir.org/packages/hl7.fhir.us.core/{version}"  # Redirects to .tgz
 
-# List of US Core profile names for version 6.1.0 (add more as needed)
-US_CORE_PROFILE_NAMES = [
-    "us-core-patient",
-    "us-core-observation",
-    "us-core-condition",
-    "us-core-allergyintolerance",
-    "us-core-medicationrequest",
-    "us-core-medicationstatement",
-    "us-core-documentreference",
-    "us-core-composition",
-    "us-core-person",
-    # Add more as needed
-]
 
-def download_profile(profile_name: str, version: str, out_dir: Path):
-    url = US_CORE_RESOURCES_URL.format(version=version, name=profile_name)
-    out_path = out_dir / f"{profile_name}.json"
-    try:
-        response = requests.get(url, timeout=30)
-        if response.status_code == 200:
-            with open(out_path, 'w', encoding='utf-8') as f:
-                f.write(response.text)
-            print(f"Downloaded: {profile_name}")
-            return True
-        else:
-            print(f"Failed to download {profile_name}: {response.status_code} {response.text}", file=sys.stderr)
-            return False
-    except Exception as e:
-        print(f"Error downloading {profile_name}: {e}", file=sys.stderr)
+def download_and_extract_profiles(version: str, out_dir: Path):
+    # Download the NPM package
+    url = NPM_PACKAGE_URL.format(version=version)
+    print(f"Downloading US Core NPM package for version {version}...")
+    response = requests.get(url, allow_redirects=True, timeout=60)
+    if response.status_code != 200:
+        print(f"Failed to download NPM package: {response.status_code} {response.text}", file=sys.stderr)
         return False
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tgz_path = Path(tmpdir) / f"uscore-{version}.tgz"
+        with open(tgz_path, "wb") as f:
+            f.write(response.content)
+        # Extract the tarball
+        with tarfile.open(tgz_path, "r:gz") as tar:
+            tar.extractall(path=tmpdir)
+        # Find StructureDefinition JSONs
+        structdef_dir = Path(tmpdir) / "package" / "StructureDefinition"
+        if not structdef_dir.exists():
+            print(f"No StructureDefinition directory found in package.", file=sys.stderr)
+            return False
+        files = list(structdef_dir.glob("*.json"))
+        if not files:
+            print(f"No StructureDefinition JSON files found in package.", file=sys.stderr)
+            return False
+        for file in files:
+            shutil.copy(file, out_dir / file.name)
+            print(f"Downloaded: {file.name}")
+    return True
 
 def main():
     parser = argparse.ArgumentParser(description="Download US Core StructureDefinition profiles.")
@@ -61,13 +63,9 @@ def main():
         print(f"Directory {out_dir} is not empty (ignoring readme.md). Skipping download.")
         sys.exit(0)
 
-    total = len(US_CORE_PROFILE_NAMES)
-    success = 0
-    for profile_name in US_CORE_PROFILE_NAMES:
-        if download_profile(profile_name, args.version, out_dir):
-            success += 1
-    print(f"\nDownload complete: {success}/{total} profiles downloaded successfully.")
-    if success < total:
+    if download_and_extract_profiles(args.version, out_dir):
+        print("\nDownload complete: All StructureDefinition profiles downloaded successfully.")
+    else:
         sys.exit(1)
 
 if __name__ == "__main__":

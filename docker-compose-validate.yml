@@ -1,23 +1,23 @@
 version: '3.8'
 
 services:
-#  fhir-validator:
-#    platform: linux/amd64
-#    image: markiantorno/validator-wrapper:1.0.70
-#    ports:
-#      - "3500:3500"
-#    environment:
-#      VALIDATION_SERVICE_PRESETS_FILE_PATH: /presets.json
-#    volumes:
-#      - ./data/config/validation/presets.json:/presets.json
-#    networks:
-#      - fhirnet
-#    healthcheck:
-#      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3500/validator/version"]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 3
-#      start_period: 60s
+  #  fhir-validator:
+  #    platform: linux/amd64
+  #    image: markiantorno/validator-wrapper:1.0.70
+  #    ports:
+  #      - "3500:3500"
+  #    environment:
+  #      VALIDATION_SERVICE_PRESETS_FILE_PATH: /presets.json
+  #    volumes:
+  #      - ./data/config/validation/presets.json:/presets.json
+  #    networks:
+  #      - fhirnet
+  #    healthcheck:
+  #      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3500/validator/version"]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 3
+  #      start_period: 60s
 
   hapi-fhir:
     image: hapiproject/hapi:v8.4.0-2
@@ -27,21 +27,26 @@ services:
       - spring.datasource.url=jdbc:h2:mem:test_mem
       - JAVA_OPTS=-Xmx1024m
       - hapi.fhir.enable_repository_validating_interceptor=true
-#    healthcheck:
-#      test: ["CMD", "curl", "--fail", "-s", "http://localhost:8080/actuator/health"]
-#      interval: 20s
-#      timeout: 20s
-#      retries: 3
-#      start_period: 60s
+      # US Core 6.1.0 IG auto-install (no packageUrl!)
+      - hapi.fhir.implementationguides.uscore610.name=hl7.fhir.us.core
+      - hapi.fhir.implementationguides.uscore610.version=6.1.0
+      - hapi.fhir.implementationguides.uscore610.installMode=STORE_AND_INSTALL
+
+    #    healthcheck:
+    #      test: ["CMD", "curl", "--fail", "-s", "http://localhost:8080/actuator/health"]
+    #      interval: 20s
+    #      timeout: 20s
+    #      retries: 3
+    #      start_period: 60s
     networks:
       - fhirnet
 
   validate-script:
-#    depends_on:
-#      fhir-validator:
-#        condition: service_healthy
-#      hapi-fhir:
-#        condition: service_healthy
+    #    depends_on:
+    #      fhir-validator:
+    #        condition: service_healthy
+    #      hapi-fhir:
+    #        condition: service_healthy
     image: python:3.12-slim
     volumes:
       - ./profiles:/profiles
@@ -49,12 +54,11 @@ services:
       - ./data/output/large:/data/output/large
       - ./data/validation_result:/validation_result
     working_dir: /app
-    command: ["tail", "-f", "/dev/null"]
-#    command: ["/bin/sh", "-c", "pip install requests && python validate.py /data/output/large"]
+    command: [ "tail", "-f", "/dev/null" ]
+    #    command: ["/bin/sh", "-c", "pip install requests && python validate.py /data/output/large"]
     networks:
       - fhirnet
 
 networks:
   fhirnet:
     driver: bridge
-
