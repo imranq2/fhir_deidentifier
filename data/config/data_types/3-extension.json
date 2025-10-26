@@ -13,8 +13,8 @@
       "method": "keep"
     },
     {
-      "path": "nodesByType('Extension')",
-      "method": "redact"
+      "path": "nodesByType('Extension').url",
+      "method": "keep"
     }
   ]
 }
