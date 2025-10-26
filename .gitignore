@@ -405,4 +405,4 @@ FodyWeavers.xsd
 # These are temporary files created by the application
 /core
 /data/config/merged/merged.json
-/scripts/validation_result/DocumentReference/e1CUFyximuz1PymyAXuwim3-WKTB0-ylku.XwBZabiyY3.json
+/data/validation_result/

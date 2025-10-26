@@ -50,6 +50,7 @@ def validate_fhir_resource(
     # Send the FHIR resource directly as the body for $validate
     request_body = json.dumps(fhir_resource)
 
+    retry_wait = 5
     max_retries = 10
     for attempt in range(1, max_retries + 1):
         try:
@@ -74,9 +75,9 @@ def validate_fhir_resource(
                 print(f"Error validating resource after {max_retries} attempts: {e}", file=sys.stderr)
                 raise
             else:
-                print(f"Attempt {attempt} failed: {e}. Retrying in 3 seconds...", file=sys.stderr)
+                print(f"Attempt {attempt} failed: {e}. Retrying in {retry_wait} seconds...", file=sys.stderr)
                 import time
-                time.sleep(3)
+                time.sleep(retry_wait)
     return {}
 
 def main() -> None:

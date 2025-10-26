@@ -39,6 +39,7 @@ down:
 
 .PHONY: validate
 validate:
+	rm -rf ./data/validation_result/*
 	docker compose -f docker-compose-validate.yml down
 	docker compose -f docker-compose-validate.yml up -d
 	@#./scripts/wait-for-healthy.sh fhir_deidentifier-fhir-validator-1 500
