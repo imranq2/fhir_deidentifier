@@ -9,7 +9,7 @@
       "method": "keep"
     },
     {
-      "path": "nodesByType('Extension').where(url.matches('{{TRUSTED_CODE_SYSTEMS}}'))",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not())",
       "method": "keep"
     },
     {
