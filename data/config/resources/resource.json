@@ -3,12 +3,8 @@
   "processingErrors": "raise",
   "fhirPathRules": [
     {
-      "path": "id",
-      "method": "generalize",
-      "cases": {
-        "$this.length() > 88": "$this.substring(0, 88)"
-      },
-      "otherValues": "keep"
+      "path": "Resource.id",
+      "method": "keep"
     }
   ],
   "parameters": {

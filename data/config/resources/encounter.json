@@ -1,0 +1,9 @@
+{
+  "fhirPathRules": [
+    {
+      "id": "keep-encounter-status",
+      "path": "Encounter.status",
+      "method": "keep"
+    }
+  ]
+}
