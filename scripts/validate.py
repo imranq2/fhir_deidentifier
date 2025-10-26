@@ -64,15 +64,16 @@ def validate_fhir_resource(
                 timeout=30
             )
             if response.status_code == 400:
-                print("\nDEBUG: 400 Bad Request. Request payload:")
-                print(json.dumps(fhir_resource, indent=2))
-                print("Headers:", headers)
-                print("URL:", validator_url)
-                print("Params:", params)
-                print("Response:", response.text)
+                print(f"400 Bad Request: {file_path}")
+                response.raise_for_status()  # Will raise and exit loop
+                return response.json()
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
+            # Do not retry if status code is 400 (Bad Request)
+            if hasattr(e, 'response') and e.response is not None and e.response.status_code == 400:
+                print(f"400 Bad Request: {file_path}", file=sys.stderr)
+                raise
             if attempt == max_retries:
                 print(f"Error validating resource after {max_retries} attempts: {e}", file=sys.stderr)
                 raise
