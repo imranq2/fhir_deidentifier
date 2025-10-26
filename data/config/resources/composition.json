@@ -41,6 +41,11 @@
       "method": "keep"
     },
     {
+      "id": "keep-composition-section-code",
+      "path": "Composition.nodesByName('section').text.status",
+      "method": "keep"
+    },
+    {
       "id": "substitute-composition-section-source-div",
       "path": "Composition.nodesByName('section').where(title='Source').text.div",
       "method": "substitute",

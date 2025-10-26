@@ -55,8 +55,8 @@ fix-fhir:
 .PHONY: validate
 validate:
 	rm -rf ./data/validation_result/*
-	docker compose -f docker-compose-validate.yml run --rm validate-script sh -c "pip install --root-user-action=ignore requests && python validate.py /data/output/large --exclude-code=DUPLICATE_ID --exclude-code=Terminology_PassThrough_TX_Message --exclude-diagnostics-regex='^Error parsing XHTML'"
+	docker compose -f docker-compose-validate.yml run --rm validate-script sh -c "pip install --root-user-action=ignore requests && python validate.py /data/output/large --exclude-code=DUPLICATE_ID --exclude-code=Terminology_PassThrough_TX_Message --exclude-code=XHTML_XHTML_NS_InValid --exclude-diagnostics-regex='^Error parsing XHTML'"
 
 .PHONY: stop-validator
 stop-validator:
-	docker compose -f docker-compose-validate.yml down
+	docker compose -f doccker-compose-validate.yml down

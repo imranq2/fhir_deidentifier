@@ -27,7 +27,7 @@
     },
     {
       "id": "extension-rule-3",
-      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "comment": "Keep trusted extensions as-is",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}'))",
       "method": "keep"
     },
@@ -54,6 +54,18 @@
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('time')",
       "method": "dateShift"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('boolean')",
+      "method": "keep"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('integer')",
+      "method": "keep"
     },
     {
       "id": "extension-rule-3",
