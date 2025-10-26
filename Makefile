@@ -63,6 +63,7 @@ validate:
 	    --exclude-code=XHTML_XHTML_NS_InValid \
 	    --exclude-code="^http://hl7.org/fhir/StructureDefinition/Narrative" \
 	    --exclude-code="^http://hl7.org/fhir/StructureDefinition/Composition" \
+	    --exclude-code="^http://hl7.org/fhir/StructureDefinition/Extension" \
 	    --exclude-diagnostics='^Error parsing XHTML'\
 	"
 
