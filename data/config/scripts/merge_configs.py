@@ -15,6 +15,7 @@ trusted_code_systems: List[str] = [
     "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
     "http://hl7.org/fhir/sid/icd-10",
     "http://hl7.org/fhir/sid/icd-9",
+    "http://hl7.org/fhir/StructureDefinition/patient-genderIdentity"
     "http://hl7.org/fhir/us/core",
     "http://hl7.org/fhir/us/core/CodeSystem",
     "http://ihe.net/fhir/ValueSet",
