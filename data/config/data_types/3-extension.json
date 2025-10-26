@@ -98,7 +98,7 @@
     {
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
-      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('Code')",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('code')",
       "method": "substitute",
       "replaceWith": "masked"
     },
