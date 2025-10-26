@@ -15,7 +15,7 @@ services:
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh mongo:27017/test --quiet
     networks:
-      - web
+      - fhirnet
 
   atlas-cli:
     # https://www.mongodb.com/docs/atlas/cli/current/atlas-cli-changelog/
@@ -48,7 +48,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      - web
+      - fhirnet
 
   fhir:
     depends_on:
@@ -143,8 +143,8 @@ services:
     healthcheck:
       test: [ 'CMD-SHELL', 'wget --spider --quiet localhost:3000/health || exit 1' ]
     networks:
-      - web
+      - fhirnet
 
 networks:
-  web:
+  fhirnet:
     driver: bridge
