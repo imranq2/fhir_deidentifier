@@ -39,9 +39,11 @@ down:
 
 .PHONY: validate
 validate:
-	rm -rf ./data/validation_result/*
 	docker compose -f docker-compose-validate.yml down
 	docker compose -f docker-compose-validate.yml up -d
-	@#./scripts/wait-for-healthy.sh fhir_deidentifier-fhir-validator-1 500
+
+.PHONY: validate2
+validate2:
+	rm -rf ./data/validation_result/*
 	docker compose -f docker-compose-validate.yml exec validate-script sh -c "pip install --root-user-action=ignore --upgrade pip && pip install --root-user-action=ignore requests && python validate.py /data/output/large"
 	docker compose -f docker-compose-validate.yml down
