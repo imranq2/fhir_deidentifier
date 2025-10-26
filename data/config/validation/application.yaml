@@ -92,26 +92,18 @@ spring:
     fail-on-missing-locations: false
 
   datasource:
-    # url: "jdbc:h2:file:./target/database/h2"
-    url: jdbc:h2:mem:test_mem
-    username: sa
-    password: null
-    driver-class-name: org.h2.Driver
-    # max-active: 15     # (ignored with HikariCP; use hikari.maximum-pool-size)
+    url: jdbc:postgresql://postgres:5432/hapi
+    username: hapi
+    password: hapi
+    driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
-
   jpa:
     properties:
       hibernate:
         format_sql: false
         show_sql: false
-        # Hibernate dialect is auto-detected except for H2/Postgres.
-        # If using H2:     ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
-        # If using Postgres: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
-        dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
-
-        # --- Optional Hibernate DDL & tuning (commented out from source) ---
+        dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
         hbm2ddl:
           auto: update
         jdbc:
@@ -122,18 +114,29 @@ spring:
           use_structured_entries: false
           use_minimal_puts: false
 
+        # --- Optional Hibernate DDL & tuning (commented out from source) ---
+        # hbm2ddl:
+        #   auto: update
+        # jdbc:
+        #   batch_size: 20
+        # cache:
+        #   use_query_cache: false
+        #   use_second_level_cache: false
+        #   use_structured_entries: false
+        #   use_minimal_puts: false
+
         # --- Hibernate Search (Lucene/Elasticsearch) ---
         search:
-          enabled: false
-          # Lucene backend (default example)
-          # backend:
-          #   type: lucene
-          #   analysis:
-          #     configurer: ca.uhn.fhir.jpa.search.HapiHSearchAnalysisConfigurers$HapiLuceneAnalysisConfigurer
-          #   directory:
-          #     type: local-filesystem
-          #     root: target/lucenefiles
-          #   lucene_version: lucene_current
+          enabled: true
+            # Lucene backend (default example)
+          backend:
+            type: lucene
+            analysis:
+              configurer: ca.uhn.fhir.jpa.search.HapiHSearchAnalysisConfigurers$HapiLuceneAnalysisConfigurer
+            directory:
+              type: local-filesystem
+              root: target/lucenefiles
+            lucene_version: lucene_current
           # Elasticsearch backend (alternative) — see also hapi.fhir.elasticsearch section in docs
           # backend:
           #   type: elasticsearch
@@ -161,10 +164,14 @@ hapi:
     # -------------------------------------------------------------------------------
     # B. Implementation Guides (IG) & Package Install
     # -------------------------------------------------------------------------------
-    ig_runtime_upload_enabled: false
+    ig_runtime_upload_enabled: true
     # validate_resource_status_for_package_upload: false   # default true
     # install_transitive_ig_dependencies: true
-    # implementationguides:
+    implementationguides:
+       uscore610:
+         name: hl7.fhir.us.core
+         version: 6.1.0
+         installMode: STORE_AND_INSTALL
     #   swiss:
     #     name: swiss.mednet.fhir
     #     version: 0.8.0
@@ -302,8 +309,8 @@ hapi:
     # -------------------------------------------------------------------------------
     # I. Terminology / ValueSet Expansion
     # -------------------------------------------------------------------------------
-    # pre_expand_value_sets: true
-    # enable_task_pre_expand_value_sets: true
+    pre_expand_value_sets: true
+    enable_task_pre_expand_value_sets: true
     # pre_expand_value_sets_default_count: 1000
     # pre_expand_value_sets_max_count: 1000
     # maximum_expansion_size: 1000
@@ -399,16 +406,16 @@ hapi:
     # -------------------------------------------------------------------------------
     # P. Remote Terminology Service (disabled by default)
     # -------------------------------------------------------------------------------
-    # remote_terminology_service:
-    #   all:
-    #     system: "*"
-    #     url: "https://tx.fhir.org/r4/"
-    #   snomed:
-    #     system: "http://snomed.info/sct"
-    #     url: "https://tx.fhir.org/r4/"
-    #   loinc:
-    #     system: "http://loinc.org"
-    #     url: "https://hapi.fhir.org/baseR4/"
+    remote_terminology_service:
+     all:
+       system: "*"
+       url: "https://tx.fhir.org/r4/"
+     snomed:
+       system: "http://snomed.info/sct"
+       url: "https://tx.fhir.org/r4/"
+     loinc:
+       system: "http://loinc.org"
+       url: "https://hapi.fhir.org/baseR4/"
 
     # -------------------------------------------------------------------------------
     # Q. Subscriptions (disabled by default)
@@ -433,3 +440,4 @@ hapi:
     # R. LastN (analytics)
     # -------------------------------------------------------------------------------
     # lastn_enabled: true
+
