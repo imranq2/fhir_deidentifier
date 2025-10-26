@@ -9,11 +9,11 @@
       "otherValues": "keep"
     },
     {
-      "path": "nodesByType('Coding').where(system.matches('{{TRUSTED_CODE_SYSTEMS}}')).display",
+      "path": "nodesByType('Coding').where(system.exists() and system.matches('{{TRUSTED_CODE_SYSTEMS}}')).display",
       "method": "keep"
     },
     {
-      "path": "nodesByType('Coding').where(system.matches('{{TRUSTED_CODE_SYSTEMS}}')).code",
+      "path": "nodesByType('Coding').where(system.exists() and system.matches('{{TRUSTED_CODE_SYSTEMS}}')).code",
       "method": "keep"
     },
     {
@@ -22,14 +22,14 @@
       "replaceWith": "Redacted display"
     },
     {
-      "path": "nodesByType('Coding').where(code.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}')).code",
+      "path": "nodesByType('Coding').where(code.exists() and code.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}')).code",
       "method": "substitute",
       "replaceWith": "2000-01-01"
     },
     {
       "path": "nodesByType('Coding').code",
       "method": "substitute",
-      "replaceWith": "redacted"
+      "replaceWith": "Redacted code"
     },
     {
       "path": "nodesByType('Coding').system",

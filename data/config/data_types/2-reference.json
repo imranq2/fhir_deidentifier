@@ -1,7 +1,7 @@
 {
   "fhirPathRules": [
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and (display.matches('^[A-Ea-e0-1].*') or display.empty()))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and (display.exists() and display.matches('^[A-Ea-e0-1].*') or display.empty()))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Practitioner/{{PRACTITIONER_UUID_1}}",
@@ -9,7 +9,7 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.matches('^[F-Jf-j2-3].*'))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.exists() and display.matches('^[F-Jf-j2-3].*'))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Practitioner/{{PRACTITIONER_UUID_2}}",
@@ -17,7 +17,7 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.matches('^[K-Ok-o4-5].*'))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.exists() and display.matches('^[K-Ok-o4-5].*'))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Practitioner/{{PRACTITIONER_UUID_3}}",
@@ -25,7 +25,7 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.matches('^[P-Tp-t6-7].*'))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.exists() and display.matches('^[P-Tp-t6-7].*'))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Practitioner/{{PRACTITIONER_UUID_4}}",
@@ -33,7 +33,7 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.matches('^[U-Zu-z8-9].*'))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Practitioner/') and display.exists() and display.matches('^[U-Zu-z8-9].*'))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Practitioner/{{PRACTITIONER_UUID_5}}",
@@ -41,16 +41,16 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.matches('^Practitioner/.+$')).extension",
+      "path": "nodesByType('Reference').where(reference.exists() and reference.matches('^Practitioner/.+$')).extension",
       "method": "redact"
     },
     {
-      "path": "nodesByType('Reference').where(reference.matches('^Patient/.+$')).display",
+      "path": "nodesByType('Reference').where(reference.exists() and reference.matches('^Patient/.+$')).display",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
     },
     {
-      "path": "nodesByType('Reference').where(reference.matches('^Person/{{PERSON_ID_TO_SUBSTITUTE}}'))",
+      "path": "nodesByType('Reference').where(reference.exists() and reference.matches('^Person/{{PERSON_ID_TO_SUBSTITUTE}}')).",
       "method": "substitute",
       "replaceWith": {
         "reference": "Person/{{SUBSTITUTE_PERSON_ID}}",
@@ -58,12 +58,12 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.matches('^Person/.+$')).display",
+      "path": "nodesByType('Reference').where(reference.exists() and reference.matches('^Person/.+$')).display",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and (display.matches('^[A-Oa-o0-4].*') or display.empty()))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and (display.exists() and display.matches('^[A-Oa-o0-4].*') or display.empty()))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Organization/{{ORGANIZATION_UUID_1}}",
@@ -71,7 +71,7 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and display.matches('^[P-Zp-z5-9].*'))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Organization/') and display.exists() and display.matches('^[P-Zp-z5-9].*'))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Organization/{{ORGANIZATION_UUID_2}}",
@@ -79,7 +79,7 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Location/') and (display.matches('^[A-Oa-o0-4].*') or display.empty()))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Location/') and (display.exists() and display.matches('^[A-Oa-o0-4].*') or display.empty()))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Location/{{LOCATION_UUID_1}}",
@@ -87,7 +87,7 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.startsWith('Location/') and display.matches('^[P-Zp-z5-9].*'))",
+      "path": "nodesByType('Reference').where(reference.startsWith('Location/') and display.exists() and display.matches('^[P-Zp-z5-9].*'))",
       "method": "substitute",
       "replaceWith": {
         "reference": "Location/{{LOCATION_UUID_2}}",
@@ -95,11 +95,11 @@
       }
     },
     {
-      "path": "nodesByType('Reference').where(reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",
+      "path": "nodesByType('Reference').where(reference.exists() and reference.substring(reference.indexOf('/') + 1).matches('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')).reference",
       "method": "keep"
     },
     {
-      "path": "nodesByType('Reference').where(reference.matches('^[A-Za-z]+/.+$')).reference",
+      "path": "nodesByType('Reference').where(reference.exists() and reference.matches('^[A-Za-z]+/.+$')).reference",
       "method": "cryptoHash"
     }
   ]
