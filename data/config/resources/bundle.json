@@ -1,7 +1,19 @@
 {
   "fhirPathRules": [
-    {"path": "Bundle.entry.fullUrl", "method": "redact"},
-    {"path": "Bundle.entry.request.url", "method": "redact"},
-    {"path": "Bundle.entry.response.location", "method": "redact"}
+    {
+      "id": "redact-bundle-entry-fullurl",
+      "path": "Bundle.entry.fullUrl",
+      "method": "redact"
+    },
+    {
+      "id": "redact-bundle-entry-request-url",
+      "path": "Bundle.entry.request.url",
+      "method": "redact"
+    },
+    {
+      "id": "redact-bundle-entry-response-location",
+      "path": "Bundle.entry.response.location",
+      "method": "redact"
+    }
   ]
 }

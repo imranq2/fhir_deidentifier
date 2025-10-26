@@ -1,45 +1,55 @@
 {
   "fhirPathRules": [
     {
+      "id": "substitute-person-id",
       "path": "Person.where(id.matches('{{PERSON_ID_TO_SUBSTITUTE}}')).id",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_ID}}"
     },
     {
+      "id": "keep-person-active",
       "path": "Person.active",
       "method": "keep"
     },
     {
+      "id": "keep-person-gender",
       "path": "Person.gender",
       "method": "keep"
     },
     {
+      "id": "dateshift-person-birthdate",
       "path": "Person.birthDate",
       "method": "dateshift"
     },
     {
+      "id": "keep-person-deceasedboolean",
       "path": "Person.deceasedBoolean",
       "method": "keep"
     },
     {
+      "id": "keep-person-link-id",
       "path": "Person.link.id",
       "method": "keep"
     },
     {
+      "id": "keep-person-link-assurance",
       "path": "Person.link.assurance",
       "method": "keep"
     },
     {
+      "id": "substitute-person-humanname-text",
       "path": "Person.nodesByType('HumanName').text",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME}}"
     },
     {
+      "id": "substitute-person-humanname-family",
       "path": "Person.nodesByType('HumanName').family",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME_FAMILY}}"
     },
     {
+      "id": "substitute-person-humanname-given",
       "path": "Person.nodesByType('HumanName').given",
       "method": "substitute",
       "replaceWith": "{{SUBSTITUTE_PERSON_NAME_GIVEN}}"

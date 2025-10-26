@@ -1,6 +1,7 @@
 {
   "fhirPathRules": [
     {
+      "id": "keep-diagnosticreport-status",
       "path": "DiagnosticReport.status",
       "method": "keep"
     }

@@ -1,6 +1,7 @@
 {
   "fhirPathRules": [
     {
+      "id": "keep-documentreference-status",
       "path": "DocumentReference.status",
       "method": "keep"
     }

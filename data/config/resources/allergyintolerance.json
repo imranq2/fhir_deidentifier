@@ -1,14 +1,17 @@
 {
   "fhirPathRules": [
     {
+      "id": "keep-allergyintolerance-type",
       "path": "AllergyIntolerance.type",
       "method": "keep"
     },
     {
+      "id": "keep-allergyintolerance-category",
       "path": "AllergyIntolerance.category",
       "method": "keep"
     },
     {
+      "id": "keep-allergyintolerance-criticality",
       "path": "AllergyIntolerance.criticality",
       "method": "keep"
     }

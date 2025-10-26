@@ -1,6 +1,7 @@
 {
   "fhirPathRules": [
     {
+      "id": "keep-medicationdispense-status",
       "path": "MedicationDispense.status",
       "method": "keep"
     }

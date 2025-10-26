@@ -1,18 +1,22 @@
 {
   "fhirPathRules": [
     {
+      "id": "keep-identifier-uuid",
       "path": "nodesByType('Identifier').where(system='https://www.icanbwell.com/uuid')",
       "method": "keep"
     },
     {
+      "id": "keep-identifier-intelligence-version",
       "path": "nodesByType('Identifier').where(system='https://www.icanbwell.com/intelligence-layer-pipeline/version')",
       "method": "keep"
     },
     {
+      "id": "keep-identifier-system",
       "path": "nodesByType('Identifier').system",
       "method": "keep"
     },
     {
+      "id": "substitute-identifier-value",
       "path": "nodesByType('Identifier').value",
       "method": "substitute",
       "replaceWith": "redacted"

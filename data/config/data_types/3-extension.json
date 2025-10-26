@@ -1,18 +1,21 @@
 {
   "fhirPathRules": [
     {
+      "id": "keep-icanbwell-uuid",
       "path": "nodesByType('Extension').where(url='https://www.icanbwell.com/uuid')",
       "method": "keep"
     },
     {
+      "id": "keep-icanbwell-intelligence",
       "path": "nodesByType('Extension').where(url='https://fhir.icanbwell.com/4_0_0/StructureDefinition/intelligence')",
       "method": "keep"
     },
     {
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not())",
-      "method": "redact"
+      "method": "keep"
     },
     {
+      "id": "keep-extension-url",
       "path": "nodesByType('Extension').url",
       "method": "keep"
     }

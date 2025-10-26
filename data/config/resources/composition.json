@@ -1,60 +1,74 @@
 {
   "fhirPathRules": [
     {
+      "id": "keep-composition-status",
       "path": "Composition.status",
       "method": "keep"
     },
     {
+      "id": "keep-composition-title",
       "path": "Composition.title",
       "method": "keep"
     },
     {
+      "id": "keep-composition-text",
       "path": "Composition.text",
       "method": "keep"
     },
     {
+      "id": "keep-composition-type",
       "path": "Composition.type",
       "method": "keep"
     },
     {
+      "id": "keep-composition-author",
       "path": "Composition.author",
       "method": "keep"
     },
     {
+      "id": "keep-composition-section-id",
       "path": "Composition.nodesByName('section').id",
       "method": "keep"
     },
     {
+      "id": "keep-composition-section-title",
       "path": "Composition.nodesByName('section').title",
       "method": "keep"
     },
     {
+      "id": "keep-composition-section-code",
       "path": "Composition.nodesByName('section').code",
       "method": "keep"
     },
     {
+      "id": "substitute-composition-section-source-div",
       "path": "Composition.nodesByName('section').where(title='Source').text.div",
       "method": "substitute",
       "replaceWith": "Redacted Source"
     },
     {
+      "id": "substitute-composition-section-created-div",
       "path": "Composition.nodesByName('section').where(title='created').text.div",
       "method": "substitute",
       "replaceWith": "Redacted Source"
     },
     {
+      "id": "keep-composition-section-medication-name-div",
       "path": "Composition.nodesByName('section').where(title='Medication Name').text.div",
       "method": "keep"
     },
     {
+      "id": "keep-composition-section-condition-name-div",
       "path": "Composition.nodesByName('section').where(title='Condition Name').text.div",
       "method": "keep"
     },
     {
+      "id": "keep-composition-section-status-div",
       "path": "Composition.nodesByName('section').where(title='Status').text.div",
       "method": "keep"
     },
     {
+      "id": "generalize-composition-section-authored-on-date-div",
       "path": "Composition.nodesByName('section').where(title='Authored On Date').text.div",
       "method": "generalize",
       "cases": {
@@ -62,6 +76,7 @@
       }
     },
     {
+      "id": "generalize-composition-section-recorded-date-div",
       "path": "Composition.nodesByName('section').where(title='Recorded Date').text.div",
       "method": "generalize",
       "cases": {
@@ -69,6 +84,7 @@
       }
     },
     {
+      "id": "generalize-composition-section-date-div",
       "path": "Composition.nodesByName('section').where(title.contains(' Date')).text.div",
       "method": "generalize",
       "cases": {
@@ -76,19 +92,23 @@
       }
     },
     {
+      "id": "substitute-composition-section-text-div",
       "path": "Composition.nodesByName('section').text.div",
       "method": "substitute",
       "replaceWith": "Redacted section text"
     },
     {
+      "id": "keep-composition-section-mode",
       "path": "Composition.nodesByName('section').mode",
       "method": "keep"
     },
     {
+      "id": "keep-composition-section-ordered-by",
       "path": "Composition.nodesByName('section').orderedBy",
       "method": "keep"
     },
     {
+      "id": "keep-composition-entry-id",
       "path": "Composition.nodesByName('entry').id",
       "method": "keep"
     }

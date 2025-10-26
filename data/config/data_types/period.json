@@ -1,10 +1,12 @@
 {
   "fhirPathRules": [
     {
+      "id": "dateshift-period-start",
       "path": "nodesByType('Period').start",
       "method": "dateShift"
     },
     {
+      "id": "dateshift-period-end",
       "path": "nodesByType('Period').end",
       "method": "dateShift"
     }
