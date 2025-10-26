@@ -102,7 +102,7 @@ def get_us_core_profile_url(resource_type: str) -> Optional[str]:
     }
     profile_name = us_core_profiles.get(resource_type)
     if profile_name:
-        return f"https://hl7.org/fhir/us/core/StructureDefinition/{profile_name}"
+        return f"http://hl7.org/fhir/us/core/StructureDefinition/{profile_name}"
     return None
 
 def install_us_core_ig(validator_base_url: str, version: str = "6.1.0", max_retries: int = 10, retry_wait: int = 10):
