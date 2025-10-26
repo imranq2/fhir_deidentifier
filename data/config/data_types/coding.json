@@ -35,12 +35,19 @@
       "id": "coding-rule-6",
       "path": "nodesByType('Coding').code",
       "method": "substitute",
-      "replaceWith": "Redacted code"
+      "replaceWith": "masked"
     },
     {
       "id": "coding-rule-7",
       "path": "nodesByType('Coding').system",
-      "method": "keep"
+      "method": "substitute",
+      "replaceWith": "http://terminology.hl7.org/CodeSystem/data-absent-reason"
+    },
+    {
+      "id": "coding-rule-8",
+      "path": "nodesByType('Coding').display",
+      "method": "substitute",
+      "replaceWith": "masked"
     }
   ]
 }
