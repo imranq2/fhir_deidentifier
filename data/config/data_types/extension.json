@@ -7,6 +7,14 @@
     {
       "path": "nodesByType('Extension').where(url='https://fhir.icanbwell.com/4_0_0/StructureDefinition/intelligence')",
       "method": "keep"
+    },
+    {
+      "path": "nodesByType('Extension').where(url.matches('{{TRUSTED_CODE_SYSTEMS}}'))",
+      "method": "keep"
+    },
+    {
+      "path": "nodesByType('Extension')",
+      "method": "redact"
     }
   ]
 }

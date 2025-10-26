@@ -11,18 +11,20 @@ OUTPUT_FILE = os.path.join(CONFIG_DIR, '../merged/merged.json')
 DEFAULT_CONFIG = "resource.json"
 
 trusted_code_systems: List[str] = [
-    "http://loinc.org",
-    "http://snomed.info/sct",
+    # keep this list sorted alphabetically for easier maintenance
+    "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
     "http://hl7.org/fhir/sid/icd-10",
     "http://hl7.org/fhir/sid/icd-9",
-    "http://unitsofmeasure.org",
-    "http://www.nlm.nih.gov/research/umls/rxnorm",
-    "http://terminology.hl7.org",
-    "http://www.ama-assn.org/go/cpt",
-    "http://fhir.icanbwell.com/4_0_0/CodeSystem/medicationstatement",
-    "http://www.whocc.no/atc",
+    "http://hl7.org/fhir/us/core",
     "http://hl7.org/fhir/us/core/CodeSystem",
-    "http://ihe.net/fhir/ValueSet"
+    "http://ihe.net/fhir/ValueSet",
+    "http://loinc.org",
+    "http://snomed.info/sct",
+    "http://terminology.hl7.org",
+    "http://unitsofmeasure.org",
+    "http://www.ama-assn.org/go/cpt",
+    "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "http://www.whocc.no/atc"
 ]
 
 trusted_code_systems_list: str = '|'.join([cs.replace('http://', '').replace('https://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems])
