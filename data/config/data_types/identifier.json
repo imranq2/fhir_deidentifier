@@ -17,6 +17,13 @@
     },
     {
       "id": "substitute-identifier-value",
+      "comment": "Redact URN identifiers but keep them syntactically valid",
+      "path": "nodesByType('Identifier').where(system.matches('urn:ietf:rfc:3986')).value",
+      "method": "substitute",
+      "replaceWith": "urn:redacted"
+    },
+    {
+      "id": "substitute-identifier-value",
       "path": "nodesByType('Identifier').value",
       "method": "substitute",
       "replaceWith": "redacted"

@@ -64,16 +64,41 @@ def validate_fhir_resource(
                 timeout=30
             )
             if response.status_code == 400:
-                print(f"400 Bad Request: {file_path}")
-                response.raise_for_status()  # Will raise and exit loop
-                return response.json()
+                # Return a synthetic OperationOutcome issue for 400 errors
+                return {
+                    "issue": [
+                        {
+                            "severity": "error",
+                            "code": "processing",
+                            "details": {
+                                "text": "400 Bad Request from validator"
+                            },
+                            "diagnostics": f"File: {file_path}. Response: {response.text}",
+                            "location": [str(file_path)],
+                            "expression": []
+                        }
+                    ]
+                }
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
             # Do not retry if status code is 400 (Bad Request)
             if hasattr(e, 'response') and e.response is not None and e.response.status_code == 400:
-                print(f"400 Bad Request: {file_path}", file=sys.stderr)
-                raise
+                # Return a synthetic OperationOutcome issue for 400 errors
+                return {
+                    "issue": [
+                        {
+                            "severity": "error",
+                            "code": "processing",
+                            "details": {
+                                "text": "400 Bad Request from validator (exception)"
+                            },
+                            "diagnostics": f"File: {file_path}. Error: {e}",
+                            "location": [str(file_path)],
+                            "expression": []
+                        }
+                    ]
+                }
             if attempt == max_retries:
                 print(f"Error validating resource after {max_retries} attempts: {e}", file=sys.stderr)
                 raise
