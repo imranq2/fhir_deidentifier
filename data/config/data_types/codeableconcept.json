@@ -1,10 +1,6 @@
 {
   "fhirPathRules": [
     {
-      "path": "nodesByType('CodeableConcept').where(coding.exists(system.matches('{{TRUSTED_CODE_SYSTEMS}}'))).text",
-      "method": "keep"
-    },
-    {
       "path": "nodesByType('CodeableConcept').text",
       "method": "substitute",
       "replaceWith": "Redacted text"

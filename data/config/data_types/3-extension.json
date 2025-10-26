@@ -17,15 +17,36 @@
       "replaceWith": "redacted"
     },
     {
-      "id": "extension-rule-3",
-      "comment": "Now hash the entire extension to catch any other sensitive data",
-      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not())",
-      "method": "redact"
-    },
-    {
       "id": "extension-rule-4",
       "path": "nodesByType('Extension').url",
       "method": "keep"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('string')",
+      "method": "substitute",
+      "replaceWith": "redacted"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('CodeableConcept').text",
+      "method": "substitute",
+      "replaceWith": "Redacted text"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('Coding').display",
+      "method": "substitute",
+      "replaceWith": "Redacted display"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Now hash the entire extension to catch any other sensitive data",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not())",
+      "method": "cryptoHash"
     }
   ]
 }
