@@ -41,6 +41,11 @@ WORKDIR /app
 ENV PYTHONPATH=/app;/lib/netlib
 ENV PATH="/lib/netlib:${PATH}"
 
+# Add logging configuration
+ENV Logging__LogLevel__Default=Debug
+ENV Logging__LogLevel__Microsoft.Health.Fhir.Anonymizer=Trace
+ENV Logging__Console__IncludeScopes=true
+
 # Copy the build output from the first stage
 COPY --from=build /app/FHIR/src/Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool/bin/Release/net8.0 /lib/netlib
 

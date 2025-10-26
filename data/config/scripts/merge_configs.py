@@ -1,7 +1,6 @@
 import json
 import glob
 import os
-import re
 from typing import List, Dict, Any
 
 CONFIG_DIR = os.path.dirname(__file__)
@@ -28,13 +27,20 @@ trusted_code_systems: List[str] = [
     "http://www.ama-assn.org/go/cpt",
     "http://www.nlm.nih.gov/research/umls/rxnorm",
     "http://www.whocc.no/atc",
-    "ombCategory",
-    "urn:oid:2.16.840.1.113883.6.238",
+    "ombCategory"
+]
+
+trusted_oids: List[str] = [
     "2.16.840.1.113883.6.238"
 ]
 
-trusted_code_systems_list: str = '|'.join([cs.replace('http://', '').replace('https://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems])
-trusted_code_system_regex = f"^https?://({trusted_code_systems_list})"
+trusted_code_systems_list: str = '|'.join([
+    cs.replace('http://', '').replace('https://', '').replace('.', r'.').replace('/', r'\/') for cs in trusted_code_systems
+])
+trusted_oids_list: str = '|'.join([
+    oid.replace('.', r'.') for oid in trusted_oids
+])
+trusted_code_system_regex = f"^(https?://({trusted_code_systems_list})|(urn:oid:)?({trusted_oids_list}))"
 print(f"Using trusted code systems regex: {trusted_code_system_regex}")
 
 placeholder_replacements: Dict[str, str] = {
@@ -64,8 +70,6 @@ placeholder_replacements: Dict[str, str] = {
     "{{LOCATION_UUID_2}}": "3420266f-0e96-48b6-9996-fddd6d59b34f",
 }
 
-
-
 limit_to_configs = None
 
 # List all config files except the output and the merge script itself
@@ -81,23 +85,25 @@ config_files = sorted(
 config_names_text = '\n'.join([os.path.basename(f) for f in config_files])
 print(f"Using following config files for merging:\n{config_names_text}")
 
-def replace_placeholders(*, fhir_path_rules: List[Dict[str,Any]]) -> List[Dict[str,Any]]:
+
+def replace_placeholders(*, fhir_path_rules: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     # now iterate the fhir_path_rules and replace the trusted code systems placeholder if present
     for rule in fhir_path_rules:
         for placeholder, placeholder_value in placeholder_replacements.items():
             rule['path'] = rule['path'].replace(placeholder, placeholder_value)
             if "replaceWith" in rule:
                 if isinstance(rule["replaceWith"], str):
-                    rule['replaceWith'] = rule['replaceWith'].replace(placeholder , placeholder_value)
+                    rule['replaceWith'] = rule['replaceWith'].replace(placeholder, placeholder_value)
                 elif isinstance(rule["replaceWith"], dict):
                     for key in rule['replaceWith']:
-                        rule['replaceWith'][key] = rule['replaceWith'][key].replace(placeholder , placeholder_value)
+                        rule['replaceWith'][key] = rule['replaceWith'][key].replace(placeholder, placeholder_value)
             if "cases" in rule:
                 cases: Dict[str, str] = rule['cases']
                 for case_key in cases:
                     cases[case_key] = cases[case_key].replace(placeholder, placeholder_value)
 
     return fhir_path_rules
+
 
 def load_configs():
     merged_rules = []
@@ -174,6 +180,7 @@ def load_configs():
         }, output_file, indent=2)
 
     print(f"Merged {len(config_files)} configs into {OUTPUT_FILE} with defaultRule set to redact.")
+
 
 if __name__ == "__main__":
     load_configs()
