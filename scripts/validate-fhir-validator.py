@@ -1,6 +1,6 @@
 # !/usr/bin/env python3
 """
-FHIR Resource Validator using HAPI FHIR server $validate operation
+FHIR Resource Validator using validator-wrapper Docker container
 """
 
 import json
@@ -13,18 +13,18 @@ import uuid
 
 def validate_fhir_resource(
         file_path: Path,
-        validator_url: str = "http://hapi-fhir:8080/fhir/$validate",
+        validator_url: str = "http://fhir-validator:3500/validate",
         profile: Optional[str] = None,
         session_id: Optional[str] = None
 ) -> Dict[str, Any]:
     """
-    Validate a FHIR JSON resource file using HAPI FHIR server $validate operation.
+    Validate a FHIR JSON resource file.
 
     Args:
         file_path: Path to the FHIR JSON file
-        validator_url: URL of the HAPI FHIR $validate endpoint
-        profile: Optional FHIR profile URL to validate against (sent as a parameter)
-        session_id: Optional session ID (unused, for compatibility)
+        validator_url: URL of the validator endpoint
+        profile: Optional FHIR profile URL to validate against
+        session_id: Optional session ID for validation request
 
     Returns:
         Validation response as dictionary
@@ -34,20 +34,40 @@ def validate_fhir_resource(
 
     with open(file_path, 'r', encoding='utf-8') as f:
         fhir_resource: Dict[str, Any] = json.load(f)
+        fhir_resource_str = json.dumps(fhir_resource)
 
-    headers: Dict[str, str] = {"Content-Type": "application/fhir+json", "Accept": "application/fhir+json"}
+    headers: Dict[str, str] = {"Content-Type": "application/json"}
 
-    params = {}
-    if profile:
-        params['profile'] = profile
+    cli_context = {
+        "sv": "4.0.1",
+        "igs": ["hl7.fhir.us.core#6.1.0"],
+        "profiles": [profile] if profile else [],
+        "locale": "en"
+    }
+
+    files_to_validate = [
+        {
+            "fileName": file_path.name,
+            "fileContent": fhir_resource_str,
+            "fileType": "json"
+        }
+    ]
+
+    # Use the provided session_id or create a new one
+    session_id = session_id or str(uuid.uuid4())
+
+    validation_request = {
+        "cliContext": cli_context,
+        "filesToValidate": files_to_validate,
+        "sessionId": session_id
+    }
 
     max_retries = 10
     for attempt in range(1, max_retries + 1):
         try:
             response = requests.post(
                 validator_url,
-                params=params,
-                data=json.dumps(fhir_resource),
+                json=validation_request,
                 headers=headers,
                 timeout=30
             )
@@ -61,6 +81,7 @@ def validate_fhir_resource(
                 print(f"Attempt {attempt} failed: {e}. Retrying in 3 seconds...", file=sys.stderr)
                 import time
                 time.sleep(3)
+
     return {}
 
 def main() -> None:
@@ -90,7 +111,7 @@ def main() -> None:
     # Determine the root for relative paths
     input_root = input_path if input_path.is_dir() else input_path.parent
 
-    # Create a single session_id for all validations (not used for HAPI, but kept for compatibility)
+    # Create a single session_id for all validations
     session_id = str(uuid.uuid4())
 
     total = len(files_to_validate)
@@ -101,11 +122,18 @@ def main() -> None:
     for file_path in files_to_validate:
         try:
             result = validate_fhir_resource(file_path, session_id=session_id)
-            # HAPI returns an OperationOutcome resource
-            issues = result.get('issue', [])
-            # A file is valid if there are no ERROR or FATAL issues
-            error_issues = [issue for issue in issues if issue.get('severity', '').upper() in ('ERROR', 'FATAL')]
-            is_valid = not error_issues
+            outcomes = result.get("outcomes", [])
+            # A file is valid if there are no ERROR-level issues in any outcome
+            has_error = any(
+                any(issue.get('level', '').upper() == 'ERROR' for issue in outcome.get('issues', []))
+                for outcome in outcomes
+            )
+            is_valid = not has_error
+            # Collect all ERROR issues for this file
+            error_issues = []
+            for outcome in outcomes:
+                issues = outcome.get("issues", [])
+                error_issues.extend([issue for issue in issues if issue.get('level', '').upper() == 'ERROR'])
             # Compute relative path and ensure subdirs exist in validation_result
             rel_path = file_path.relative_to(input_root)
             result_file = validation_result_dir / rel_path
