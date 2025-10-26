@@ -18,7 +18,6 @@ trusted_code_systems: List[str] = [
     "http://hl7.org/fhir/sid/icd-9",
     "http://hl7.org/fhir/StructureDefinition/patient-genderIdentity",
     "http://hl7.org/fhir/us/core",
-    "http://hl7.org/fhir/us/core/CodeSystem",
     "http://ihe.net/fhir/ValueSet",
     "http://loinc.org",
     "http://snomed.info/sct",
