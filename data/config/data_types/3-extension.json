@@ -25,7 +25,7 @@
       "id": "extension-rule-3",
       "comment": "Now hash the entire extension to catch any other sensitive data",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not())",
-      "method": "cryptoHash"
+      "method": "redact"
     }
   ]
 }
