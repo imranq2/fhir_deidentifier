@@ -2,6 +2,7 @@ import json
 import glob
 import os
 from typing import List, Dict, Any
+import re
 
 CONFIG_DIR = os.path.dirname(__file__)
 DATA_TYPES_CONFIG_DIR = os.path.join(CONFIG_DIR, '../data_types')
@@ -101,6 +102,22 @@ config_names_text = '\n'.join([os.path.basename(f) for f in config_files])
 print(f"Using following config files for merging:\n{config_names_text}")
 
 
+def prefix_urn_oid_system(obj):
+    """
+    Recursively traverse obj. If a dict has a key 'system' whose value is a string starting with a digit,
+    prefix 'urn:oid:' if not already present.
+    """
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k == "system" and isinstance(v, str) and re.match(r"^\d", v) and not v.startswith("urn:oid:"):
+                obj[k] = "urn:oid:" + v
+            else:
+                prefix_urn_oid_system(v)
+    elif isinstance(obj, list):
+        for item in obj:
+            prefix_urn_oid_system(item)
+    return obj
+
 def replace_placeholders(*, fhir_path_rules: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     # now iterate the fhir_path_rules and replace the trusted code systems placeholder if present
     for rule in fhir_path_rules:
@@ -131,6 +148,8 @@ def load_configs():
         with open(config_path, 'r') as f:
             try:
                 data = json.load(f)
+                # Recursively prefix urn:oid: to system fields
+                data = prefix_urn_oid_system(data)
                 fhir_path_rules = data.get('fhirPathRules', [])
                 # check that all rules begin with the resource type from the filename
                 resource_type_upper = os.path.splitext(os.path.basename(config_path))[0].upper()
@@ -157,6 +176,7 @@ def load_configs():
         with open(config_path, 'r') as f:
             try:
                 data = json.load(f)
+                prefix_urn_oid_system(data)
                 fhir_path_rules = data.get('fhirPathRules', [])
                 fhir_path_rules = replace_placeholders(fhir_path_rules=fhir_path_rules)
                 merged_rules.extend(fhir_path_rules)
@@ -168,6 +188,7 @@ def load_configs():
     with open(os.path.join(RESOURCE_CONFIG_DIR, DEFAULT_CONFIG), 'r') as f:
         try:
             data = json.load(f)
+            prefix_urn_oid_system(data)
             fhir_path_rules = data.get('fhirPathRules', [])
             fhir_path_rules = replace_placeholders(fhir_path_rules=fhir_path_rules)
             merged_rules.extend(fhir_path_rules)

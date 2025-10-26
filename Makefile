@@ -45,7 +45,7 @@ start_validator:
 .PHONY: validate
 validate:
 	rm -rf ./data/validation_result/*
-	docker compose -f docker-compose-validate.yml run --rm validate-script sh -c "pip install --root-user-action=ignore --upgrade pip && pip install --root-user-action=ignore requests && python validate.py /data/output/large"
+	docker compose -f docker-compose-validate.yml run --rm validate-script sh -c "pip install --root-user-action=ignore requests && python validate.py /data/output/large"
 
 .PHONY: stop_validator
 stop_validator:
