@@ -6,6 +6,16 @@
       "method": "keep"
     },
     {
+      "id": "extension-rule-1",
+      "path": "nodesByType('Extension').where(url='https://www.icanbwell.com/sourceId').id",
+      "method": "keep"
+    },
+    {
+      "id": "extension-rule-1",
+      "path": "nodesByType('Extension').where(url='https://www.icanbwell.com/sourceAssigningAuthority').id",
+      "method": "keep"
+    },
+    {
       "id": "extension-rule-2",
       "path": "nodesByType('Extension').where(url='https://fhir.icanbwell.com/4_0_0/StructureDefinition/intelligence')",
       "method": "keep"
