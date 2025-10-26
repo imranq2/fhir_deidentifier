@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Dict, Any, Optional
 import sys
 import uuid
+import argparse
 
 
 def validate_fhir_resource(
@@ -80,13 +81,38 @@ def validate_fhir_resource(
                 time.sleep(retry_wait)
     return {}
 
+def get_us_core_profile_url(resource_type: str) -> Optional[str]:
+    """
+    Return the canonical US Core 6.1.0 profile URL for a given resource type, if known.
+    """
+    resource_type = resource_type.lower()
+    # Map resourceType to US Core profile name
+    us_core_profiles = {
+        "patient": "us-core-patient",
+        "observation": "us-core-observation",
+        "condition": "us-core-condition",
+        "allergyintolerance": "us-core-allergyintolerance",
+        "medicationrequest": "us-core-medicationrequest",
+        "medicationstatement": "us-core-medicationstatement",
+        "documentreference": "us-core-documentreference",
+        "composition": "us-core-composition",
+        "person": "us-core-person",
+        # Add more as needed
+    }
+    profile_name = us_core_profiles.get(resource_type)
+    if profile_name:
+        return f"https://hl7.org/fhir/us/core/StructureDefinition/{profile_name}"
+    return None
+
 def main() -> None:
     """Main entry point for CLI usage."""
-    if len(sys.argv) < 2:
-        print("Usage: python validate.py <path-to-fhir-json-file-or-directory>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="FHIR Resource Validator using HAPI FHIR server $validate operation")
+    parser.add_argument("input_path", help="Path to FHIR JSON file or directory")
+    parser.add_argument("--profile", help="FHIR profile URL to validate against (e.g., US Core 6.1.0 profile)")
+    parser.add_argument("--validator-base-url", default="http://hapi-fhir:8080/fhir", help="Base URL of the HAPI FHIR server")
+    args = parser.parse_args()
 
-    input_path = Path(sys.argv[1])
+    input_path = Path(args.input_path)
     files_to_validate = []
 
     if input_path.is_file():
@@ -117,7 +143,12 @@ def main() -> None:
 
     for file_path in files_to_validate:
         try:
-            result = validate_fhir_resource(file_path, session_id=session_id)
+            # Read resourceType to infer profile if not provided
+            with open(file_path, 'r', encoding='utf-8') as f:
+                fhir_resource = json.load(f)
+            resource_type = fhir_resource.get("resourceType", "").lower()
+            profile_url = args.profile or get_us_core_profile_url(resource_type)
+            result = validate_fhir_resource(file_path, validator_base_url=args.validator_base_url, profile=profile_url, session_id=session_id)
             # HAPI returns an OperationOutcome resource
             issues = result.get('issue', [])
             # A file is valid if there are no ERROR or FATAL issues
@@ -143,14 +174,15 @@ def main() -> None:
             failed += 1
             failed_files.append(file_path)
 
-    print(f"\nValidation complete. {passed}/{total} files PASSED, {failed} FAILED.")
     if failed > 0:
         # Print just the list of failed files at the end
         print("\nFAILED FILES LIST:")
         for f in failed_files:
-            print(f)
+            print(f"{f} FAILED")
+        print(f"\n----- Validation complete. {passed}/{total} files PASSED, {failed} FAILED ----")
         sys.exit(1)
     else:
+        print(f"\n----- Validation complete. {passed}/{total} files PASSED, {failed} FAILED ----")
         sys.exit(0)
 
 
