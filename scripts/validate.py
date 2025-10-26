@@ -137,11 +137,12 @@ def main() -> None:
     parser.add_argument("input_path", help="Path to FHIR JSON file or directory")
     parser.add_argument("--profile", help="FHIR profile URL to validate against. If not provided, the script will use the US Core profile for each resource type by default.")
     parser.add_argument("--validator-base-url", default="http://hapi-fhir:8080/fhir", help="Base URL of the HAPI FHIR server")
-    parser.add_argument("--exclude-code", action='append', default=[], help="Code(s) to exclude from error issues (compared to details.coding.code in OperationOutcome.issue). Can be specified multiple times.")
-    parser.add_argument("--exclude-diagnostics-regex", action='append', default=[], help="Regex(es) to exclude issues where diagnostics matches. Can be specified multiple times.")
+    parser.add_argument("--exclude-code", action='append', default=[], help="Regex(es) for code(s) to exclude from error issues (compared to details.coding.code in OperationOutcome.issue). Can be specified multiple times. Supports regex.")
+    parser.add_argument("--exclude-diagnostics", action='append', default=[], help="Regex(es) to exclude issues where diagnostics matches. Can be specified multiple times.")
     args = parser.parse_args()
 
-    exclude_diagnostics_regexes = [re.compile(r) for r in args.exclude_diagnostics_regex]
+    exclude_diagnostics_regexes = [re.compile(r) for r in args.exclude_diagnostics]
+    exclude_code_regexes = [re.compile(r) for r in args.exclude_code]
 
     input_path = Path(args.input_path)
     files_to_validate = []
@@ -179,9 +180,10 @@ def main() -> None:
         details = issue.get('details', {})
         codings = details.get('coding', [])
         for coding in codings:
-            code = coding.get('code')
-            if code and code in exclude_codes:
-                return True
+            code = coding.get('code', '')
+            for regex in exclude_code_regexes:
+                if regex.search(code):
+                    return True
         diagnostics = issue.get('diagnostics', '')
         for regex in exclude_diagnostics_regexes:
             if regex.search(diagnostics):
