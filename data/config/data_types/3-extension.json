@@ -98,7 +98,7 @@
     {
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
-      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('code')",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).valueCode",
       "method": "substitute",
       "replaceWith": "masked"
     },
@@ -106,6 +106,17 @@
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('Identifier')",
+      "method": "substitute",
+      "replaceWith": {
+        "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+        "value": "masked",
+        "display": "masked"
+      }
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).valueIdentifier",
       "method": "substitute",
       "replaceWith": {
         "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",

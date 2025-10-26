@@ -11,6 +11,7 @@ import sys
 import uuid
 import argparse
 import time
+import re
 
 
 def validate_fhir_resource(
@@ -104,7 +105,6 @@ def validate_fhir_resource(
                 raise
             else:
                 print(f"Attempt {attempt} failed: {e}. Retrying in {retry_wait} seconds...", file=sys.stderr)
-                import time
                 time.sleep(retry_wait)
     return {}
 
@@ -138,7 +138,10 @@ def main() -> None:
     parser.add_argument("--profile", help="FHIR profile URL to validate against. If not provided, the script will use the US Core profile for each resource type by default.")
     parser.add_argument("--validator-base-url", default="http://hapi-fhir:8080/fhir", help="Base URL of the HAPI FHIR server")
     parser.add_argument("--exclude-code", action='append', default=[], help="Code(s) to exclude from error issues (compared to details.coding.code in OperationOutcome.issue). Can be specified multiple times.")
+    parser.add_argument("--exclude-diagnostics-regex", action='append', default=[], help="Regex(es) to exclude issues where diagnostics matches. Can be specified multiple times.")
     args = parser.parse_args()
+
+    exclude_diagnostics_regexes = [re.compile(r) for r in args.exclude_diagnostics_regex]
 
     input_path = Path(args.input_path)
     files_to_validate = []
@@ -172,6 +175,19 @@ def main() -> None:
 
     exclude_codes = set(args.exclude_code)
 
+    def is_excluded(issue):
+        details = issue.get('details', {})
+        codings = details.get('coding', [])
+        for coding in codings:
+            code = coding.get('code')
+            if code and code in exclude_codes:
+                return True
+        diagnostics = issue.get('diagnostics', '')
+        for regex in exclude_diagnostics_regexes:
+            if regex.search(diagnostics):
+                return True
+        return False
+
     for file_path in files_to_validate:
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -183,15 +199,7 @@ def main() -> None:
             result = validate_fhir_resource(file_path, validator_base_url=args.validator_base_url, profile=profile_url, session_id=session_id)
             # HAPI returns an OperationOutcome resource
             issues = result.get('issue', [])
-            # A file is valid if there are no ERROR or FATAL issues, after excluding specified codes
-            def is_excluded(issue):
-                details = issue.get('details', {})
-                codings = details.get('coding', [])
-                for coding in codings:
-                    code = coding.get('code')
-                    if code and code in exclude_codes:
-                        return True
-                return False
+            # A file is valid if there are no ERROR or FATAL issues, after excluding specified codes or diagnostics regexes
             error_issues = [issue for issue in issues if issue.get('severity', '').upper() in ('ERROR', 'FATAL') and not is_excluded(issue)]
             is_valid = not error_issues
             # Compute relative path and ensure subdirs exist in validation_result
