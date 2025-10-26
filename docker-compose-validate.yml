@@ -44,6 +44,7 @@ services:
 #        condition: service_healthy
     image: python:3.12-slim
     volumes:
+      - ./profiles:/profiles
       - ./scripts:/app
       - ./data/output/large:/data/output/large
       - ./data/validation_result:/validation_result
