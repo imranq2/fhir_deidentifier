@@ -170,10 +170,11 @@ def main() -> None:
             is_valid = not error_issues
             # Compute relative path and ensure subdirs exist in validation_result
             rel_path = file_path.relative_to(input_root)
-            result_file = validation_result_dir / rel_path
-            result_file.parent.mkdir(parents=True, exist_ok=True)
-            with open(result_file, 'w', encoding='utf-8') as rf:
-                json.dump(error_issues, rf, indent=2)
+            if len(error_issues) > 0:
+                result_file = validation_result_dir / rel_path
+                result_file.parent.mkdir(parents=True, exist_ok=True)
+                with open(result_file, 'w', encoding='utf-8') as rf:
+                    json.dump(error_issues, rf, indent=2)
             # Print only the relative file path and status
             if is_valid:
                 print(f"{rel_path} PASSED")
