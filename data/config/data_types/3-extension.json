@@ -78,21 +78,14 @@
     {
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
-      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('Coding').system",
-      "method": "substitute",
-      "replaceWith": "http://terminology.hl7.org/CodeSystem/data-absent-reason"
-    },
-    {
-      "id": "extension-rule-3",
-      "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
-      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('Coding').code",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('code')",
       "method": "substitute",
       "replaceWith": "masked"
     },
     {
       "id": "extension-rule-3",
       "comment": "Redact Coding nodes within untrusted extensions here otherwise they cause problems later on",
-      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).valueCode",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('Coding').code",
       "method": "substitute",
       "replaceWith": "masked"
     },
@@ -122,6 +115,13 @@
       "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('string')",
       "method": "substitute",
       "replaceWith": "redacted"
+    },
+    {
+      "id": "extension-rule-3",
+      "comment": "Set untrusted Coding.system to a known value to avoid issues downstream",
+      "path": "nodesByType('Extension').where(url.exists() and url.matches('{{TRUSTED_CODE_SYSTEMS}}').not()).nodesByType('Coding').system",
+      "method": "substitute",
+      "replaceWith": "http://terminology.hl7.org/CodeSystem/data-absent-reason"
     },
     {
       "id": "extension-rule-3",

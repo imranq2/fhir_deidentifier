@@ -118,7 +118,7 @@ def process_json_files(input_dir, output_dir=None):
                 prefix_urn_oid_system(data)
                 fix_id_with_uuidv5(data)
                 fix_reference_with_uuid_extension(data)
-                fix_div_fields(data)
+                # fix_div_fields(data)
                 # Write back to the same file or to output_dir if specified
                 if output_dir:
                     rel_path = os.path.relpath(input_path, input_dir)
