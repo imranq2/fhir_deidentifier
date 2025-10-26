@@ -6,6 +6,10 @@ services:
     image: markiantorno/validator-wrapper:1.0.70
     ports:
       - "3500:3500"
+    environment:
+      VALIDATION_SERVICE_PRESETS_FILE_PATH: /presets.json
+    volumes:
+      - ./data/config/validation/presets.json:/presets.json
     networks:
       - fhirnet
     healthcheck:

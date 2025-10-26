@@ -14,7 +14,8 @@ import uuid
 def validate_fhir_resource(
         file_path: Path,
         validator_url: str = "http://fhir-validator:3500/validate",
-        profile: Optional[str] = None
+        profile: Optional[str] = None,
+        session_id: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Validate a FHIR JSON resource file.
@@ -23,6 +24,7 @@ def validate_fhir_resource(
         file_path: Path to the FHIR JSON file
         validator_url: URL of the validator endpoint
         profile: Optional FHIR profile URL to validate against
+        session_id: Optional session ID for validation request
 
     Returns:
         Validation response as dictionary
@@ -51,7 +53,8 @@ def validate_fhir_resource(
         }
     ]
 
-    session_id = str(uuid.uuid4())
+    # Use the provided session_id or create a new one
+    session_id = session_id or str(uuid.uuid4())
 
     validation_request = {
         "cliContext": cli_context,
@@ -59,7 +62,7 @@ def validate_fhir_resource(
         "sessionId": session_id
     }
 
-    max_retries = 5
+    max_retries = 10
     for attempt in range(1, max_retries + 1):
         try:
             response = requests.post(
@@ -108,6 +111,9 @@ def main() -> None:
     # Determine the root for relative paths
     input_root = input_path if input_path.is_dir() else input_path.parent
 
+    # Create a single session_id for all validations
+    session_id = str(uuid.uuid4())
+
     total = len(files_to_validate)
     passed = 0
     failed = 0
@@ -115,7 +121,7 @@ def main() -> None:
 
     for file_path in files_to_validate:
         try:
-            result = validate_fhir_resource(file_path)
+            result = validate_fhir_resource(file_path, session_id=session_id)
             outcomes = result.get("outcomes", [])
             # A file is valid if there are no ERROR-level issues in any outcome
             has_error = any(
